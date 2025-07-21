@@ -1,18 +1,18 @@
 import React from 'react';
-import { DualAxes } from '@ant-design/plots';
+import { Column, DualAxes } from '@ant-design/plots';
 
 const formatDate = (dateStr) => {
-  const [ month, day ] = dateStr.split('-');
+  const [month, day] = dateStr.split('-');
   return `${day}-${month}`;
 };
 
 const ChartActivityRevenue = ({ activityRevenue }) => {
 
-  const dataRevenue = activityRevenue?.map(item => ({
-    year: formatDate(item.date),
-    'Doanh thu': item.data[0]?.total || 0,
-  })) || [];
-  
+  // const dataRevenue = activityRevenue?.map(item => ({
+  //   year: formatDate(item.date),
+  //   'Doanh thu': item.data[0]?.total || 0,
+  // })) || [];
+
   const dataOrderOpportunity = activityRevenue?.flatMap(item => ([
     {
       year: formatDate(item.date),
@@ -25,9 +25,16 @@ const ChartActivityRevenue = ({ activityRevenue }) => {
       type: 'Cơ hội',
     }
   ])) || [];
-  
+
+  const dataRevenue = activityRevenue?.map((item, idx) => ({
+    year: formatDate(item.date),
+    value: 100000 * (idx + 1),
+    type: 'Doanh số hoàn thành thực tế'
+  })) || [];
+
+  if (!dataRevenue || dataRevenue.length == 0) return <></>
   const config = {
-    data: [dataRevenue, dataOrderOpportunity],
+    data: dataRevenue,
     xField: 'year',
     yField: ['Doanh thu', 'value'],
     geometryOptions: [
@@ -87,12 +94,12 @@ const ChartActivityRevenue = ({ activityRevenue }) => {
       }
     ],
     legend: {
-      position: 'top',
+      position: 'bottom',
     },
   };
   return (
-    <div>
-      <DualAxes {...config} />
+    <div style={{ height: '100%' }}>
+      <Column {...config} />
     </div>
   );
 };
