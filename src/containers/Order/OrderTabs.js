@@ -6,6 +6,7 @@ import { useEffectAsync } from 'hooks/MyHooks';
 import OrderPayment from './OrderPayment';
 import { DollarOutlined, FileTextOutlined, BankOutlined } from '@ant-design/icons';
 import Invoice from './Invoice';
+import EnterpriseForm from './EnterpriseForm';
 
 const OrderTabs = ({ data, title }) => {
 
@@ -44,7 +45,7 @@ const OrderTabs = ({ data, title }) => {
       key: 'company',
       label: 'Thông tin công ty',
       icon: <BankOutlined />,
-      component: <span />
+      component: <EnterpriseForm {...dataInTabs} />
     }
   ];
 

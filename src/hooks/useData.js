@@ -76,6 +76,9 @@ export const useGetAllProductQuery = ({queryParams, onCompleted}) =>
 export const useGetAllProviderQuery = ({queryParams, onCompleted}) => 
 	useData({queryParams, onCompleted, api: 'provider/fetch'});
 
+export const useGetAllProvinceQuery = ({queryParams, onCompleted}) => 
+	useData({queryParams, onCompleted, api: 'province/find'});
+
 export const useGetAllStockQuery = ({queryParams, onCompleted}) => 
 	useData({queryParams, onCompleted, api: 'warehouse/fetch-stock'});
 
