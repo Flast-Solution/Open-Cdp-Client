@@ -17,6 +17,9 @@ import {
   BookOutlined,
   ArrowUpOutlined,
   ArrowDownOutlined,
+  FunnelPlotOutlined,
+  DashboardOutlined,
+  AimOutlined,
 } from '@ant-design/icons';
 import MiniLineChart from './MiniChart';
 const { Text } = Typography;
@@ -103,7 +106,7 @@ const NewFeed = () => {
       icon: <BookOutlined style={{ fontSize: 20 }} />,
       value: '4.724 Điều',
       change: -7.07,
-      chart: [5000, 4900, 4800, 4700, 4650, 4600, 4550], // giảm đều
+      chart: [4000, 4900, 4800, 4700, 4650, 4600, 4550], // giảm đều
     },
   ];
 
@@ -144,16 +147,22 @@ const NewFeed = () => {
     </Row>
     <Row gutter={[16, 16]} style={{ marginTop: 16 }}>
       <Col md={8} xs={24}>
-        <div style={{ width: '100%', background: '#fff', padding: 15, minHeight: 500 }}>
-          <h2 style={{ fontSize: 14, fontWeight: 'bold' }}>Hợp đồng số tiền mục tiêu và trạng thái hoàn thành</h2>
-          <ChartActivityRevenue activityRevenue={activityRevenue} />
+        <div style={{ width: '100%', background: '#fff', padding: 15, height: 450 }}>
+          <div style={{ display: 'flex', alignItems: 'center' }}>
+            <AimOutlined style={{ fontSize: 18 }} />
+            <h2 style={{ fontSize: 16, fontWeight: 'bold', marginBottom: 0, marginLeft: 10 }}>Hợp đồng số tiền mục tiêu và trạng thái hoàn thành</h2>
+          </div>
+          <ChartActivityRevenue activityRevenue={{ activityRevenue: [] }} />
         </div>
       </Col>
 
       <Col md={8} xs={24}>
-        <div style={{ width: '100%', background: '#fff', padding: 15, minHeight: 500 }}>
-          <h2 style={{ fontSize: 14, fontWeight: 'bold' }}>Hợp đồng số tiền mục tiêu và trạng thái hoàn thành</h2>
-          <ChartSale activityRevenue={activityRevenue} />
+        <div style={{ width: '100%', background: '#fff', padding: 15, height: 450 }}>
+          <div style={{ display: 'flex', alignItems: 'center' }}>
+            <FunnelPlotOutlined style={{ fontSize: 18, marginBottom: 10 }} />
+            <h2 style={{ fontSize: 16, fontWeight: 'bold', marginLeft: 10 }}>Hợp đồng số tiền mục tiêu và trạng thái hoàn thành</h2>
+          </div>
+          <ChartSale activityRevenue={{ activityRevenue: [] }} />
         </div>
       </Col>
 
@@ -162,7 +171,11 @@ const NewFeed = () => {
           style={{ height: '100%' }}
           title={
             <div style={{ display: 'flex', flexDirection: 'column' }}>
-              <Text strong style={{ fontSize: 16 }}>Tỷ lệ hoàn thành chỉ tiêu hiệu suất</Text>
+              <div style={{ display: 'flex', alignItems: 'center' }}>
+                <DashboardOutlined style={{ fontSize: 18 }} />
+                <Text strong style={{ fontSize: 16, fontWeight: 'bold', marginLeft: 10 }}>Tỷ lệ hoàn thành chỉ tiêu hiệu suất</Text>
+              </div>
+
               <Text type="secondary" style={{ fontSize: 12 }}>Tôi và cấp dưới | Tháng trước</Text>
             </div>
           }
