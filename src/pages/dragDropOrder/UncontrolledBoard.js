@@ -9,9 +9,9 @@ import { useEffectAsync } from 'hooks/MyHooks';
 import KanbanCard from './KanbanCard';
 import { SUCCESS_CODE } from 'configs';
 import { isEmpty } from 'lodash';
-import '@asseinfo/react-kanban/dist/styles.css'
 import { InAppEvent } from 'utils/FuseUtils';
 import { HASH_POPUP } from 'configs/constant';
+import '@asseinfo/react-kanban/dist/styles.css'
 
 const { Search } = Input;
 const generateCart = (details, order, status) => {
