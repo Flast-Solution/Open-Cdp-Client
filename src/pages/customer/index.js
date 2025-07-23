@@ -2,7 +2,7 @@ import React, { useCallback, useState } from 'react';
 import { Helmet } from 'react-helmet';
 import CustomBreadcrumb from 'components/BreadcrumbCustom';
 import RestList from 'components/RestLayout/RestList';
-import LeadFilter from './Filter';
+import CustomerFilter from './Filter';
 import useGetList from "hooks/useGetList";
 import { Button } from 'antd';
 import { arrayEmpty, dateFormatOnSubmit, formatTime } from 'utils/dataUtils';
@@ -106,7 +106,7 @@ const ListCustomerRetail = () => {
         xScroll={1200}
         onData={onData}
         initialFilter={{ limit: 10, page: 1 }}
-        filter={<LeadFilter />}
+        filter={<CustomerFilter />}
         beforeSubmitFilter={beforeSubmitFilter}
         useGetAllQuery={useGetList}
         hasCreate={false}
