@@ -61,27 +61,29 @@ const UncontrolledBoard = () => {
   const [ listStatus, setListStatus ] = useState([]);
 
   useEffectAsync(async() => {
-    const [ columns, kanban ] = await Promise.all([
-      RequestUtils.GetAsList("/order-status/fetch"),
-      RequestUtils.Get("/order/fetch-kanban")
-    ]);
-    const dataGenerate = generateDataInBoard(kanban.data, columns);
-    setDataInBoard(dataGenerate);
-    setDataOrigin(dataGenerate);
-    setListStatus(columns);
+    const dataStatus = await RequestUtils.GetAsList("/order-status/fetch");
+    setListStatus(dataStatus);
   }, [])
 
+  useEffectAsync(async() => {
+    if(arrayEmpty(listStatus)) {
+      return;
+    }
+    const kanban = await RequestUtils.Get("/order/fetch-kanban");
+    const dataGenerate = generateDataInBoard(kanban.data, listStatus);
+    setDataInBoard(dataGenerate);
+    setDataOrigin(dataGenerate);
+  }, [listStatus])
+
   const handleColumnSearch = async (value, { columnId }) => {
+
     const column = dataInBoard[columnId - 1];
     const { id: status } = column;
-    const [ columns, orders ] = await Promise.all([
-      RequestUtils.GetAsList("/order-status/fetch"),
-      RequestUtils.GetAsList("/order/fetch-kanban-detail", { customerPhone: value, status }),
-    ]);
-
+    const orders = await RequestUtils.GetAsList("/order/fetch-kanban-detail", { customerPhone: value, status });
     let kanban = { [status]: orders };
-    let listStatus = columns.filter(i => i.id === status) ?? [];
-    const dataGenerate = generateDataInBoard(kanban, listStatus);
+
+    let orderStatus = listStatus.filter(i => i.id === status) ?? [];
+    const dataGenerate = generateDataInBoard(kanban, orderStatus);
     let filteredCards = dataGenerate.find(i => i.id === status)?.cards ?? [];
 
     setDataInBoard((prev) => prev.map((col) => {
@@ -116,21 +118,19 @@ const UncontrolledBoard = () => {
     searchQuery: col.searchQuery
   })));
 
-  const onClickAddStatus = useCallback(() => {
-    InAppEvent.emit(HASH_POPUP, {
-      hash: "order.add.status",
-      title: "Cập nhật trạng thái đơn hàng",
-      data: {
-        onSave: (values) => values,
-        listStatus
-      }
-    });
-  }, [listStatus]);
+  const onClickAddStatus = () => InAppEvent.emit(HASH_POPUP, {
+    hash: "order.add.status",
+    title: "Cập nhật trạng thái đơn hàng",
+    data: {
+      onSave: (values) => setListStatus(values),
+      listStatus
+    }
+  });
 
   return (
     <ContainerStyles>
       <div style={{ display: 'flex', justifyContent: 'end', marginBottom: 20 }}>
-        <Button type="primary" onClick={onClickAddStatus}>Tạo trạng thái đơn</Button>
+        <Button type="primary" onClick={onClickAddStatus}>Cấu hình trạng thái qui trình</Button>
       </div>
       <Board
         key={boardKey}
