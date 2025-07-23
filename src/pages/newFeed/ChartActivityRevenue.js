@@ -1,5 +1,5 @@
 import React from 'react';
-import { Column, DualAxes } from '@ant-design/plots';
+import { Column } from '@ant-design/plots';
 
 const formatDate = (dateStr) => {
   const [month, day] = dateStr.split('-');
@@ -26,75 +26,42 @@ const ChartActivityRevenue = ({ activityRevenue }) => {
     }
   ])) || [];
 
-  const dataRevenue = activityRevenue?.map((item, idx) => ({
-    year: formatDate(item.date),
-    value: 100000 * (idx + 1),
-    type: 'Doanh số hoàn thành thực tế'
-  })) || [];
+  const dataRevenue = Array.from({ length: 6 }, (_, idx) => {
+    const date = new Date(2024, idx, 1); // Tháng 0–5
+    const month = String(date.getMonth() + 1).padStart(2, '0');
+    const day = String(date.getDate()).padStart(2, '0');
+    const formattedInput = `${month}-${day}`; 
+  
+    return {
+      year: formatDate(formattedInput),
+      value: (100000 * (idx + 1)).toLocaleString('vi-VN'),
+      type: 'Doanh số hoàn thành thực tế',
+    };
+  });
 
   if (!dataRevenue || dataRevenue.length == 0) return <></>
   const config = {
     data: dataRevenue,
+    isGroup: true, 
     xField: 'year',
-    yField: ['Doanh thu', 'value'],
-    geometryOptions: [
-      {
-        geometry: 'line',
-        lineStyle: {
-          lineWidth: 3,
-          lineDash: [5, 5],
-        },
-        color: '#5B8FF9',
-        yAxis: {
-          label: {
-            formatter: (v) => `${Number(v).toLocaleString('vi-VN')} ₫`,
-          },
-          title: {
-            text: 'Doanh thu',
-            style: { fill: '#5B8FF9' },
-          },
-        },
-        tooltip: {
-          formatter: (datum) => ({
-            name: 'Doanh thu',
-            value: `${datum['Doanh thu'].toLocaleString('vi-VN')} ₫`,
-          }),
-        },
-      },
-      {
-        geometry: 'line',
-        seriesField: 'type',
-        color: ['#5AD8A6', '#F6BD16'],
-        lineStyle: (datum) => {
-          if (datum.type === 'Đơn hàng') return { lineWidth: 4, opacity: 0.5 };
-          if (datum.type === 'Cơ hội') return { lineWidth: 3, opacity: 0.7 };
-          return {};
-        },
-        point: {
-          visible: true,
-          style: (datum) => {
-            if (datum.type === 'Đơn hàng') return { stroke: '#5AD8A6', fill: '#fff' };
-            if (datum.type === 'Cơ hội') return { stroke: '#F6BD16', fill: '#fff' };
-            return {};
-          },
-        },
-        yAxis: {
-          position: 'right',
-          title: {
-            text: 'Đơn hàng / Cơ hội',
-            style: { fill: '#5AD8A6' },
-          },
-        },
-        tooltip: {
-          formatter: (datum) => ({
-            name: datum.type,
-            value: datum.value.toLocaleString('vi-VN'),
-          }),
-        },
-      }
-    ],
+    yField: 'value',
+    seriesField: 'type', 
+    columnStyle: {
+      radius: [4, 4, 0, 0],
+    },
     legend: {
       position: 'bottom',
+    },
+    tooltip: {
+      formatter: (datum) => ({
+        name: datum.type,
+        value: datum.type === 'Doanh thu'
+          ? `${datum.value.toLocaleString('vi-VN')} ₫`
+          : datum.value.toLocaleString('vi-VN'),
+      }),
+    },
+    color: (type) => {
+      return '#5B8FF9';
     },
   };
   return (

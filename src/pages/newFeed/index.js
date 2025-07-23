@@ -46,7 +46,7 @@ const NewFeed = () => {
   useEffect(() => {
     (async () => {
       const { data } = await RequestUtils.Get('/sale-report/data-activity');
-      setListDataActivity(data);
+      setListDataActivity(data || {});
     })()
   }, [])
   const grandTotal = activityGroup?.reduce((sum, item) => sum + Number(item.total), 0);
@@ -152,7 +152,7 @@ const NewFeed = () => {
             <AimOutlined style={{ fontSize: 18 }} />
             <h2 style={{ fontSize: 16, fontWeight: 'bold', marginBottom: 0, marginLeft: 10 }}>Hợp đồng số tiền mục tiêu và trạng thái hoàn thành</h2>
           </div>
-          <ChartActivityRevenue activityRevenue={{ activityRevenue: [] }} />
+          <ChartActivityRevenue activityRevenue={[] } />
         </div>
       </Col>
 
@@ -162,7 +162,7 @@ const NewFeed = () => {
             <FunnelPlotOutlined style={{ fontSize: 18, marginBottom: 10 }} />
             <h2 style={{ fontSize: 16, fontWeight: 'bold', marginLeft: 10 }}>Hợp đồng số tiền mục tiêu và trạng thái hoàn thành</h2>
           </div>
-          <ChartSale activityRevenue={{ activityRevenue: [] }} />
+          <ChartSale activityRevenue={ [] } />
         </div>
       </Col>
 
