@@ -8,30 +8,11 @@ const formatDate = (dateStr) => {
 
 const ChartActivityRevenue = ({ activityRevenue }) => {
 
-  // const dataRevenue = activityRevenue?.map(item => ({
-  //   year: formatDate(item.date),
-  //   'Doanh thu': item.data[0]?.total || 0,
-  // })) || [];
-
-  const dataOrderOpportunity = activityRevenue?.flatMap(item => ([
-    {
-      year: formatDate(item.date),
-      value: item.data[0]?.order || 0,
-      type: 'Đơn hàng',
-    },
-    {
-      year: formatDate(item.date),
-      value: item.data[0]?.cohoi || 0,
-      type: 'Cơ hội',
-    }
-  ])) || [];
-
   const dataRevenue = Array.from({ length: 6 }, (_, idx) => {
-    const date = new Date(2024, idx, 1); // Tháng 0–5
+    const date = new Date(2024, idx, 1);
     const month = String(date.getMonth() + 1).padStart(2, '0');
     const day = String(date.getDate()).padStart(2, '0');
     const formattedInput = `${month}-${day}`; 
-  
     return {
       year: formatDate(formattedInput),
       value: (100000 * (idx + 1)).toLocaleString('vi-VN'),
@@ -39,7 +20,6 @@ const ChartActivityRevenue = ({ activityRevenue }) => {
     };
   });
 
-  if (!dataRevenue || dataRevenue.length == 0) return <></>
   const config = {
     data: dataRevenue,
     isGroup: true, 
@@ -62,13 +42,13 @@ const ChartActivityRevenue = ({ activityRevenue }) => {
     },
     color: (type) => {
       return '#5B8FF9';
-    },
-  };
+    }
+  }
   return (
     <div style={{ height: '100%' }}>
       <Column {...config} />
     </div>
-  );
+  )
 };
 
 export default ChartActivityRevenue;

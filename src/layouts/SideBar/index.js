@@ -66,7 +66,7 @@ function SideBar() {
 		getItem(<Link to="/sale/co-hoi"> Cơ hội </Link>, 'co_hoi', <IncomeFIcon />),
     getItem('Đơn hàng', 'order_solve', <DollarCircleFilled /> , [
 			getItem(<Link to="/sale/order">Tổng hợp</Link>, 'list_order', <UnorderedListOutlined />),
-			getItem(<Link to="/sale/cancellations">Đơn hủy</Link>, 'care-order', <ReservationFIcon />)
+			getItem(<Link to="/sale/order-cancel">Đơn hủy</Link>, 'order_cancel', <ReservationFIcon />)
 		]),
     getItem(<Link to="/sale/drag-drop-order">Quy Trình</Link>, 'quy_trinh_don_hang', <DashboardFIcon />),
     getItem('Kế toán', 'need_solve', <DollarCircleFilled /> , [

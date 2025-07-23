@@ -5,7 +5,7 @@ import ListOrder from 'containers/Order/List';
 
 const OrderPage = () => {
   const [ title ] = useState("Danh sách đơn hàng");
-  const filter = { type: "order"}
+  const filter = { type: "order" }
   return <>
     <Helmet>
       <title>{title}</title>

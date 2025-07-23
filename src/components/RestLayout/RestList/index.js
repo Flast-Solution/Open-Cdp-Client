@@ -3,6 +3,8 @@ import { useLocation, useNavigate } from "react-router-dom";
 import { convertObjToSearchStr, getQueryParamsFromUrl } from 'utils/tools';
 import ListLayout from './ListLayout';
 import RestFilter from '../RestFilter';
+import { useUpdateEffect } from 'hooks/MyHooks';
+import { isEmpty } from 'lodash';
 
 const log = (k, v) => console.log('[component.RestLayout.RestList] ' + k, v);
 const RestList = ({
@@ -34,6 +36,12 @@ const RestList = ({
     apiPath,
     resource
   });
+  
+  useUpdateEffect(() => {
+    if(!isEmpty(initialFilter)) {
+      setQueryParams(pre => ({...pre, ...initialFilter}));
+    }
+  }, [initialFilter]);
   
   const { data, loading } = useGetAllQuery({queryParams, onData});
   const handleChangeQueryParams = (params) => {

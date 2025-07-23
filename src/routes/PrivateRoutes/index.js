@@ -1,7 +1,7 @@
 import React from 'react';
 import { Navigate } from 'react-router-dom';
 import FuseUtils from 'utils/FuseUtils';
-import { authRoles } from 'auth';
+
 import { LoginConfig } from './AuthConfig';
 import { HomeConfig } from './HomeConfig';
 import { ProductConfig } from './ProductConfig';
@@ -22,23 +22,14 @@ import { ListUserSystemConfig } from './ListUserSysTemConfig';
 import { NewfeedConfig } from './NewFeedConfig';
 import { CohoiTakeConfig } from './CohoiTakeConfig';
 import { CardOrderConfig } from './CardOrderConfig';
-import { CancellationsConfig } from './CancellationsPageConfig';
 import { CongnoConfig } from './ConnoConfig';
 import { OrderTakeConfig } from './OrderTakeCareConfig';
 import { DragDropConfig } from './DragDropOrderConfig';
-
-const OrderPage = React.lazy(() => import('pages/order'));
-const SaleConfig = {
-    auth    : authRoles.admin,
-    routes  : [
-        { path     : '/sale/order', element: <OrderPage /> }
-    ]
-};
+import { OrderConfig } from './OrderConfig';
 
 const routeConfigs = [
     LoginConfig,
     ProductConfig,
-    SaleConfig,
     HomeConfig,
     LeadConfig,
     LeadNotTakeConfig,
@@ -57,8 +48,8 @@ const routeConfigs = [
     NewfeedConfig,
     CohoiTakeConfig,
     CardOrderConfig,
+    OrderConfig,
     OrderTakeConfig,
-    CancellationsConfig,
     CongnoConfig,
     DragDropConfig
 ];
