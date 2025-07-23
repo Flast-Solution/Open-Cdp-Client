@@ -6,30 +6,50 @@ import CustomerFilter from './Filter';
 import useGetList from "hooks/useGetList";
 import { Button } from 'antd';
 import { arrayEmpty, dateFormatOnSubmit, formatTime } from 'utils/dataUtils';
-import { HASH_MODAL } from 'configs';
-import { InAppEvent } from 'utils/FuseUtils';
+import UserService from 'services/UserService';
+import { CHANNEL_SOURCE_MAP_KEYS } from 'configs/localData';
+import { useNavigate } from "react-router-dom";
 
 const ListCustomerRetail = () => {
 
   const [ title ] = useState("Khách lẻ");
+  let navigate = useNavigate();
+
   const CUSTOM_ACTION = [
     {
       title: "Tên khách hàng",
-      ddataIndex: 'name',
+      dataIndex: 'name',
       width: 150
     },
     {
       title: "Số điện thoại",
       dataIndex: 'mobile',
-      width: 200,
+      width: 150,
       ellipsis: true
     },
     {
       title: "Email",
       dataIndex: 'email',
-      width: 200,
+      width: 190,
       ellipsis: true,
       render: (email) => email || '(Chưa có)'
+    },
+    {
+      title: "Nguồn",
+      dataIndex: 'sourceId',
+      width: 170,
+      render: (sourceId) => CHANNEL_SOURCE_MAP_KEYS[sourceId]?.name
+    },
+    {
+      title: "Kinh doanh",
+      dataIndex: 'saleName',
+      width: 150,
+      ellipsis: true
+    },
+    {
+      title: "Đ.Hàng",
+      dataIndex: 'numOfOrder',
+      width: 90
     },
     {
       title: "Ngày tạo",
@@ -41,20 +61,14 @@ const ListCustomerRetail = () => {
     {
       title: "Ngày sinh",
       dataIndex: 'dateOfBirth',
-      width: 200,
+      width: 120,
       ellipsis: true,
       render: (dateOfBirth) => formatTime(dateOfBirth)
     },
     {
-      title: "Sale",
-      dataIndex: 'sale',
-      width: 100,
-      ellipsis: true
-    },
-    {
       title: "Giới tính",
       dataIndex: 'gender',
-      width: 200,
+      width: 120,
       ellipsis: true
     },
     {
@@ -70,11 +84,15 @@ const ListCustomerRetail = () => {
     }
   ];
 
-  const onData = useCallback((values) => {
+  const onData = useCallback(async (values) => {
     if (arrayEmpty(values.embedded)) {
       return values;
     }
-    return values;
+    let { embedded, page } = values;
+    const ids = embedded.map( u => u.saleId);
+    const mUser = await UserService.mapId2Name(ids);
+    const datas = embedded.map(item => ({ ...item, saleName: mUser[item.saleId] || '' }));
+    return { embedded: datas, page };
   }, []);
 
   const beforeSubmitFilter = useCallback((values) => {
@@ -82,16 +100,8 @@ const ListCustomerRetail = () => {
     return values;
   }, []);
 
-  const onCreateLead = () => InAppEvent.emit(HASH_MODAL, {
-    hash: '#draw/warehouse.edit',
-    title: 'Tạo mới kho',
-    data: {}
-  });
-
-  const onHandleEdit = (record) => {
-    let title = 'Thông tin khách hàng';
-    let hash = '#draw/cutomerRetail.edit';
-    InAppEvent.emit(HASH_MODAL, { hash, title, data: record });
+  const onHandleEdit = ({id}) => {
+    navigate(String("/customer/").concat(id));
   }
 
   return (
@@ -111,7 +121,6 @@ const ListCustomerRetail = () => {
         useGetAllQuery={useGetList}
         hasCreate={false}
         apiPath={'customer/fetch-customer-personal'}
-        customClickCreate={onCreateLead}
         columns={CUSTOM_ACTION}
       />
     </div>

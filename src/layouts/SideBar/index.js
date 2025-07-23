@@ -17,8 +17,15 @@ import {
   OpenAIOutlined
 } from '@ant-design/icons';
 
-import { ConfigFIcon, CustomerFIcon, DashboardFIcon, IncomeFIcon, ReportFIcon, ReservationFIcon } from 'icons/FontIcons';
-import defaultLogoMark from 'assets/images/logo-mark-default.svg';
+import { 
+  ConfigFIcon, 
+  CustomerFIcon, 
+  DashboardFIcon, 
+  IncomeFIcon, 
+  ReportFIcon, 
+  ReservationFIcon 
+} from 'icons/FontIcons';
+
 import useCollapseSidebar from 'hooks/useCollapseSidebar';
 import { useTranslation } from 'react-i18next';
 import { Link } from "react-router-dom";
@@ -32,7 +39,8 @@ const { Sider } = Layout;
 
 const roleUserSale = "ROLE_SALE"; 
 const roleUserAdmin = "ROLE_ADMIN";
-const roleUser = "ROLE_USER"
+const roleUser = "ROLE_USER";
+
 function SideBar() {
 
   const { user: profile } = useGetMe();
@@ -106,7 +114,7 @@ function SideBar() {
         theme="light"
       >
         <div className="logo" onClick={toggleCollapse}>
-          <img alt="" src={collapsed ? defaultLogoMark : '/logo.png'}/>
+          <img alt="" src={collapsed ? '/img-intro-login.png' : '/logo.png'}/>
         </div>
         <Menu
           mode="inline"

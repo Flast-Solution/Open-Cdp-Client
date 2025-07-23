@@ -8,7 +8,6 @@ import LeadRoute from './LeadRouter.js';
 import LeadNotTakeRouter from './LeadNotTakeRouter.js';
 import LeadTakeRouter from './LeadTakeRouter.js';
 import WareHoseRouter from './WareHouseRouter.js';
-import CutomerRetailRouter from './CustomerRetailRouter.js';
 import ActionXuatkhoRouter from './ActionXuatkhoRouter.js';
 import WareHoseActionRouter from './WareHouseActionRouter.js';
 import OrderRouter from './UserAccountRouter.js';
@@ -24,7 +23,6 @@ const modalRoutes = [
   ...LeadNotTakeRouter,
   ...LeadTakeRouter,
   ...WareHoseRouter,
-  ...CutomerRetailRouter,
   ...ActionXuatkhoRouter,
   ...WareHoseActionRouter,
   ...OrderRouter,

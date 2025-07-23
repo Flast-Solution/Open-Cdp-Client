@@ -23,20 +23,17 @@ import {
 
 const { Title, Text, Paragraph } = Typography;
 const customer = {
-  name: 'Công ty TNHH ABC Tech',
+  name: 'Công ty Cổ Phần Flast Solution',
   contactName: 'Nguyễn Văn A',
   position: 'Giám đốc Kinh doanh',
-  email: 'nva@abctech.com.vn',
+  email: 'flast.vn@gmail.vn',
   phone: '090x.xxx.xxx',
-  address: '123 Lê Lợi, Q.1, TP.HCM',
+  address: '35 Lê Văn Lương',
   industry: 'Công nghệ',
-  region: 'Miền Nam',
   createdAt: '15/03/2025',
   owner: 'Lê H',
   priority: 'Cao',
-  leadScore: 85,
-  source: 'Webinar Q1',
-  campaign: 'TechGrow 2025',
+  leadScore: 85
 };
 
 const opportunities = [
@@ -61,7 +58,7 @@ const products = [
   { name: 'Hỗ trợ kỹ thuật tiêu chuẩn', status: 'Đang sử dụng' },
 ];
 
-const upsellSuggestions = ['Gói CRM Nâng cao', 'Bảo trì Pro', 'Tư vấn triển khai'];
+const upsellSuggestions = ['Gói Nâng cao', 'Bảo trì Pro', 'Tư vấn triển khai'];
 
 const notes = [
   'Khách quan tâm đến tính năng phân tích dữ liệu. Đề xuất thêm demo BI. – Lê H, 25/03',
@@ -69,9 +66,9 @@ const notes = [
 ];
 
 const tasks = [
-  { title: 'Gửi demo BI', due: '05/04', completed: false },
-  { title: 'Gọi xác nhận ngân sách', due: '10/04', completed: false },
-  { title: 'Tổ chức meeting với kỹ thuật', due: '', completed: false },
+  { title: 'Tư vấn lại 3 ngày chưa Cơ Hội', due: '05/04', completed: true },
+  { title: 'Gửi Báo giá', due: '05/04', completed: true },
+  { title: 'Gọi điện 7 ngày chưa ra đơn', due: '10/04', completed: false }
 ];
 
 const stats = {
@@ -210,7 +207,7 @@ const CustomerProfile = () => {
               </Tag>
             ))}
             <div style={{ marginTop: 8, color: 'orange' }}>
-              ⚠️ Hợp đồng sắp hết hạn trong 90 ngày
+              ⚠️ Dữ liệu chưa đủ để đề xuất sản phẩm liên quan
             </div>
           </Card>
         </Col>
@@ -233,7 +230,7 @@ const CustomerProfile = () => {
                 <List.Item>
                   <Checkbox checked={task.completed}>{task.title}</Checkbox>{' '}
                   <Text type="secondary" style={{ marginLeft: 8 }}>
-                    (hạn: {task.due || 'chưa đặt'})
+                    (Hạn: {task.due || 'chưa đặt'})
                   </Text>
                 </List.Item>
               )}
