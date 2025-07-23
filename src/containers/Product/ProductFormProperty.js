@@ -1,7 +1,7 @@
 import { useContext, useMemo } from 'react';
 import { Col, Form } from 'antd';
 import FormSelectAPI from 'components/form/FormSelectAPI';
-import FormStyles from './styles'
+import { FormListStyles } from "css/global";
 import ProductAttrService from 'services/ProductAttrService';
 import { FormContextCustom } from 'components/context/FormContextCustom';
 import _ from "lodash";
@@ -10,7 +10,7 @@ const ProductFormProperty = ({ field }) => {
   const { name } = field || { name: 0 };
   const { record } = useContext(FormContextCustom);
   return <>
-    <FormStyles gutter={16}>
+    <FormListStyles gutter={16}>
       <Col md={12} xs={24}>
         <FormSelectAPI
           required
@@ -43,7 +43,7 @@ const ProductFormProperty = ({ field }) => {
           }}
         </Form.Item>
       </Col>
-    </FormStyles>
+    </FormListStyles>
   </>
 }
 

@@ -10,6 +10,8 @@ import KanbanCard from './KanbanCard';
 import { SUCCESS_CODE } from 'configs';
 import { isEmpty } from 'lodash';
 import '@asseinfo/react-kanban/dist/styles.css'
+import { InAppEvent } from 'utils/FuseUtils';
+import { HASH_POPUP } from 'configs/constant';
 
 const { Search } = Input;
 const generateCart = (details, order, status) => {
@@ -56,6 +58,7 @@ const UncontrolledBoard = () => {
 
   const [ dataOrigin, setDataOrigin ] = useState([]);
   const [ dataInBoard, setDataInBoard ] = useState([]);
+  const [ listStatus, setListStatus ] = useState([]);
 
   useEffectAsync(async() => {
     const [ columns, kanban ] = await Promise.all([
@@ -65,6 +68,7 @@ const UncontrolledBoard = () => {
     const dataGenerate = generateDataInBoard(kanban.data, columns);
     setDataInBoard(dataGenerate);
     setDataOrigin(dataGenerate);
+    setListStatus(columns);
   }, [])
 
   const handleColumnSearch = async (value, { columnId }) => {
@@ -112,10 +116,21 @@ const UncontrolledBoard = () => {
     searchQuery: col.searchQuery
   })));
 
+  const onClickAddStatus = useCallback(() => {
+    InAppEvent.emit(HASH_POPUP, {
+      hash: "order.add.status",
+      title: "Cập nhật trạng thái đơn hàng",
+      data: {
+        onSave: (values) => values,
+        listStatus
+      }
+    });
+  }, [listStatus]);
+
   return (
     <ContainerStyles>
       <div style={{ display: 'flex', justifyContent: 'end', marginBottom: 20 }}>
-        <Button type="primary">Tạo trạng thái đơn</Button>
+        <Button type="primary" onClick={onClickAddStatus}>Tạo trạng thái đơn</Button>
       </div>
       <Board
         key={boardKey}

@@ -5,7 +5,7 @@ import { Modal } from 'antd';
 import { NoFooter } from 'components/common/NoFooter';
 import { createGlobalStyle } from 'styled-components';
 
-import ChoiseSKU from './ChoiseSKU';
+import Order from './Order';
 import NhapKho from './NhapKho';
 import Cusomter from './Customer';
 
@@ -22,7 +22,7 @@ const CustomModalStyles = createGlobalStyle`
 `;
 
 const modalRoutes = [
-  ...ChoiseSKU,
+  ...Order,
   ...NhapKho,
   ...Cusomter
 ];

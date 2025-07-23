@@ -12,7 +12,8 @@ import FormSelect from 'components/form/FormSelect';
 import { PRODUCT_STATUS } from 'configs/localData';
 import Dragger from 'antd/es/upload/Dragger';
 import { GATEWAY } from 'configs';
-import FormStyles, { FormListFile } from './styles';
+import { FormListFile } from './styles';
+import { FormListStyles } from "css/global";
 import RequestUtils from 'utils/RequestUtils';
 import { InAppEvent } from 'utils/FuseUtils';
 
@@ -42,9 +43,10 @@ const ProductForm = ({ data, fileActive, setFileActive, setSessionId}) => {
         InAppEvent.normalError("Lỗi tải file" );
       });
   };
+  
   /* Tải file mẫu */
   const props = {
-    beforeUpload: (file, fileList) => {
+    beforeUpload: ( file, fileList ) => {
       onUploadMultiple(fileList);
       return false;
     }
@@ -52,22 +54,20 @@ const ProductForm = ({ data, fileActive, setFileActive, setSessionId}) => {
 
   /* set mặc định ảnh*/
   const onHandleAvtiveImage = (file) => setFileActive(file);
+
   /* Xoá ảnh */
   const onHandleDeleteFile = (file) => {
-    RequestUtils.Post(`/product/remove-file?file=${file}&productId=${data?.id}`)
-      .then(({ errorCode }) => {
-        if (errorCode !== 200) {
-          throw new Error("Xóa file thất bại");
-        }
-        InAppEvent.normalSuccess("Xóa file thành công");
-
-        // Cập nhật danh sách file sau khi xóa thành công
-        const newListFile = listFile.filter(f => f !== file);
-        setListFile(newListFile);
-      })
-      .catch((error) => {
-        InAppEvent.normalError("Lỗi xóa file");
-      });
+    const params = { file, productId: data?.id };
+    RequestUtils.Post('/product/remove-file', {}, params).then(({ errorCode }) => {
+      if (errorCode !== 200) {
+        throw new Error("Xóa file thất bại");
+      }
+      InAppEvent.normalSuccess("Xóa file thành công");
+      const newListFile = listFile.filter(f => f !== file);
+      setListFile(newListFile);
+    }).catch((error) => {
+      InAppEvent.normalError("Lỗi xóa file");
+    });
   }
 
   return (
@@ -239,7 +239,7 @@ const ProductForm = ({ data, fileActive, setFileActive, setSessionId}) => {
 const FormOpenInfo = ({ field }) => {
   const { name } = field || { name: 0 };
   return (
-    <FormStyles gutter={16}>
+    <FormListStyles gutter={16}>
       <Col md={6} xs={24}>
         <FormInput
           name={[name, 'name']}
@@ -261,7 +261,7 @@ const FormOpenInfo = ({ field }) => {
           placeholder={"Icon"}
         />
       </Col>
-    </FormStyles>
+    </FormListStyles>
   )
 }
 
