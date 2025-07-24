@@ -58,7 +58,7 @@ const products = [
   { name: 'Hỗ trợ kỹ thuật tiêu chuẩn', status: 'Đang sử dụng' },
 ];
 
-const upsellSuggestions = ['Gói Nâng cao', 'Bảo trì Pro', 'Tư vấn triển khai'];
+const upsellSuggestions = ['Gói Nâng cao', 'Bảo trì', 'Tư vấn triển khai'];
 
 const notes = [
   'Khách quan tâm đến tính năng phân tích dữ liệu. Đề xuất thêm demo BI. – Lê H, 25/03',
@@ -202,12 +202,12 @@ const CustomerProfile = () => {
             <Divider />
             <Title level={5}>Gợi ý Upsell</Title>
             {upsellSuggestions.map((s, i) => (
-              <Tag key={i} color="geekblue" style={{ marginRight: 8, marginBottom: 8 }}>
+              <Tag key={i} color="#ccc" style={{ marginRight: 8, marginBottom: 8 }}>
                 {s}
               </Tag>
             ))}
             <div style={{ marginTop: 8, color: 'orange' }}>
-              ⚠️ Dữ liệu chưa đủ để đề xuất sản phẩm liên quan
+              ⚠️ Dữ liệu chưa đủ để Gợi ý sản phẩm Upsell
             </div>
           </Card>
         </Col>
