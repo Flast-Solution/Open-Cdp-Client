@@ -4,7 +4,7 @@ import { InAppEvent } from 'utils/FuseUtils';
 import RequestUtils from 'utils/RequestUtils';
 import { arrayNotEmpty, f5List } from 'utils/dataUtils';
 import { GATEWAY, HASH_MODAL_CLOSE } from 'configs';
-import jwtService from 'utils/jwtService';
+import axios from "axios";
 import LeadForm from './LeadForm';
 
 function getRandomInt(min, max) {
@@ -27,12 +27,8 @@ const NewLead = ({ closeModal, data }) => {
       for (let i = 0; i < fileUploads.length; i++) {
         formData.append('files[]', fileUploads[i]);
       }
-      const uri = RequestUtils.generateUrlGetParams("/data/uploads-files", { sessionId });
-      await fetch(String(GATEWAY).concat(uri), { 
-        method: 'POST',
-        body: formData ,
-        headers: { 'Authorization': `Bearer ${jwtService.getAccessToken()}`}
-      });
+      const endpoint = RequestUtils.generateUrlGetParams("/data/uploads-files", { sessionId });
+      axios.post(String(GATEWAY).concat(endpoint), formData).then(d => d.data).then(console.log)
     }
 
     const { errorCode } = await RequestUtils.Post("/data/create", {

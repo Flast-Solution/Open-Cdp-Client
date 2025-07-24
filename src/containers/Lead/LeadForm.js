@@ -141,8 +141,8 @@ const LeadForm = ({
       <Col md={24} xs={24} style={{ marginBottom: 10 }}>
         <FormSelect
           required
-          name="staff"
-          label="Nhân viên"
+          name="saleId"
+          label="Nhân viên phụ trách"
           placeholder="Chọn nhân viên"
           resourceData={listSale}
           valueProp="name"
