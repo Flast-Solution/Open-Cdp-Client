@@ -58,18 +58,12 @@ function SideBar() {
 		getItem(<Link to="/project/list">Dự án</Link>, 'project_list', <PieChartOutlined />),
     getItem(<Link to="/lead">Lead</Link>, 'tong_lead', <FolderOpenOutlined />),
 		
-    !shouldHideLeadLinks && getItem('Chưa chăm sóc', 'chua_cham_soc', <FolderOpenOutlined /> , [
+    !shouldHideLeadLinks && getItem('Chăm sóc K.H', 'chua_cham_soc', <FolderOpenOutlined /> , [
      getItem(<Link to="/customer-service/lead">Lead</Link>, "lead_chua_cham_doc", <ScheduleOutlined />),
      getItem(<Link to="/customer-service/co-hoi">Cơ hội</Link>, "co_hoi_chua_cham_soc", <AppstoreOutlined />),
      getItem(<Link to="/customer-service/hoan-thanh">Đơn hoàn thành</Link>, "don_hang_hoan_thanh", <AuditOutlined />),
      getItem(<Link to="/customer-service/su-co">Đơn sự cố</Link>, "don_hang_su_co", <ScheduleOutlined />),
 		].filter(Boolean)),
-
-    !shouldHideLeadLinks && getItem('Đã chăm sóc', 'da_cham_soc', <FolderOpenOutlined /> , [
-      getItem(<Link to="/customer-lead/lead">Lead</Link>, "lead_da_cham_soc", <ScheduleOutlined />),
-      getItem(<Link to="/customer-service/co-hoi-cham-soc">Cơ hội</Link>, "co_hoi_da_cham_soc", <AppstoreOutlined />),
-      getItem(<Link to="/customer-service/order">Đơn hàng</Link>, "don_hang_da_hoan_thanh", <AuditOutlined />),
-    ].filter(Boolean)),
 
 		getItem(<Link to="/sale/co-hoi"> Cơ hội </Link>, 'co_hoi', <IncomeFIcon />),
     getItem('Đơn hàng', 'order_solve', <DollarCircleFilled /> , [

@@ -61,8 +61,7 @@ const products = [
 const upsellSuggestions = ['Gói Nâng cao', 'Bảo trì', 'Tư vấn triển khai'];
 
 const notes = [
-  'Khách quan tâm đến tính năng phân tích dữ liệu. Đề xuất thêm demo BI. – Lê H, 25/03',
-  'Không muốn ký dài hạn >12 tháng. Có thể linh hoạt 6+6. – 20/03',
+  'Khách quan tâm đến tính năng phân tích dữ liệu. – Lê H, 25/03'
 ];
 
 const tasks = [
@@ -188,7 +187,7 @@ const CustomerProfile = () => {
                 </List.Item>
               )}
             />
-            <Text strong>Tần suất tương tác: 2 lần/tuần</Text>
+            <Text strong>Sản phẩm / Dịch vụ (3), CSKH (5)</Text>
           </Card>
 
           <Card title="Sản phẩm & Dịch vụ" style={{ marginBottom: 16 }}>
