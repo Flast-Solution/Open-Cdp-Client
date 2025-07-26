@@ -41,6 +41,9 @@ const SideBarStyles = styled.div`
     .ant-menu-inline {
       border-right: 0px;
     }
+    .ant-menu-submenu-title {
+      padding-left: 18px;
+    }
     .ant-menu-inline .ant-menu-item {
       padding: 0 20px !important;
       width: 100%;

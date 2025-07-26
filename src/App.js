@@ -1,7 +1,4 @@
 import 'Main.less';
-import 'css/styles.css';
-import { GlobalStyle } from 'css/global';
-import { AntOverrideStyles } from 'css/antOverride';
 import { useEffect, Suspense } from 'react';
 import { ThemeProvider } from 'styled-components';
 import theme from 'theme';
@@ -28,8 +25,6 @@ const ThemeRender = () => (
       <ModalRoutes />
       <MyPopup />
     </Suspense>
-    <GlobalStyle />
-    <AntOverrideStyles />
   </ThemeProvider>
 );
 

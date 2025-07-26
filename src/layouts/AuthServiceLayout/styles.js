@@ -59,7 +59,7 @@ const PublicLayoutWrapper = styled.div`
     font-weight: 500;
   }
   .btn-auth {
-    margin-top: 80px;
+    margin-top: 30px;
     button {
       font-weight: 700;
     }

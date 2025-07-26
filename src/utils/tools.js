@@ -39,7 +39,12 @@ export const getStaticImageUrl = (image) => {
   if (!image) {
     return `${GATEWAY}/uploads/image-default.png`;
   }
-  return image && image.startsWith('http') ? image : GATEWAY.concat(image.startsWith('/uploads') ? image : "/uploads/".concat(image));
+  if(image.startsWith('http')) {
+    return image;
+  }
+
+  const path = image.startsWith('/uploads') ? image : "/uploads/".concat(image);  
+  return String(GATEWAY).concat(path);
 };
 
 export const formatterInputNumber = (value) =>

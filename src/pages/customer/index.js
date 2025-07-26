@@ -3,17 +3,22 @@ import { Helmet } from 'react-helmet';
 import CustomBreadcrumb from 'components/BreadcrumbCustom';
 import RestList from 'components/RestLayout/RestList';
 import CustomerFilter from './Filter';
-import useGetList from "hooks/useGetList";
+import useGetList from 'hooks/useGetList';
 import { Button } from 'antd';
 import { arrayEmpty, dateFormatOnSubmit, formatTime } from 'utils/dataUtils';
 import UserService from 'services/UserService';
 import { CHANNEL_SOURCE_MAP_KEYS } from 'configs/localData';
-import { useNavigate } from "react-router-dom";
+import { useNavigate } from 'react-router-dom';
+import TagEditor from './TagEditor';
 
 const ListCustomerRetail = () => {
 
   const [ title ] = useState("Khách lẻ");
   let navigate = useNavigate();
+
+  const handleTagsChange = (record, newTags) => {
+    console.log(newTags);
+  };
 
   const CUSTOM_ACTION = [
     {
@@ -30,7 +35,7 @@ const ListCustomerRetail = () => {
     {
       title: "Email",
       dataIndex: 'email',
-      width: 190,
+      width: 150,
       ellipsis: true,
       render: (email) => email || '(Chưa có)'
     },
@@ -50,6 +55,17 @@ const ListCustomerRetail = () => {
       title: "Đ.Hàng",
       dataIndex: 'numOfOrder',
       width: 90
+    },
+    {
+      title: "Tags",
+      dataIndex: 'tags',
+      width: 250,
+      render: (tags, record) => (
+        <TagEditor 
+          tags={tags || []} 
+          onChange={(newTags) => handleTagsChange(record, newTags)}
+        />
+      )
     },
     {
       title: "Ngày tạo",

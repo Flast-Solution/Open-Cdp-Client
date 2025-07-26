@@ -1,12 +1,11 @@
 import { Badge } from 'antd';
-import { OpenMenuFIcon } from 'icons/FontIcons';
 import { Link } from 'react-router-dom';
 import useCollapseSidebar from 'hooks/useCollapseSidebar';
 import SearchInput from './SearchInput';
 import ServiceSelect from './ServiceSelect';
 import HeaderWrapper from './styles';
 import CustomButton from 'components/CustomButton';
-import { BellFilled, PlusOutlined } from '@ant-design/icons';
+import { BellFilled, PlusOutlined, UnorderedListOutlined } from '@ant-design/icons';
 import UserInfo from './UserInfo';
 import useServiceId from 'hooks/useServiceId';
 import { useNavigate } from "react-router-dom";
@@ -20,7 +19,7 @@ const Header = () => {
   return (
     <HeaderWrapper className="header">
       <div className="leftHeader">
-        <OpenMenuFIcon
+        <UnorderedListOutlined
           className={`trigger ${isCollapseSidebar ? '' : 'reverse-trigger'}`}
           onClick={toggleCollapse}
         />

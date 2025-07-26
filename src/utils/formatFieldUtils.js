@@ -1,8 +1,5 @@
-import union from 'lodash/union';
-import { getStaticImageUrl } from './tools';
-import GridPhotos from 'components/common/GridPhotos';
+
 import i18next from 'i18next';
-import { arrayEmpty } from './dataUtils';
 import { 
   PAYMENT_STATUS_MAP_KEYS,
   CONTRACT_TYPES, CONTRACT_STATUS
@@ -10,23 +7,6 @@ import {
 import { Tag } from 'antd';
 import { formatDataI18n } from './dataUtils';
 import UserInfo from 'components/common/UserInfo';
-
-export const formatGallery = (thumbnail, gallery = []) => {
-  let images = [];
-  if (thumbnail) {
-    images = union([getStaticImageUrl(thumbnail)], gallery);
-  } else {
-    images = arrayEmpty(gallery) ? [getStaticImageUrl()] : gallery;
-  }
-  return (
-    <GridPhotos
-      isShowEmpty={false}
-      isShowAll={false}
-      images={images}
-      maxWidth={100}
-    />
-  );
-};
 
 export const formatPaymentStatus = (data) => {
   if (!data) {

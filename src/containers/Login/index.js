@@ -1,13 +1,12 @@
 import { useTranslation } from 'react-i18next';
-import { Button, Form, Input } from 'antd';
+import { Form, Input } from 'antd';
 import FormInput from 'components/form/FormInput';
-import { LockIcon, SmsIcon } from 'components/common/Icons/SVGIcons';
 import useLogin from 'hooks/useLogin';
-import { Link } from 'react-router-dom';
+import CustomButton from 'components/CustomButton';
 
 function Login() {
   
-  const { loading, login } = useLogin();
+  const { login } = useLogin();
   const { t } = useTranslation();
   const [ form ] = Form.useForm();
 
@@ -35,7 +34,6 @@ function Login() {
             },
           ]}
           size="large"
-          prefix={<SmsIcon />}
         />
         <FormInput
           name="password"
@@ -45,23 +43,9 @@ function Login() {
           messageRequire="input.password.validateMsg.required"
           ContentComponent={Input.Password}
           size="large"
-          prefix={<LockIcon />}
         />
-        <div className="actions">
-          <Link to="/forgot-password" className="forgot-password">
-            {t('forgotPassword.title')}
-          </Link>
-        </div>
         <div className="btn-auth">
-          <Button
-            className="submit-btn w-full booking-antd-btn-primary"
-            type="primary"
-            htmlType="submit"
-            loading={loading}
-            size="large"
-          >
-            {t('login.loginBtn')}
-          </Button>
+          <CustomButton htmlType="submit" title='Đăng nhập' />
         </div>
       </Form>
     </div>
