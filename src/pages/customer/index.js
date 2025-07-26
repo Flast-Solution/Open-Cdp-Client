@@ -5,26 +5,29 @@ import RestList from 'components/RestLayout/RestList';
 import CustomerFilter from './Filter';
 import useGetList from 'hooks/useGetList';
 import { Button } from 'antd';
-import { arrayEmpty, dateFormatOnSubmit, formatTime } from 'utils/dataUtils';
+import { arrayEmpty, arrayNotEmpty, dateFormatOnSubmit, formatTime } from 'utils/dataUtils';
 import UserService from 'services/UserService';
 import { CHANNEL_SOURCE_MAP_KEYS } from 'configs/localData';
 import { useNavigate } from 'react-router-dom';
 import TagEditor from './TagEditor';
+import RequestUtils from 'utils/RequestUtils';
+import { SUCCESS_CODE } from 'configs';
 
 const ListCustomerRetail = () => {
 
   const [ title ] = useState("Khách lẻ");
   let navigate = useNavigate();
 
-  const handleTagsChange = (record, newTags) => {
-    console.log(newTags);
+  const handleTagsChange = async (record, newTags) => {
+    RequestUtils.Post(`/customer/tags/save/${record.id}`, { tags: newTags});
   };
 
   const CUSTOM_ACTION = [
     {
-      title: "Tên khách hàng",
+      title: "Khách hàng",
       dataIndex: 'name',
-      width: 150
+      width: 150,
+      ellipsis: true
     },
     {
       title: "Số điện thoại",
@@ -105,10 +108,23 @@ const ListCustomerRetail = () => {
       return values;
     }
     let { embedded, page } = values;
-    const ids = embedded.map( u => u.saleId);
-    const mUser = await UserService.mapId2Name(ids);
-    const datas = embedded.map(item => ({ ...item, saleName: mUser[item.saleId] || '' }));
-    return { embedded: datas, page };
+    const saleIds = embedded.map( u => u.saleId);
+    const mUser = await UserService.mapId2Name(saleIds);
+
+    const customerIds = embedded.map( u => u.id);
+    let { data: tags, errorCode } = await RequestUtils.Get("/customer/tags/fetch", { ids: customerIds });
+    if(errorCode !== SUCCESS_CODE) {
+      tags = {};
+    }
+    for(let item of embedded) {
+      item.saleName = mUser[item.saleId] || '';
+      if(arrayNotEmpty(tags[item.id])) {
+        item.tags = tags[item.id].map(i => i.tag);
+      } else {
+        item.tags = [];
+      }
+    }
+    return { embedded, page };
   }, []);
 
   const beforeSubmitFilter = useCallback((values) => {

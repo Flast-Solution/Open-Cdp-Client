@@ -43,7 +43,7 @@ const TagEditor = ({ tags = [], onChange }) => {
     }
   };
 
-  const maxVisibleTags = 6;
+  const maxVisibleTags = 4;
   const shouldShowMore = localTags.length > maxVisibleTags;
   const visibleTags = showAll ? localTags : localTags.slice(0, maxVisibleTags);
   const hiddenCount = localTags.length - maxVisibleTags;

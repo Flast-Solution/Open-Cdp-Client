@@ -198,16 +198,6 @@ const CustomerProfile = () => {
                 {p.expiry && <Text type="secondary">({p.expiry})</Text>}
               </div>
             ))}
-            <Divider />
-            <Title level={5}>Gợi ý Upsell</Title>
-            {upsellSuggestions.map((s, i) => (
-              <Tag key={i} color="#ccc" style={{ marginRight: 8, marginBottom: 8 }}>
-                {s}
-              </Tag>
-            ))}
-            <div style={{ marginTop: 8, color: 'orange' }}>
-              ⚠️ Dữ liệu chưa đủ để Gợi ý sản phẩm Upsell
-            </div>
           </Card>
         </Col>
 
@@ -260,7 +250,7 @@ const CustomerProfile = () => {
             </Row>
 
             <Divider />
-            <Title level={5}>Cảnh báo</Title>
+            <Title level={5}>Tương tác gần nhất</Title>
             {alerts.map((alert, i) => (
               <div key={i} style={{ color: 'orange', marginBottom: 8 }}>
                 ⚠️ {alert}
@@ -271,6 +261,17 @@ const CustomerProfile = () => {
               <Tag>#CRM</Tag>
               <Tag>#Doanh_nghiệp_vừa</Tag>
               <Tag>#Upsell_sắp_tới</Tag>
+            </div>
+
+            <Divider />
+            <Title level={5}>Gợi ý Upsell</Title>
+            {upsellSuggestions.map((s, i) => (
+              <Tag key={i} color="#ccc" style={{ marginRight: 8, marginBottom: 8 }}>
+                {s}
+              </Tag>
+            ))}
+            <div style={{ marginTop: 8, color: 'orange' }}>
+              ⚠️ Dữ liệu chưa đủ để Gợi ý sản phẩm Upsell
             </div>
           </Card>
         </Col>
