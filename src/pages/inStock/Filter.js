@@ -1,7 +1,7 @@
 import { Row, Col } from 'antd';
 import FormInput from 'components/form/FormInput';
 
-const LeadFilter = () => (
+const WarehouseFilter = () => (
   <Row gutter={16}>
     <Col xl={6} lg={6} md={6} xs={24}>
       <FormInput
@@ -18,4 +18,4 @@ const LeadFilter = () => (
   </Row>
 )
 
-export default LeadFilter;
+export default WarehouseFilter;

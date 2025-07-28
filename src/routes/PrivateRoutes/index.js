@@ -5,27 +5,38 @@ import FuseUtils from 'utils/FuseUtils';
 import { LoginConfig } from './AuthConfig';
 import { HomeConfig } from './HomeConfig';
 import { ProductConfig } from './ProductConfig';
+
+/* Lead - Cơ hội - Đơn hàng */
 import { LeadConfig } from './LeadConfig';
-import { LeadNotTakeConfig } from './LeadNotTakeConfig'
-import { LeadTookCareConfig } from './LeadTookCareConfig';
+import { CustomerConfig } from './CustomerRetailConfig';
 import { CohoiConfig } from './CohoiConfig';
-import { ListKhoConfig } from './KhoConfig';
-import { ListInstockConfig } from './TrongkhoConfig';
-import { ListWareHouseConfig } from './ListKhoConfig';
-import { ListCustomerRetailConfig } from './CustomerRetailConfig';
-import { WareHouseConfig } from './WareHouseConfig';
+import { OrderConfig } from './OrderConfig';
+
+/* Kho */
+import { InstockConfig } from './TrongkhoConfig';
+import { WareHouseConfig } from './ListKhoConfig';
+import { WareHouseExportConfig } from './WareHouseConfig';
+
+/* Tài khoản */
 import { ListAcountConfig } from './ListAcountConnfig';
 import { ListAcountGroupConfig } from './ListUserGroupConfig';
-import { CohoiNotTakeConfig } from './CohoiNotTakeConfig';
-import { DuyetTienConfig } from './DuyetTienConfig';
 import { ListUserSystemConfig } from './ListUserSysTemConfig';
-import { NewfeedConfig } from './NewFeedConfig';
+
+/* CSKH */
+import { LeadNotTakeConfig } from './LeadNotTakeConfig'
+import { LeadTookCareConfig } from './LeadTookCareConfig';
 import { CohoiTakeConfig } from './CohoiTakeConfig';
 import { CardOrderConfig } from './CardOrderConfig';
-import { CongnoConfig } from './ConnoConfig';
+import { CohoiNotTakeConfig } from './CohoiNotTakeConfig';
 import { OrderTakeConfig } from './OrderTakeCareConfig';
+
+/* Kế  toán */
+import { DuyetTienConfig } from './DuyetTienConfig';
+import { CongnoConfig } from './ConnoConfig';
+
+/* NewFeed - Quy trình */
+import { NewfeedConfig } from './NewFeedConfig';
 import { DragDropConfig } from './DragDropOrderConfig';
-import { OrderConfig } from './OrderConfig';
 
 const routeConfigs = [
     LoginConfig,
@@ -35,11 +46,10 @@ const routeConfigs = [
     LeadNotTakeConfig,
     LeadTookCareConfig,
     CohoiConfig,
-    ListKhoConfig,
-    ListInstockConfig,
-    ListWareHouseConfig,
-    ListCustomerRetailConfig,
+    InstockConfig,
     WareHouseConfig,
+    CustomerConfig,
+    WareHouseExportConfig,
     ListAcountConfig,
     ListAcountGroupConfig,
     CohoiNotTakeConfig,

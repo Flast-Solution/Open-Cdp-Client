@@ -145,7 +145,7 @@ const LeadForm = ({
           label="Nhân viên phụ trách"
           placeholder="Chọn nhân viên"
           resourceData={listSale}
-          valueProp="name"
+          valueProp="id"
           titleProp="name"
         />
       </Col>
