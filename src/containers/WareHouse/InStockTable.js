@@ -16,7 +16,7 @@ const InStockTable = ({ data, onChangeSelected }) => {
       title: "SKU",
       dataIndex: "skuName",
       key: "skuName",
-      width: 100,
+      width: 130,
       ellipsis: true
     },
     {
@@ -34,10 +34,10 @@ const InStockTable = ({ data, onChangeSelected }) => {
     },
     {
       title: "Chi tiết",
-      key: "detail",
+      dataIndex: "skuDetails",
       width: 350,
       ellipsis: true,
-      render: (_, record) => <ShowSkuDetail skuInfo={record.skuInfo} />
+      render: (skuDetails) => <ShowSkuDetail skuInfo={skuDetails} />
     },
     {
       title: "Chọn",

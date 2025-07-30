@@ -5,7 +5,7 @@ import FormSelect from 'components/form/FormSelect';
 import FormInputNumber from 'components/form/FormInputNumber';
 import BtnSubmit from 'components/CustomButton/BtnSubmit';
 import _ from 'lodash';
-import { arrayEmpty, arrayNotEmpty, decodeProperty } from 'utils/dataUtils';
+import { arrayEmpty, arrayNotEmpty } from 'utils/dataUtils';
 import InStockTable from 'containers/WareHouse/InStockTable'
 import FormAutoComplete from 'components/form/FormAutoComplete';
 import OrderService from 'services/OrderService';
@@ -57,9 +57,6 @@ const AddSKU = ({ onSave, productId }) => {
     let nProduct = _.cloneDeep(item);
     let { warehouses } = nProduct;
     if(arrayNotEmpty(warehouses)) {
-      for(let stock of warehouses) {
-        decodeProperty(stock, ["skuInfo"]);
-      }
       setInStocks(warehouses);
     } else {
       setInStocks([]);
@@ -105,7 +102,7 @@ const AddSKU = ({ onSave, productId }) => {
   }, [skuDetail]);
 
   const onSelectedStock = useCallback((item) => {
-    const { skuInfo, ...params } = item;
+    const { skuDetails, ...params } = item;
     form.setFieldsValue(params);
 
     /* Lấy SKU trong sản phẩm để lọc detail */
@@ -113,10 +110,10 @@ const AddSKU = ({ onSave, productId }) => {
     setSkuDetail(skus?.find(i => i.id === item.skuId)?.skuDetail ?? []);
 
     /* Fill vào form */
-    if(arrayEmpty(skuInfo)) {
+    if(arrayEmpty(skuDetails)) {
       return;
     }
-    for(let sku of skuInfo) {
+    for(let sku of skuDetails) {
       let key = `${SKU_DETAIL_ID_PREFIX}${sku.text}`
       form.setFieldsValue({ [key]: sku?.values?.map(i => i.id) ?? [] });
     }

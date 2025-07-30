@@ -1,6 +1,5 @@
 import React from 'react';
-import { Area, Line } from '@ant-design/plots';
-
+import { Area } from '@ant-design/plots';
 
 
 const MiniLineChart = ({

@@ -1,11 +1,6 @@
 import React from 'react';
 import { Line } from '@ant-design/plots';
 
-const formatDate = (dateStr) => {
-    const [year, month, day] = dateStr.split('-');
-    return `${day}-${month}`;
-};
-
 const ChartSale = ({ activityRevenue }) => {
 
     const data = [
@@ -18,7 +13,7 @@ const ChartSale = ({ activityRevenue }) => {
             value: 4,
         },
     ];
-    if (!data || data.length == 0) return <></>
+    if (!data || data.length === 0) return <></>
     const config = {
         data,
         xField: 'step',
