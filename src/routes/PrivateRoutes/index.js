@@ -15,7 +15,6 @@ import { OrderConfig } from './OrderConfig';
 /* Kho */
 import { InstockConfig } from './TrongkhoConfig';
 import { WareHouseConfig } from './ListKhoConfig';
-import { WareHouseExportConfig } from './WareHouseConfig';
 
 /* Tài khoản */
 import { ListAcountConfig } from './ListAcountConnfig';
@@ -49,7 +48,6 @@ const routeConfigs = [
     InstockConfig,
     WareHouseConfig,
     CustomerConfig,
-    WareHouseExportConfig,
     ListAcountConfig,
     ListAcountGroupConfig,
     CohoiNotTakeConfig,

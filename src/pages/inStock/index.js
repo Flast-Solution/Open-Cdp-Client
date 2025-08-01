@@ -1,25 +1,37 @@
 import React, { useCallback, useState } from 'react';
 import { Helmet } from 'react-helmet';
-import { Button } from 'antd';
+import { Button, Popconfirm, Form, message  } from 'antd';
 import CustomBreadcrumb from 'components/BreadcrumbCustom';
 import RestList from 'components/RestLayout/RestList';
 import WarehouseFilter from './Filter';
 import useGetList from "hooks/useGetList";
-import { dateFormatOnSubmit, formatTime } from 'utils/dataUtils';
+import { dateFormatOnSubmit, f5List, formatTime } from 'utils/dataUtils';
 import { InAppEvent } from 'utils/FuseUtils';
 import { ShowSkuDetail } from 'containers/Product/SkuView';
 import { HASH_POPUP } from 'configs/constant';
+import FormInfiniteStock from 'components/form/SelectInfinite/FormInfiniteStock';
+import FormInputNumber from 'components/form/FormInputNumber';
+import RequestUtils from 'utils/RequestUtils';
 
-const ListInStocK = () => {
+const ListInStock = () => {
 
   const [ title ] = useState("Trong kho");
+  const [ form ] = Form.useForm();
+
   const beforeSubmitFilter = useCallback((values) => {
     dateFormatOnSubmit(values, ['from', 'to']);
     return values;
   }, []);
 
   const onCreateImportProduct = () => InAppEvent.emit(HASH_POPUP, {
+    title: 'Nhập kho'
+  });
 
+  const onCofirmExchange = (record) => form.validateFields().then( async (values) => {
+    const body = { ...values, warehouseSourceId: record.id };
+    const { message: MSG } = await RequestUtils.Post('/warehouse/exchange', body);
+    message.success(MSG);
+    f5List("warehouse/fetch");
   });
 
   const CUSTOM_ACTION = [
@@ -91,13 +103,28 @@ const ListInStocK = () => {
           <Button type="primary" size="small" >
             Giao hàng
           </Button>
-          <Button size="small" style={{ color: "#fa8c16" }}>
-            Chuyển kho
-          </Button>
+          <Popconfirm
+            placement="topLeft"
+            title="Chọn kho để chuyển"
+            description={
+              <PopconfirmCustom 
+                record={record}
+                form={form} 
+              />
+            }
+            onConfirm={() => onCofirmExchange(record)}
+            okText="Yes"
+            cancelText="No"
+          >
+            <Button size="small" style={{ color: "#fa8c16" }}>
+              Chuyển kho
+            </Button>
+          </Popconfirm>
         </span>
       )
     }
   ];
+
   return (
     <div>
       <Helmet>
@@ -118,6 +145,31 @@ const ListInStocK = () => {
       />
     </div>
   )
-}
+};
 
-export default ListInStocK
+const PopconfirmCustom = ({ form, record }) => {
+  return (
+    <div style={{ width: 300, marginTop:30 }}>
+      <Form form={form} layout='vertical'> 
+        <FormInfiniteStock 
+          required
+          placeholder="Chọn kho"
+          label="Kho cần chuyển đến"
+          name="warehouseTargetId"
+        />
+        <FormInputNumber 
+          style={{ width: '100%' }}
+          name="quantity"
+          label="Số lượng"
+          placeholder="Nhập số lượng"
+          required
+          min={1}
+          max={record.quantity}
+          initialValue={record.quantity}
+        />
+      </Form>
+    </div>
+  )
+};
+
+export default ListInStock;
