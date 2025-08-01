@@ -23,7 +23,8 @@ import {
   WalletOutlined,
   TagOutlined,
   DeleteOutlined,
-  PaperClipOutlined
+  PaperClipOutlined,
+  GiftOutlined
 } from '@ant-design/icons';
 
 import useCollapseSidebar from 'hooks/useCollapseSidebar';
@@ -81,10 +82,9 @@ function SideBar() {
 			getItem(<Link to="/sale/m-customer">Khách lẻ</Link>, 'customer', <GroupOutlined />),
 			getItem(<Link to="/sale/m-enterprice">Doanh nghiệp</Link>, 'enterprice', <GroupOutlined />)
 		]),
-    getItem('Kho vận', 'warehouse', <OrderedListOutlined /> , [
+    getItem('Kho - Giao hàng', 'warehouse', <OrderedListOutlined /> , [
 			getItem(<Link to="/warehouse/trong-kho"> Trong kho </Link>, 'tt-theo-don', <UnorderedListOutlined />),
-			getItem(<Link to="/warehouse/xuat-kho"> Xuất kho </Link>, 'xk-theo-don', <UnorderedListOutlined />),
-      getItem(<Link to="/warehouse/da-giao"> Đã giao </Link>, 'da-giao-theo-don', <UnorderedListOutlined />),
+      getItem(<Link to="/warehouse/da-giao"> Giao hàng </Link>, 'da-giao-theo-don', <GiftOutlined />),
       getItem(<Link to="/warehouse/danh-sach-kho">Danh sách kho</Link>, 'd.s.kho', <DeploymentUnitOutlined />)
 		]),
 		getItem(<Link to="/sale-kpi/list"> Kpi</Link>, 'Kpi', <RiseOutlined />),

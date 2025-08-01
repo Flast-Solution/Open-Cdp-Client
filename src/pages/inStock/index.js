@@ -164,8 +164,7 @@ const PopconfirmCustom = ({ form, record }) => {
           placeholder="Nhập số lượng"
           required
           min={1}
-          max={record.quantity}
-          initialValue={record.quantity}
+          initialValue={1}
         />
       </Form>
     </div>
