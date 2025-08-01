@@ -2,14 +2,13 @@ import { HASH_MODAL, HASH_MODAL_CLOSE } from 'configs';
 import { useEffect, useMemo, useState, useCallback } from 'react';
 import { InAppEvent } from 'utils/FuseUtils';
 import DrawerCustom from 'components/DrawerCustom';
+
 import ProductRoute from './ProductRoute.js';
 import OrderRoute from './OrderRoute';
 import LeadRoute from './LeadRouter.js';
 import LeadNotTakeRouter from './LeadNotTakeRouter.js';
 import LeadTakeRouter from './LeadTakeRouter.js';
 import WareHoseRouter from './WareHouseRouter.js';
-import ActionXuatkhoRouter from './ActionXuatkhoRouter.js';
-import WareHoseActionRouter from './WareHouseActionRouter.js';
 import OrderRouter from './UserAccountRouter.js';
 import UserGroupRouter from './UserGroupRouter.js';
 import CohoiNotTakeRouter from './CohoiNotTakeRouter.js';
@@ -23,8 +22,6 @@ const modalRoutes = [
   ...LeadNotTakeRouter,
   ...LeadTakeRouter,
   ...WareHoseRouter,
-  ...ActionXuatkhoRouter,
-  ...WareHoseActionRouter,
   ...OrderRouter,
   ...UserGroupRouter,
   ...CohoiNotTakeRouter,

@@ -8,7 +8,7 @@ import useGetList from "hooks/useGetList";
 import { dateFormatOnSubmit, f5List, formatTime } from 'utils/dataUtils';
 import { InAppEvent } from 'utils/FuseUtils';
 import { ShowSkuDetail } from 'containers/Product/SkuView';
-import { HASH_POPUP } from 'configs/constant';
+import { HASH_POPUP, HASH_MODAL } from 'configs/constant';
 import FormInfiniteStock from 'components/form/SelectInfinite/FormInfiniteStock';
 import FormInputNumber from 'components/form/FormInputNumber';
 import RequestUtils from 'utils/RequestUtils';
@@ -32,6 +32,12 @@ const ListInStock = () => {
     const { message: MSG } = await RequestUtils.Post('/warehouse/exchange', body);
     message.success(MSG);
     f5List("warehouse/fetch");
+  });
+
+  const onClickGiaoHang = (record) =>  InAppEvent.emit(HASH_MODAL, {
+    hash: "#warehouse.delivery",
+    title: 'Giao hàng',
+    data: {  itemInStock: record }
   });
 
   const CUSTOM_ACTION = [
@@ -100,7 +106,11 @@ const ListInStock = () => {
       width: 200,
       render: (record) => (
         <span style={{ display: 'flex', gap: 8 }}>
-          <Button type="primary" size="small" >
+          <Button 
+            type="primary" 
+            size="small" 
+            onClick={() => onClickGiaoHang(record)}
+          >
             Giao hàng
           </Button>
           <Popconfirm
@@ -147,7 +157,7 @@ const ListInStock = () => {
   )
 };
 
-const PopconfirmCustom = ({ form, record }) => {
+const PopconfirmCustom = ({ form }) => {
   return (
     <div style={{ width: 300, marginTop:30 }}>
       <Form form={form} layout='vertical'> 
