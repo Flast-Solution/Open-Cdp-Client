@@ -3,11 +3,11 @@ export const SUCCESS_CODE = 200;
 export const GATE_EVN = {
   Loc:      'http://127.0.0.1:9765',
   Pro:      'https://open.api.flast.vn',
-  bao_gia:  'https://flash-solution-eight.vercel.app/bao-gia-don-hang-i',
-  configAi: 'https://service.aicuatui.vn'
+  BaoGia:   'https://flash-solution-eight.vercel.app/bao-gia-don-hang-i',
+  AiA2A:    'https://service.aicuatui.vn'
 };
 
-export const GATEWAY = GATE_EVN['Loc'];
+export const GATEWAY = GATE_EVN['Pro'];
 export const CHANGE_STORE = 'CHANGE_STORE';
 export const UPLOAD_PATH = GATEWAY + '/uploads'
 
@@ -24,7 +24,6 @@ export const ACTIONS = {
 
 export const INAPP_NOTIFICATION_EMITTER = 'in_app_noti';
 export const EVENT_ACCEPT_IMAGE_TYPES = '.png, .jpeg, .jpg';
-export const ANT_PREFIX_CLS = 'booking-antd';
 export const HASH_MODAL = '#modal';
 export const HASH_MODAL_CLOSE = '#close-modal';
 export const DEFAULT_INBOX_ID = 'inbox';
@@ -35,8 +34,6 @@ export const FORMAT_TIME_INPUT = 'HH:mm';
 export const MAX_FILE_SIZE_MB = 3;
 export const REPORT_DATE_FORMAT = 'YYYY-MM-DD';
 export const CURRENCY_UNIT = 'VND';
-export const NEED_ROLES = ['business', 'owner'];
 export const EMBED_YOUTUBE_LINK = '//www.youtube.com/embed/';
-export const OWNER_ROLE_ID = '114984141980690';
 export const DEFAULT_COLOR_VALUE = '#ffffff';
 export const outerRadius = 143 / 2;
