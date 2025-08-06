@@ -1,28 +1,69 @@
-import React from 'react'
+import React, { useEffect, useState } from 'react'
 import { Col, Form, Row } from 'antd'
 import CustomButton from 'components/CustomButton';
 import FormAddress from 'components/form/FormAddress';
-import FormHidden from 'components/form/FormHidden';
 import FormInput from 'components/form/FormInput';
 import FormInputNumber from 'components/form/FormInputNumber';
 import FormSelectAPI from 'components/form/FormSelectAPI';
 import FormInfiniteStock from 'components/form/SelectInfinite/FormInfiniteStock';
+import FormInfiniteOrderCode from 'components/form/SelectInfinite/FormInfiniteOrderCode';
+import FormSelect from 'components/form/FormSelect';
 
+const getStockId = (data) => data?.itemInStock?.stockId ?? undefined;
 const GiaoHangForm = ({ title, data }) => {
   
+  const [ form ] = Form.useForm();
+  const [ details, setDetails ] = useState([]);
+
+  useEffect(() => {
+    console.log(data);
+    form.setFieldValue('stockId', getStockId(data));
+  }, [data, form]);
+
+  const onChangeGetOrderItem = (value, order) => {
+    const { id, details, ...values } = order;
+    const { 
+      customerProvinceId: provinceId, 
+      customerWardId: wardId, 
+      customerAddress: address,
+      ...params
+    } = values;
+    setDetails(details || []);
+    form.setFieldsValue({...params, provinceId, wardId, address});
+  }
+
   const onFinish = async (value) => {
     console.log(value);
   }
 
   return (
-    <Form onFinish={onFinish} layout="vertical">
+    <Form form={form} onFinish={onFinish} layout="vertical">
       <Row gutter={16} style={{ marginTop: 20 }}>
-        <FormHidden name={'id'} />
+        <Col md={12} xs={24}>
+          <FormInfiniteOrderCode
+            required
+            onChangeGetSelectedItem={onChangeGetOrderItem}
+            formatText={(_, order) => `${order.code} (${order.customerMobilePhone})` }
+            label="Mã đơn"
+            placeholder={"Nhập mã đơn"}
+          />
+        </Col>
+        <Col md={12} xs={24}>
+          <FormSelect
+            required
+            formatText={(_, detail) => `${detail.code} (${detail.productName}), SL: ${detail.quantity}` }
+            resourceData={details}
+            label="Mã đơn con"
+            valueProp='code'
+            name="orderDetailCode"
+            placeholder={"Nhập mã đơn nhỏ"}
+          />
+        </Col>
         <Col md={12} xs={24}>
           <FormInput
             required
             label="Họ tên"
-            name="customerName"
+            name="customerReceiverName"
             placeholder={"Nhập họ tên"}
           />
         </Col>
@@ -30,38 +71,46 @@ const GiaoHangForm = ({ title, data }) => {
           <FormInput
             required
             label="Số điện thoại"
-            name="customerPhone"
+            name="customerMobilePhone"
             placeholder={"Số điện thoại"}
           />
         </Col>
         <FormAddress />
-
         <Col md={12} xs={24}>
-          <FormInput
-            required={false}
-            label="Mã vận chuyển"
-            name="transporterCode"
-            placeholder={"Mã vận chuyển"}
+          <FormSelectAPI
+            apiPath="transporter/fetch"
+            label="Đơn vị vận chuyển"
+            name="transporterId"
+            placeholder={"Chọn đơn vị vận chuyển"}
           />
         </Col>
         <Col md={12} xs={24}>
+          <FormInput
+            label="Mã vận đơn"
+            name="transporterCode"
+            placeholder={"Mã vận đơn"}
+          />
+        </Col>
+        <Col md={8} xs={24}>
           <FormInputNumber
             required={false}
-            label="Phí"
+            label="Phí vận chuyển"
             name="fee"
             placeholder={"Phí"}
           />
         </Col>
-        <Col md={12} xs={24}>
+        <Col md={8} xs={24}>
           <FormInputNumber
             required={false}
-            label="Tiền hàng"
+            label="Tiền thu hộ"
             name="cod"
-            placeholder={"Tiền hàng"}
+            placeholder={"Tiền COD"}
           />
         </Col>
-        <Col md={12} xs={24}>
+        <Col md={8} xs={24}>
           <FormInputNumber
+            mix={1}
+            max={data?.itemInStock?.quantity ?? 0}
             required={false}
             label="Số lượng"
             name="quality"
@@ -82,6 +131,7 @@ const GiaoHangForm = ({ title, data }) => {
         <Col md={12} xs={24}>
           <FormInfiniteStock
             required
+            customValue={getStockId(data)}
             name="stockId"
             label="Kho Hàng"
             placeholder="Kho Hàng"

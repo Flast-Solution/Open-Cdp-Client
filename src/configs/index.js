@@ -7,7 +7,7 @@ export const GATE_EVN = {
   AiA2A:    'https://service.aicuatui.vn'
 };
 
-export const GATEWAY = GATE_EVN['Pro'];
+export const GATEWAY = GATE_EVN['Loc'];
 export const CHANGE_STORE = 'CHANGE_STORE';
 export const UPLOAD_PATH = GATEWAY + '/uploads'
 
