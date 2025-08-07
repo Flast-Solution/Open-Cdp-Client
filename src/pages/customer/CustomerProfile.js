@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import {
   Card,
   Typography,
@@ -15,11 +15,14 @@ import {
   Checkbox
 } from 'antd';
 
-import { 
+import {
   DollarCircleOutlined,
   MailOutlined,
   FileDoneOutlined
 } from "@ant-design/icons";
+import { useEffectAsync } from 'hooks/MyHooks';
+import RequestUtils from 'utils/RequestUtils';
+import moment from 'moment';
 
 const { Title, Text, Paragraph } = Typography;
 const customer = {
@@ -77,27 +80,33 @@ const stats = {
 };
 
 const alerts = [
-  'Đơn hàng gần đây nhất: 20/05/2025', 
+  'Đơn hàng gần đây nhất: 20/05/2025',
   'Chưa tương tác >14 ngày'
 ];
 
 const CustomerProfile = () => {
+  const [data, setData] = useState(null);
+
+  useEffectAsync(async () => {
+    let { data, errorCode } = await RequestUtils.Get(`/customer/report-by-id/${24}`);
+    setData(data);
+  }, []);
   return (
     <div style={{ padding: '24px', backgroundColor: '#f5f5f5', minHeight: '100vh' }}>
       <Card style={{ marginBottom: '24px', borderRadius: '8px' }}>
         <Row justify="space-between" align="top" gutter={[16, 16]}>
           <Col xs={24} md={16}>
             <Title level={3} style={{ marginBottom: 15 }}>
-              {customer.name}
+              {data?.iCustomer?.name}
             </Title>
-            <p style={{margin: '10px 0px'}}>
+            <p style={{ margin: '10px 0px' }}>
               <Text strong>
                 {customer.contactName} – {customer.position}
               </Text>
             </p>
-            <p style={{margin: '10px 0px'}}>
+            <p style={{ margin: '10px 0px' }}>
               <Text type="secondary">
-                ✉️ {customer.email} | 📞 {customer.phone} | 📍 {customer.address}
+                ✉️ {data?.iCustomer?.email} | 📞 {data?.iCustomer?.mobile} | 📍 {data?.iCustomer?.address}
               </Text>
             </p>
             <div style={{ marginTop: '8px' }}>
@@ -108,17 +117,17 @@ const CustomerProfile = () => {
             </div>
           </Col>
           <Col xs={24} md={8} style={{ textAlign: 'right' }}>
-            <Button onClick={() => {}} style={{ marginRight: 8 }}>
+            <Button onClick={() => { }} style={{ marginRight: 8 }}>
               Sửa
             </Button>
-            <Button disabled type="dashed" onClick={() => {}} style={{ marginRight: 8 }}>
+            <Button disabled type="dashed" onClick={() => { }} style={{ marginRight: 8 }}>
               Gửi email
             </Button>
-            <Button disabled type="default" onClick={() => {}} style={{ marginRight: 8 }}>
+            <Button disabled type="default" onClick={() => { }} style={{ marginRight: 8 }}>
               Gọi qua CallCenter
             </Button>
             <br />
-            <Button type="default" style={{ marginTop: 8 }} onClick={() => {}}>
+            <Button type="default" style={{ marginTop: 8 }} onClick={() => { }}>
               Tạo cơ hội
             </Button>
           </Col>
@@ -206,20 +215,20 @@ const CustomerProfile = () => {
           {/* Ghi chú & Nhiệm vụ */}
           <Card title="Ghi chú & Nhiệm vụ" style={{ marginBottom: 16 }}>
             <Title level={5}>Ghi chú</Title>
-            {notes.map((note, i) => (
+            {data?.notes?.map((note, i) => (
               <Paragraph key={i} style={{ fontSize: 13, color: '#595959', fontStyle: 'italic' }}>
-                {note}
+                {note?.content} - {note?.userNote} ({moment(note?.createdAt).format("DD/MM/YYYY")})
               </Paragraph>
             ))}
             <Divider />
             <Title level={5}>Nhiệm vụ</Title>
             <List
-              dataSource={tasks}
+              dataSource={data?.activities}
               renderItem={(task) => (
                 <List.Item>
-                  <Checkbox checked={task.completed}>{task.title}</Checkbox>{' '}
+                  <Checkbox checked={task.completed}>{task.name}</Checkbox>{' '}
                   <Text type="secondary" style={{ marginLeft: 8 }}>
-                    (Hạn: {task.due || 'chưa đặt'})
+                    (Hạn: {moment(task.dueDate).format("HH:mm DD-MM-YYYY") || 'chưa đặt'})
                   </Text>
                 </List.Item>
               )}
@@ -230,19 +239,19 @@ const CustomerProfile = () => {
             <Row gutter={[16, 8]} style={{ textAlign: 'center' }}>
               {/* Lead */}
               <Col span={8}>
-                <div style={{ fontSize: 20, fontWeight: 'bold', color: '#1890ff' }}>10</div>
+                <div style={{ fontSize: 20, fontWeight: 'bold', color: '#1890ff' }}>{data?.summary?.leads}</div>
                 <Tag icon={<MailOutlined />} color="blue" style={{ marginTop: 6 }}>
                   Lead
                 </Tag>
               </Col>
               <Col span={8}>
-                <div style={{ fontSize: 20, fontWeight: 'bold', color: '#52c41a' }}>5</div>
+                <div style={{ fontSize: 20, fontWeight: 'bold', color: '#52c41a' }}>{data?.summary?.opportunities}</div>
                 <Tag icon={<FileDoneOutlined />} color="green" style={{ marginTop: 6 }}>
                   Cơ hội
                 </Tag>
               </Col>
               <Col span={8}>
-                <div style={{ fontSize: 20, fontWeight: 'bold', color: '#fa8c16' }}>3</div>
+                <div style={{ fontSize: 20, fontWeight: 'bold', color: '#fa8c16' }}>{data?.summary?.orders}</div>
                 <Tag icon={<DollarCircleOutlined />} color="orange" style={{ marginTop: 6 }}>
                   Đơn hàng
                 </Tag>
@@ -258,9 +267,11 @@ const CustomerProfile = () => {
             ))}
             <Divider />
             <div>
-              <Tag>#CRM</Tag>
-              <Tag>#Doanh_nghiệp_vừa</Tag>
-              <Tag>#Upsell_sắp_tới</Tag>
+              {data?.tag?.map((tag, i) => (
+                <Tag key={i} color="#108ee9" style={{ marginRight: 8, marginBottom: 8 }}>
+                  {tag}
+                </Tag>
+              ))}
             </div>
 
             <Divider />
