@@ -12,12 +12,15 @@ import { useEffectAsync } from 'hooks/MyHooks';
 import { arrayEmpty } from 'utils/dataUtils';
 import OrderTextTableOnly from 'containers/Order/OrderTextTableOnly';
 import RequestUtils from 'utils/RequestUtils';
+import FormTextArea from 'components/form/FormTextArea';
+import { SUCCESS_CODE } from 'configs';
 
 const GiaoHangForm = ({ title, data }) => {
   
   const [ form ] = Form.useForm();
   const [ submitStock, setSubmitStock ] = useState({});
   const [ details, setDetails ] = useState([]);
+  const [ ship, setShip ] = useState({});
 
   const onChangeGetOrderItem = (value, order) => {
     let { id, details, ...values } = order;
@@ -43,7 +46,19 @@ const GiaoHangForm = ({ title, data }) => {
       message.error("Chưa chọn kho giao !");
       return;
     }
-    const { message: MSG } = await RequestUtils.Post("/warehouse/delivery", { stockId: submitStock.id, ...values})
+    const { quality } = values;
+    if(submitStock.quantity < quality ) {
+      message.error("Kho không đủ số lượng giao !");
+      return;
+    }
+    const { data, message: MSG, errorCode } = await RequestUtils.Post("/warehouse/delivery", {
+       warehouseId: submitStock.id,
+       id: ship.id,
+       ...values
+    });
+    if(errorCode === SUCCESS_CODE) {
+      setShip(data);
+    }
     message.success(MSG);
   }
 
@@ -66,19 +81,19 @@ const GiaoHangForm = ({ title, data }) => {
             resourceData={details}
             label="Mã đơn con"
             valueProp='code'
-            name="orderDetailCode"
+            name="detailCode"
             placeholder={"Nhập mã đơn nhỏ"}
           />
         </Col>
         <Form.Item
           noStyle
-          shouldUpdate={(prevValues, curValues) => prevValues.orderDetailCode !== curValues.orderDetailCode }
+          shouldUpdate={(prevValues, curValues) => prevValues.detailCode !== curValues.detailCode }
         >
           {({ getFieldValue }) => (
             <Col md={24} xs={24}>
               <ShowSkuInStockByDetailCode
                 details={details}
-                detailCode={getFieldValue('orderDetailCode')}
+                detailCode={getFieldValue('detailCode')}
                 onChoiseStock={setSubmitStock}
               />
             </Col>
@@ -120,9 +135,8 @@ const GiaoHangForm = ({ title, data }) => {
         </Col>
         <Col md={12} xs={24}>
           <FormInputNumber
-            required={false}
             label="Phí vận chuyển"
-            name="fee"
+            name="shippingCost"
             placeholder={"Phí"}
           />
         </Col>
@@ -137,10 +151,9 @@ const GiaoHangForm = ({ title, data }) => {
         <Col md={12} xs={24}>
           <FormInputNumber
             mix={1}
-            max={data?.itemInStock?.quantity ?? 0}
             required
             label="Số lượng"
-            name="quality"
+            name="quantity"
             placeholder={"Số lượng"}
           />
         </Col>
@@ -153,6 +166,14 @@ const GiaoHangForm = ({ title, data }) => {
             label="Trang thái"
             name="status"
             placeholder="Trạng thái"
+          />
+        </Col>
+        <Col md={24} xs={24}>
+          <FormTextArea 
+            rows={2}
+            label="Ghi chú giao hàng"
+            name="note"
+            placeholder="Nghi chú nếu có"
           />
         </Col>
         <Col md={24} xs={24}>
@@ -216,6 +237,7 @@ const ShowSkuInStockByDetailCode = ( {
       />
       <p style={{margin: '20px 0px'}}><strong>Chọn một trong các kho</strong></p>
       <Table
+        rowKey={'id'}
         style={{marginBottom: 20}}
         rowSelection={rowSelection}
         columns={columns}
