@@ -84,7 +84,7 @@ function SideBar() {
 		]),
     getItem('Kho - Giao hàng', 'warehouse', <OrderedListOutlined /> , [
 			getItem(<Link to="/warehouse/trong-kho"> Trong kho </Link>, 'tt-theo-don', <UnorderedListOutlined />),
-      getItem(<Link to="/warehouse/da-giao"> Giao hàng </Link>, 'da-giao-theo-don', <GiftOutlined />),
+      getItem(<Link to="/ship"> Giao hàng </Link>, 'da-giao-theo-don', <GiftOutlined />),
       getItem(<Link to="/warehouse/danh-sach-kho">Danh sách kho</Link>, 'd.s.kho', <DeploymentUnitOutlined />)
 		]),
 		getItem(<Link to="/sale-kpi/list"> Kpi</Link>, 'Kpi', <RiseOutlined />),

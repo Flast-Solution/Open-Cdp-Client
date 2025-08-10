@@ -42,6 +42,11 @@ const GiaoHangForm = ({ title, data }) => {
   }
 
   const onFinish = async (values) => {
+    if (data?.onSubmit && typeof data.onSubmit === 'function') {
+      await data.onSubmit(values);
+      return;
+    }
+
     if(!submitStock.id) {
       message.error("Chưa chọn kho giao !");
       return;
@@ -51,13 +56,13 @@ const GiaoHangForm = ({ title, data }) => {
       message.error("Kho không đủ số lượng giao !");
       return;
     }
-    const { data, message: MSG, errorCode } = await RequestUtils.Post("/warehouse/delivery", {
+    const { data: response, message: MSG, errorCode } = await RequestUtils.Post("/warehouse/delivery", {
        warehouseId: submitStock.id,
        id: ship.id,
        ...values
     });
     if(errorCode === SUCCESS_CODE) {
-      setShip(data);
+      setShip(response);
     }
     message.success(MSG);
   }

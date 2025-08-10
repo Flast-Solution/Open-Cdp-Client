@@ -15,6 +15,7 @@ import { OrderConfig } from './OrderConfig';
 /* Kho */
 import { InstockConfig } from './TrongkhoConfig';
 import { WareHouseConfig } from './ListKhoConfig';
+import { ShipConfig } from './ShipConfig';
 
 /* Tài khoản */
 import { ListAcountConfig } from './ListAcountConnfig';
@@ -25,7 +26,6 @@ import { ListUserSystemConfig } from './ListUserSysTemConfig';
 import { LeadNotTakeConfig } from './LeadNotTakeConfig'
 import { LeadTookCareConfig } from './LeadTookCareConfig';
 import { CohoiTakeConfig } from './CohoiTakeConfig';
-import { CardOrderConfig } from './CardOrderConfig';
 import { CohoiNotTakeConfig } from './CohoiNotTakeConfig';
 import { OrderTakeConfig } from './OrderTakeCareConfig';
 
@@ -55,7 +55,7 @@ const routeConfigs = [
     ListUserSystemConfig,
     NewfeedConfig,
     CohoiTakeConfig,
-    CardOrderConfig,
+    ShipConfig,
     OrderConfig,
     OrderTakeConfig,
     CongnoConfig,

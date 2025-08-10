@@ -16,7 +16,7 @@ import InStockTable from 'containers/WareHouse/InStockTable'
 const SKU_DETAIL_ID_PREFIX = 'skuDetailId_';
 const ModalNhapKho = ({
   product, 
-  onSave 
+  onSave = (values) => values
 }) => {
   
   const [ form ] = Form.useForm();
