@@ -20,7 +20,7 @@ const ShipPage = () => {
 
   const onClickGiaoHang = (record) =>  InAppEvent.emit(HASH_MODAL, {
     hash: "#ship.update",
-    title: 'Phiếu xuất kho',
+    title: 'Phiếu xuất kho #' + record.orderCode,
     data: record
   });
 
@@ -38,6 +38,12 @@ const ShipPage = () => {
       width: 150,
       ellipsis: true,
       render: (warehouse) => warehouse.product.name
+    },
+    {
+      title: 'Mã đơn',
+      dataIndex: 'orderCode',
+      width: 120,
+      ellipsis: true
     },
     {
       title: 'Nhân viên',

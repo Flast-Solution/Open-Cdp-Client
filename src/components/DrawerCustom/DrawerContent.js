@@ -8,7 +8,7 @@ const DrawerContent = ({
   return (
     <div className="drawer-content-wrapper">
       { title && <Header onClose={onClose} title={title} /> }
-      <div className="drawer-content">{children}</div>
+      <div id="drawer-content" className="drawer-content">{children}</div>
     </div>
   );
 };
