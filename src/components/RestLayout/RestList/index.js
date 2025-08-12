@@ -69,11 +69,11 @@ const RestList = ({
     <div>
       { filter && 
         <RestFilter
-            onSubmitFilter={onSubmitFilter}
-            onClearFilter={onClearFilter}
-            defaultQueryParams={defaultQueryParams}
-          >
-            { filter }
+          onSubmitFilter={onSubmitFilter}
+          onClearFilter={onClearFilter}
+          defaultQueryParams={defaultQueryParams}
+        >
+          { filter }
         </RestFilter>
       }
       <ListLayout

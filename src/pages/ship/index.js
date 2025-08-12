@@ -5,10 +5,11 @@ import CustomBreadcrumb from 'components/BreadcrumbCustom';
 import RestList from 'components/RestLayout/RestList';
 import ShipFilter from './Filter';
 import useGetList from "hooks/useGetList";
-import { dateFormatOnSubmit, formatTime } from 'utils/dataUtils';
+import { arrayEmpty, dateFormatOnSubmit, formatTime } from 'utils/dataUtils';
 import { InAppEvent } from 'utils/FuseUtils';
 import { ShowSkuDetail } from 'containers/Product/SkuView';
 import { HASH_MODAL } from 'configs/constant';
+import RequestUtils from 'utils/RequestUtils';
 
 const ShipPage = () => {
 
@@ -23,6 +24,17 @@ const ShipPage = () => {
     title: 'Phiếu xuất kho #' + record.orderCode,
     data: record
   });
+
+  const onData = async (values) => {
+    if(arrayEmpty(values.embedded)) {
+      return values;
+    }
+    const listStatus = await RequestUtils.GetAsList("/shipping/fetch-status");
+    for(let ship of values.embedded) {
+      ship.statusName = listStatus.find(i => i.id === ship.status)?.name || ''; 
+    }
+    return values;
+  }
 
   const CUSTOM_ACTION = [
     {
@@ -66,6 +78,12 @@ const ShipPage = () => {
     {
       title: 'Địa chỉ',
       dataIndex: 'address',
+      width: 150,
+      ellipsis: true
+    },
+    {
+      title: 'Trạng thái',
+      dataIndex: 'statusName',
       width: 150,
       ellipsis: true
     },
@@ -122,6 +140,7 @@ const ShipPage = () => {
         data={[{ title: 'Trang chủ' }, { title: title }]}
       />
       <RestList
+        onData={onData}
         hasCreate={false}
         xScroll={1400}
         initialFilter={{ limit: 10, page: 1 }}

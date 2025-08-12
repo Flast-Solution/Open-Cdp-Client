@@ -37,6 +37,7 @@ const InvoicePage = ({
         <Col span={12}>
           <p className='title'>THÔNG TIN KHÁCH HÀNG</p>
           <Table
+						className='row_padding_small'
 						showHeader={false}
             dataSource={[
               { key: '1', label: 'Công ty:', value: customer.companyName || 'N/A' },
@@ -57,6 +58,7 @@ const InvoicePage = ({
             THÔNG TIN ĐẠI DIỆN
           </p>
           <Table
+						className='row_padding_small'
 						showHeader={false}
             dataSource={[
               { key: '1', label: 'Bộ phận:', value: 'Phòng kinh doanh' },
@@ -150,7 +152,7 @@ const Invoice = ({ data }) => {
 				</Col>
 				<Col span={8} offset={8}>
 					<Text strong>Người lập hóa đơn</Text>
-					<div style={{height: 100}} />
+					<div style={{height: 80}} />
 					<Text style={{ display: 'block', marginTop: '5px' }}>Ngày .... tháng .... năm 202..</Text>
 				</Col>
 			</Row>

@@ -43,4 +43,7 @@ export const StyledHeaderInvoice = styled(Layout)`
 		margin-bottom: 20px;
 		color: #1890ff;
 	}
+  .row_padding_small .ant-table-cell {
+    padding: 5px 15px;
+  }
 `;
