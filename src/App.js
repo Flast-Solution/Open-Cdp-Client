@@ -5,9 +5,9 @@
 /*                             Open CDP                                   */
 /*                        https://flast.vn                                */
 /**************************************************************************/
-/* Bản quyền (c) 2025 - nay thuộc về các cộng tác viên Godot Engine       */
+/* Bản quyền (c) 2025 - này thuộc về các cộng tác viên Godot Engine       */
 /* (xem AUTHORS.md).                                                      */
-/* Bản quyền (c) 2024-2025 Long Huu, Quang Duc, Hung                      */
+/* Bản quyền (c) 2024-2025 Long Huu, Quang Duc, Hung Bùi                  */
 /*                                                                        */
 /* Bạn được quyền sử dụng phần mềm này miễn phí cho bất kỳ mục đích nào,  */
 /* bao gồm sao chép, sửa đổi, phân phối, bán lại…                         */
