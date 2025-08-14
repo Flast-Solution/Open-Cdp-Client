@@ -30,9 +30,8 @@ import { useUpdateEffect, useMount } from "hooks/MyHooks";
 import { PlusOutlined } from '@ant-design/icons';
 import { SUCCESS_CODE } from 'configs';
 import { arrayEmpty } from "utils/dataUtils"
-import { InAppEvent } from 'utils/FuseUtils';
-const { Option } = Select;
 
+const { Option } = Select;
 const FormSelectAPI = ({
   apiPath = '',
   apiAddNewItem = '',
@@ -51,6 +50,7 @@ const FormSelectAPI = ({
   initialValue,
   formItemProps,
   isShowModalCreateNewItem,
+  onChangeGetSelectedItem,
   onCreateNewItem = () => false,
   isLimitWidth = false,
   filter,
@@ -127,23 +127,21 @@ const FormSelectAPI = ({
   }, []);
 
   const addItem = useCallback(async () => {
+    /* Open Modal Create Data */
     if (onCreateNewItem()) {
-      /* Open Modal Create Data */
       return;
     }
-    /* const value = inputRef?.current?.input?.value ?? ''; */
-    if (value && apiAddNewItem) {
-      let dataPost = { [searchKey]: value, ...(createDefaultValues || {}) }
-      const { data, errorCode, message: msg } = await RequestUtils.Post("/" + apiAddNewItem, dataPost);
-      if (errorCode !== SUCCESS_CODE) {
-        message.error(msg);
-      } else {
-        const newData = resourceData.concat(data);
-        setData(newData);
-        InAppEvent.normalInfo("Cập nhật thành công");
-        setValue('');
-      }
+    if (!value || !apiAddNewItem) {
+      return;
     }
+    let dataPost = { [searchKey]: value, ...(createDefaultValues || {}) }
+    const { data, errorCode, message: msg } = await RequestUtils.Post("/" + apiAddNewItem, dataPost);
+    if (errorCode === SUCCESS_CODE) {
+      const newData = resourceData.concat(data);
+      setData(newData);
+      setValue('');
+    }
+    message.info(msg);
     /* eslint-disable-next-line */
   }, [value, createDefaultValues, fnLoadData]);
 
@@ -156,10 +154,13 @@ const FormSelectAPI = ({
     setValue(e.target.value);
   }
 
-  const handleChange = useCallback(async (value) => {
-    fetchResource(localFilter);
-    /* eslint-disable-next-line */
-  }, [localFilter]);
+  const handleChange = (value) => {
+    if (!onChangeGetSelectedItem) return;
+    const findItem = resourceData?.find(
+      (item) => get(item, valueProp) === value,
+    );
+    onChangeGetSelectedItem(value, findItem);
+  };
 
   return (
     <Form.Item

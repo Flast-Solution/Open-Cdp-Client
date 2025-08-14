@@ -15,6 +15,7 @@ import ModaleStyles from './style';
 import FormSelect from 'components/form/FormSelect';
 import { NoFooter } from 'components/common/NoFooter';
 import { useNavigate } from "react-router-dom";
+import { CHANNEL_SOURCE_MAP_KEYS } from 'configs/localData';
 
 const LeadPage = () => {
 
@@ -58,6 +59,18 @@ const LeadPage = () => {
       width: 150
     },
     {
+      title: "Khách hàng",
+      dataIndex: 'customerName',
+      width: 200,
+      ellipsis: true
+    },
+    {
+      title: "Số đ/t",
+      dataIndex: 'customerMobile',
+      width: 120,
+      ellipsis: true
+    },
+    {
       title: "Dịch vụ",
       dataIndex: 'serviceId',
       width: 150,
@@ -66,6 +79,12 @@ const LeadPage = () => {
         const nameService = listServices.find(f => f.id === serviceId)
         return <Tag color="orange">{nameService?.name || 'N/A'} </Tag>
       }
+    },
+    {
+      title: "Nguồn",
+      dataIndex: 'source',
+      width: 170,
+      render: (source) => CHANNEL_SOURCE_MAP_KEYS[source]?.name
     },
     {
       title: "Sản phẩm",
@@ -79,18 +98,6 @@ const LeadPage = () => {
       width: 150,
       ellipsis: true,
       render: (inTime) => dateFormatOnSubmit(inTime)
-    },
-    {
-      title: "Khách hàng",
-      dataIndex: 'customerName',
-      width: 200,
-      ellipsis: true
-    },
-    {
-      title: "Số đ/t",
-      dataIndex: 'customerMobile',
-      width: 120,
-      ellipsis: true
     },
     {
       title: "Sale",
@@ -124,7 +131,7 @@ const LeadPage = () => {
               setDetailRecord(record)
             }}/>
           </Tooltip>
-          <Tooltip style={{cursor: 'pointer'}} title={'Detail'}>
+          <Tooltip style={{cursor: 'pointer'}} title={'Cập nhật'}>
             <SelectOutlined style={{ color: '#1677ff', fontSize: 16 }} onClick={() => onEdit(record)}/>
           </Tooltip>
         </div>

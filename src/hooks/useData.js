@@ -103,6 +103,9 @@ export const useGetAllProvinceQuery = ({ queryParams, onCompleted }) =>
 export const useGetAllStockQuery = ({ queryParams, onCompleted }) =>
 	useData({ queryParams, onCompleted, api: 'warehouse/fetch-stock' });
 
+export const useGetShipStatusQuery = ({ queryParams, onCompleted }) =>
+	useData({ queryParams, onCompleted, api: 'shipping/fetch-status' });
+
 export const useGetOrderCodeQuery = ({ queryParams, onCompleted }) =>
 	useData({ queryParams, onCompleted, api: 'order/fetch' });
 

@@ -10,6 +10,11 @@ const WareHoseRouter = [
     path: 'warehouse.delivery',
     Component: React.lazy(() => import('containers/WareHouse/GiaoHang')),
     modalOptions: { title: '', width: 750 }
+  },
+  {
+    path: 'ship.update',
+    Component: React.lazy(() => import('containers/Ship/DeliveryPager')),
+    modalOptions: { title: '', width: 750 }
   }
 ];
 

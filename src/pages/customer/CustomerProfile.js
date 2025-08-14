@@ -36,14 +36,11 @@ import {
   Checkbox
 } from 'antd';
 
-import {
-  DollarCircleOutlined,
-  MailOutlined,
-  FileDoneOutlined
-} from "@ant-design/icons";
+import { DollarCircleOutlined, MailOutlined, FileDoneOutlined } from "@ant-design/icons";
 import { useEffectAsync } from 'hooks/MyHooks';
 import RequestUtils from 'utils/RequestUtils';
-import moment from 'moment';
+import { SUCCESS_CODE } from 'configs';
+import { formatTime } from 'utils/dataUtils';
 
 const { Title, Text, Paragraph } = Typography;
 const customer = {
@@ -84,16 +81,6 @@ const products = [
 
 const upsellSuggestions = ['Gói Nâng cao', 'Bảo trì', 'Tư vấn triển khai'];
 
-const notes = [
-  'Khách quan tâm đến tính năng phân tích dữ liệu. – Lê H, 25/03'
-];
-
-const tasks = [
-  { title: 'Tư vấn lại 3 ngày chưa Cơ Hội', due: '05/04', completed: true },
-  { title: 'Gửi Báo giá', due: '05/04', completed: true },
-  { title: 'Gọi điện 7 ngày chưa ra đơn', due: '10/04', completed: false }
-];
-
 const stats = {
   totalSales: '480 triệu ₫',
   avgOrder: '120 triệu ₫',
@@ -106,35 +93,45 @@ const alerts = [
 ];
 
 const CustomerProfile = () => {
-  const [data, setData] = useState(null);
+
+  const [data, setData] = useState({});
+  const [iCustomer, setCustomer] = useState({});
 
   useEffectAsync(async () => {
     let { data, errorCode } = await RequestUtils.Get(`/customer/report-by-id/${24}`);
-    setData(data);
+    if (errorCode === SUCCESS_CODE) {
+      let { iCustomer, ...rest } = data;
+      setData(rest);
+      setCustomer(iCustomer)
+    }
   }, []);
+
   return (
     <div style={{ padding: '24px', backgroundColor: '#f5f5f5', minHeight: '100vh' }}>
       <Card style={{ marginBottom: '24px', borderRadius: '8px' }}>
         <Row justify="space-between" align="top" gutter={[16, 16]}>
           <Col xs={24} md={16}>
             <Title level={3} style={{ marginBottom: 15 }}>
-              {data?.iCustomer?.name}
+              {iCustomer?.name}
             </Title>
             <p style={{ margin: '10px 0px' }}>
               <Text strong>
-                {customer.contactName} – {customer.position}
+                Kinh doanh phụ trách ({data.saleName})
               </Text>
             </p>
             <p style={{ margin: '10px 0px' }}>
-              <Text type="secondary">
-                ✉️ {data?.iCustomer?.email} | 📞 {data?.iCustomer?.mobile} | 📍 {data?.iCustomer?.address}
+              <Text type="secondary" style={{ display: 'flex', gap: 8 }}>
+                {iCustomer?.email &&
+                  <span>✉️ {iCustomer?.email} |</span>
+                }
+                <span> 📞 {iCustomer?.mobile} | </span>
+                <span> 📍 {iCustomer?.address || '(Chưa có địa chỉ)'} </span>
               </Text>
             </p>
             <div style={{ marginTop: '8px' }}>
               <Tag color="red">Điểm chạm (3)</Tag>
               <Tag color="orange">Ưu tiên: {customer.priority}</Tag>
               <Tag>Điểm đánh giá từ CSKH: {customer.leadScore}/100</Tag>
-              <Tag>Ngành: {customer.industry}</Tag>
             </div>
           </Col>
           <Col xs={24} md={8} style={{ textAlign: 'right' }}>
@@ -233,14 +230,12 @@ const CustomerProfile = () => {
 
         {/* Cột phải */}
         <Col xs={24} lg={8}>
-          {/* Ghi chú & Nhiệm vụ */}
           <Card title="Ghi chú & Nhiệm vụ" style={{ marginBottom: 16 }}>
             <Title level={5}>Ghi chú</Title>
-            {data?.notes?.map((note, i) => (
-              <Paragraph key={i} style={{ fontSize: 13, color: '#595959', fontStyle: 'italic' }}>
-                {note?.content} - {note?.userNote} ({moment(note?.createdAt).format("DD/MM/YYYY")})
-              </Paragraph>
-            ))}
+            <Paragraph style={{ fontSize: 13, color: '#595959', fontStyle: 'italic' }}>
+              Quan tâm sản phẩm {data?.lead?.productName} ngày {formatTime(data?.lead?.inTime)}
+            </Paragraph>
+
             <Divider />
             <Title level={5}>Nhiệm vụ</Title>
             <List
@@ -249,7 +244,7 @@ const CustomerProfile = () => {
                 <List.Item>
                   <Checkbox checked={task.completed}>{task.name}</Checkbox>{' '}
                   <Text type="secondary" style={{ marginLeft: 8 }}>
-                    (Hạn: {moment(task.dueDate).format("HH:mm DD-MM-YYYY") || 'chưa đặt'})
+                    ({formatTime(task.dueDate)})
                   </Text>
                 </List.Item>
               )}
@@ -258,7 +253,6 @@ const CustomerProfile = () => {
 
           <Card title="Thống kê nhanh" style={{ marginBottom: 16 }}>
             <Row gutter={[16, 8]} style={{ textAlign: 'center' }}>
-              {/* Lead */}
               <Col span={8}>
                 <div style={{ fontSize: 20, fontWeight: 'bold', color: '#1890ff' }}>{data?.summary?.leads}</div>
                 <Tag icon={<MailOutlined />} color="blue" style={{ marginTop: 6 }}>

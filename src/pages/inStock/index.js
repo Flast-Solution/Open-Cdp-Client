@@ -44,9 +44,16 @@ const ListInStock = () => {
     return values;
   }, []);
 
-  const onCreateImportProduct = () => InAppEvent.emit(HASH_POPUP, {
-    title: 'Nhập kho'
-  });
+  const onCreateImportProduct = useCallback(() => {
+    const onAfterSubmit = (values) => {
+      f5List("warehouse/fetch");
+    };
+    InAppEvent.emit(HASH_POPUP, {
+      hash: "stock.add",
+      title: "Nhập kho",
+      data: { onSave: onAfterSubmit }
+    });
+  }, []);
 
   const onCofirmExchange = (record) => form.validateFields().then(async (values) => {
     const body = { ...values, warehouseSourceId: record.id };

@@ -26,35 +26,66 @@ import FormAddress from 'components/form/FormAddress';
 import FormInput from 'components/form/FormInput';
 import FormInputNumber from 'components/form/FormInputNumber';
 import FormSelectAPI from 'components/form/FormSelectAPI';
-import FormInfiniteStock from 'components/form/SelectInfinite/FormInfiniteStock';
 import FormInfiniteOrderCode from 'components/form/SelectInfinite/FormInfiniteOrderCode';
 import FormSelect from 'components/form/FormSelect';
+import WarehouseService from 'services/WarehouseService';
+import { useEffectAsync } from 'hooks/MyHooks';
+import { arrayEmpty } from 'utils/dataUtils';
+import OrderTextTableOnly from 'containers/Order/OrderTextTableOnly';
+import RequestUtils from 'utils/RequestUtils';
+import FormTextArea from 'components/form/FormTextArea';
+import { SUCCESS_CODE } from 'configs';
 
-const getStockId = (data) => data?.itemInStock?.stockId ?? undefined;
 const GiaoHangForm = ({ title, data }) => {
 
   const [form] = Form.useForm();
+  const [submitStock, setSubmitStock] = useState({});
   const [details, setDetails] = useState([]);
-
-  useEffect(() => {
-    console.log(data);
-    form.setFieldValue('stockId', getStockId(data));
-  }, [data, form]);
+  const [ship, setShip] = useState({});
 
   const onChangeGetOrderItem = (value, order) => {
-    const { id, details, ...values } = order;
+    let { id, details, ...values } = order;
     const {
       customerProvinceId: provinceId,
       customerWardId: wardId,
       customerAddress: address,
       ...params
     } = values;
-    setDetails(details || []);
+
     form.setFieldsValue({ ...params, provinceId, wardId, address });
+    if (arrayEmpty(details)) {
+      return;
+    }
+    for (let detail of details) {
+      detail.mSkuDetails = JSON.parse(detail.skuInfo);
+    }
+    setDetails(details || []);
   }
 
-  const onFinish = async (value) => {
-    console.log(value);
+  const onFinish = async (values) => {
+    if (data?.onSubmit && typeof data.onSubmit === 'function') {
+      await data.onSubmit(values);
+      return;
+    }
+
+    if (!submitStock.id) {
+      message.error("Chưa chọn kho giao !");
+      return;
+    }
+    const { quality } = values;
+    if (submitStock.quantity < quality) {
+      message.error("Kho không đủ số lượng giao !");
+      return;
+    }
+    const { data: response, message: MSG, errorCode } = await RequestUtils.Post("/warehouse/delivery", {
+      warehouseId: submitStock.id,
+      id: ship.id,
+      ...values
+    });
+    if (errorCode === SUCCESS_CODE) {
+      setShip(response);
+    }
+    message.success(MSG);
   }
 
   return (
@@ -76,14 +107,28 @@ const GiaoHangForm = ({ title, data }) => {
             resourceData={details}
             label="Mã đơn con"
             valueProp='code'
-            name="orderDetailCode"
+            name="detailCode"
             placeholder={"Nhập mã đơn nhỏ"}
           />
         </Col>
+        <Form.Item
+          noStyle
+          shouldUpdate={(prevValues, curValues) => prevValues.detailCode !== curValues.detailCode}
+        >
+          {({ getFieldValue }) => (
+            <Col md={24} xs={24}>
+              <ShowSkuInStockByDetailCode
+                details={details}
+                detailCode={getFieldValue('detailCode')}
+                onChoiseStock={setSubmitStock}
+              />
+            </Col>
+          )}
+        </Form.Item>
         <Col md={12} xs={24}>
           <FormInput
             required
-            label="Họ tên"
+            label="Người nhận"
             name="customerReceiverName"
             placeholder={"Nhập họ tên"}
           />
@@ -99,6 +144,7 @@ const GiaoHangForm = ({ title, data }) => {
         <FormAddress />
         <Col md={12} xs={24}>
           <FormSelectAPI
+            required
             apiPath="transporter/fetch"
             label="Đơn vị vận chuyển"
             name="transporterId"
@@ -107,20 +153,20 @@ const GiaoHangForm = ({ title, data }) => {
         </Col>
         <Col md={12} xs={24}>
           <FormInput
+            required
             label="Mã vận đơn"
             name="transporterCode"
             placeholder={"Mã vận đơn"}
           />
         </Col>
-        <Col md={8} xs={24}>
+        <Col md={12} xs={24}>
           <FormInputNumber
-            required={false}
             label="Phí vận chuyển"
-            name="fee"
+            name="shippingCost"
             placeholder={"Phí"}
           />
         </Col>
-        <Col md={8} xs={24}>
+        <Col md={12} xs={24}>
           <FormInputNumber
             required={false}
             label="Tiền thu hộ"
@@ -128,13 +174,12 @@ const GiaoHangForm = ({ title, data }) => {
             placeholder={"Tiền COD"}
           />
         </Col>
-        <Col md={8} xs={24}>
+        <Col md={12} xs={24}>
           <FormInputNumber
             mix={1}
-            max={data?.itemInStock?.quantity ?? 0}
-            required={false}
+            required
             label="Số lượng"
-            name="quality"
+            name="quantity"
             placeholder={"Số lượng"}
           />
         </Col>
@@ -149,13 +194,12 @@ const GiaoHangForm = ({ title, data }) => {
             placeholder="Trạng thái"
           />
         </Col>
-        <Col md={12} xs={24}>
-          <FormInfiniteStock
-            required
-            customValue={getStockId(data)}
-            name="stockId"
-            label="Kho Hàng"
-            placeholder="Kho Hàng"
+        <Col md={24} xs={24}>
+          <FormTextArea
+            rows={2}
+            label="Ghi chú giao hàng"
+            name="note"
+            placeholder="Nghi chú nếu có"
           />
         </Col>
         <Col md={24} xs={24}>
@@ -167,6 +211,67 @@ const GiaoHangForm = ({ title, data }) => {
       </Row>
     </Form>
   )
+}
+
+const ShowSkuInStockByDetailCode = ({
+  details,
+  detailCode,
+  onChoiseStock = (value) => value
+}) => {
+
+  const [skusInStock, setSkuInStock] = useState([]);
+  const [selectedRowKeys, setSelectedRowKeys] = useState([]);
+
+  useEffectAsync(async () => {
+    onChoiseStock({});
+    if (!detailCode) {
+      return;
+    }
+    const detail = details.find(i => i.code === detailCode);
+    if (!detail?.skuInfo) {
+      setSkuInStock([]);
+      return;
+    }
+    const skuHash = await WarehouseService.hashSku(detail.skuInfo);
+    const { embedded } = await WarehouseService.fetch({ skuHash });
+    setSkuInStock(embedded);
+  }, [details, detailCode]);
+
+  const rowSelection = {
+    type: 'radio',
+    selectedRowKeys,
+    onChange: (selectedKeys, selectedRows) => {
+      setSelectedRowKeys(selectedKeys);
+      const [rowSelect] = selectedRows;
+      onChoiseStock(rowSelect);
+    }
+  };
+
+  const columns = [
+    { title: 'ID', dataIndex: 'id' },
+    { title: 'Kho', dataIndex: 'stockName' },
+    { title: 'Tên SKU', dataIndex: 'skuName' },
+    { title: 'Số lượng', dataIndex: 'quantity' },
+    { title: 'NCC', dataIndex: 'providerName' }
+  ];
+
+  return arrayEmpty(skusInStock) ? '' : (
+    <div className='item-detail'>
+      <p><strong>Đơn hàng #{detailCode}</strong></p>
+      <OrderTextTableOnly
+        details={details.filter(i => i.code === detailCode) || []}
+      />
+      <p style={{ margin: '20px 0px' }}><strong>Chọn một trong các kho</strong></p>
+      <Table
+        rowKey={'id'}
+        style={{ marginBottom: 20 }}
+        rowSelection={rowSelection}
+        columns={columns}
+        dataSource={skusInStock}
+        pagination={false}
+      />
+    </div>
+  );
 }
 
 export default GiaoHangForm;
