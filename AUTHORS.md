@@ -1,4 +1,4 @@
-## Dự án Open-Cdp được phát triển và duy trì bởi đội ngũ: Công ty Cổ Phần Flast-Solution 
+## Open-Cdp được phát triển và duy trì bởi đội ngũ: Công ty Cổ Phần Flast-Solution 
 (FS) [https://flast.vn].
 
 ## DEVELOPER
