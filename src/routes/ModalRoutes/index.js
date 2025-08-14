@@ -6,7 +6,7 @@ import DrawerCustom from 'components/DrawerCustom';
 import ProductRoute from './ProductRoute.js';
 import OrderRoute from './OrderRoute';
 import LeadRoute from './LeadRouter.js';
-import LeadNotTakeRouter from './LeadNotTakeRouter.js';
+import Lead3DayRouter from './Lead3DayRouter.js';
 import LeadTakeRouter from './LeadTakeRouter.js';
 import WareHoseRouter from './WareHouseRouter.js';
 import OrderRouter from './UserAccountRouter.js';
@@ -19,7 +19,7 @@ const modalRoutes = [
   ...ProductRoute,
   ...OrderRoute,
   ...LeadRoute,
-  ...LeadNotTakeRouter,
+  ...Lead3DayRouter,
   ...LeadTakeRouter,
   ...WareHoseRouter,
   ...OrderRouter,

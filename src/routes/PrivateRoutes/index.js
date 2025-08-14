@@ -23,7 +23,7 @@ import { ListAcountGroupConfig } from './ListUserGroupConfig';
 import { ListUserSystemConfig } from './ListUserSysTemConfig';
 
 /* CSKH */
-import { LeadNotTakeConfig } from './LeadNotTakeConfig'
+import { Lead3DayConfig } from './Lead3DayConfig'
 import { LeadTookCareConfig } from './LeadTookCareConfig';
 import { CohoiTakeConfig } from './CohoiTakeConfig';
 import { CohoiNotTakeConfig } from './CohoiNotTakeConfig';
@@ -42,7 +42,7 @@ const routeConfigs = [
     ProductConfig,
     HomeConfig,
     LeadConfig,
-    LeadNotTakeConfig,
+    Lead3DayConfig,
     LeadTookCareConfig,
     CohoiConfig,
     InstockConfig,
