@@ -2,7 +2,7 @@
 (FS) [https://flast.vn].
 
 ## DEVELOPER
-(Thành Trung) [https://github.com/ThanhTrung179]
-(Quang Đức) [https://github.com/quangduc100696]
-(Hùng Bùi) [https://github.com/Hungbd271276]
-(Hữu Long) [https://github.com/LongHuu100]
+- (Thành Trung) [https://github.com/ThanhTrung179]
+- (Quang Đức) [https://github.com/quangduc100696]
+- (Hùng Bùi) [https://github.com/Hungbd271276]
+- (Hữu Long) [https://github.com/LongHuu100]
