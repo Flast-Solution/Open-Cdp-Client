@@ -1,3 +1,24 @@
+/**************************************************************************/
+/*  index.js                                                              */
+/**************************************************************************/
+/*                       Tệp này là một phần của:                         */
+/*                             Open CDP                                   */
+/*                        https://flast.vn                                */
+/**************************************************************************/
+/* Bản quyền (c) 2025 - này thuộc về các cộng tác viên Flast Solution     */
+/* (xem AUTHORS.md).                                                      */
+/* Bản quyền (c) 2024-2025 Long Huu, Quang Duc, Hung Bui                  */
+/*                                                                        */
+/* Bạn được quyền sử dụng phần mềm này miễn phí cho bất kỳ mục đích nào,  */
+/* bao gồm sao chép, sửa đổi, phân phối, bán lại…                         */
+/*                                                                        */
+/* Chỉ cần giữ nguyên thông tin bản quyền và nội dung giấy phép này trong */
+/* các bản sao.                                                           */
+/*                                                                        */
+/* Đội ngũ phát triển mong rằng phần mềm được sử dụng đúng mục đích và    */
+/* có trách nghiệm                                                        */
+/**************************************************************************/
+
 import RestEditModal from 'components/RestLayout/RestEditModal';
 import React, { useEffect, useState } from 'react'
 import ProductForm from './ProductForm';
@@ -7,40 +28,40 @@ import { InAppEvent } from 'utils/FuseUtils';
 import { f5List } from 'utils/dataUtils';
 import { HASH_MODAL_CLOSE } from 'configs';
 
-const UserAccount = ({data, closeModal}) => {
+const UserAccount = ({ data, closeModal }) => {
   const [record, setRecord] = useState({});
   const [listProFile, setListProFile] = useState([]);
   useEffect(() => {
-    (async() => {
+    (async () => {
       const listProfile = await RequestUtils.Get('/user/list-role');
-      setListProFile(listProfile?.data)   
+      setListProFile(listProfile?.data)
     })()
-  },[])
+  }, [])
 
   const onSubmit = async (dataCreate) => {
-    if(!/^\+?[0-9]{9,15}$/.test(dataCreate.phone || data?.phone)) {
+    if (!/^\+?[0-9]{9,15}$/.test(dataCreate.phone || data?.phone)) {
       InAppEvent.normalInfo('Vui lòng nhập đúng số điện thoại định dạng');
       return;
     }
-    if(!validateRegex.email.test(dataCreate.email || data?.email)) {
+    if (!validateRegex.email.test(dataCreate.email || data?.email)) {
       InAppEvent.normalInfo('Vui lòng nhập đúng Email định dạng');
       return;
     }
     const filtered = listProFile.filter(role => dataCreate?.userProfiles.includes(role.id));
     const params = {
-			ssoId: dataCreate?.ssoId || data?.ssoId ,
-			password: dataCreate?.password,
-			layout: dataCreate?.layout || data?.layout,
-			fullName: dataCreate?.fullName,
-			phone: dataCreate?.phone || data?.fullName,
-			email: dataCreate?.email || data?.email,
-			status: dataCreate?.status || data?.status,
+      ssoId: dataCreate?.ssoId || data?.ssoId,
+      password: dataCreate?.password,
+      layout: dataCreate?.layout || data?.layout,
+      fullName: dataCreate?.fullName,
+      phone: dataCreate?.phone || data?.fullName,
+      email: dataCreate?.email || data?.email,
+      status: dataCreate?.status || data?.status,
       userProfiles: filtered || data?.userProfiles
-		}
+    }
 
-    if(Object.keys(data)?.length > 0) {
+    if (Object.keys(data)?.length > 0) {
       const datas = await RequestUtils.Post(`/user/update?id=${data?.id}`, params);
-      if(datas.errorCode === 200) {
+      if (datas.errorCode === 200) {
         f5List('user/list');
         InAppEvent.emit(HASH_MODAL_CLOSE);
         InAppEvent.normalSuccess('Cập tài khoản thành công');
@@ -51,7 +72,7 @@ const UserAccount = ({data, closeModal}) => {
       }
     } else {
       const datas = await RequestUtils.Post('/user/create', params);
-      if(datas.errorCode === 200) {
+      if (datas.errorCode === 200) {
         f5List('user/list');
         InAppEvent.emit(HASH_MODAL_CLOSE);
         InAppEvent.normalSuccess('Tạo tài khoản thành công');
@@ -81,7 +102,7 @@ const UserAccount = ({data, closeModal}) => {
           userProfiles: data?.userProfiles?.map(f => f.id)
         })}
       >
-        <ProductForm listProFile={listProFile} data={data}/>
+        <ProductForm listProFile={listProFile} data={data} />
       </RestEditModal>
     </div>
   )

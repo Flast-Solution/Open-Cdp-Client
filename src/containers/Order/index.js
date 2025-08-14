@@ -1,3 +1,24 @@
+/**************************************************************************/
+/*  index.js                                                              */
+/**************************************************************************/
+/*                       Tệp này là một phần của:                         */
+/*                             Open CDP                                   */
+/*                        https://flast.vn                                */
+/**************************************************************************/
+/* Bản quyền (c) 2025 - này thuộc về các cộng tác viên Flast Solution     */
+/* (xem AUTHORS.md).                                                      */
+/* Bản quyền (c) 2024-2025 Long Huu, Quang Duc, Hung Bui                  */
+/*                                                                        */
+/* Bạn được quyền sử dụng phần mềm này miễn phí cho bất kỳ mục đích nào,  */
+/* bao gồm sao chép, sửa đổi, phân phối, bán lại…                         */
+/*                                                                        */
+/* Chỉ cần giữ nguyên thông tin bản quyền và nội dung giấy phép này trong */
+/* các bản sao.                                                           */
+/*                                                                        */
+/* Đội ngũ phát triển mong rằng phần mềm được sử dụng đúng mục đích và    */
+/* có trách nghiệm                                                        */
+/**************************************************************************/
+
 import React, { useCallback, useState } from 'react';
 import { Table, Button, InputNumber, Select, Typography, message } from 'antd';
 import { ShowSkuDetail } from 'containers/Product/SkuView';
@@ -64,11 +85,11 @@ function findByQuantity(arr, quantity) {
   ) || {} : {};
 }
 
-const EditButton = ({ 
-  editable, 
-  onEdit, 
-  onClose, 
-  onDelete 
+const EditButton = ({
+  editable,
+  onEdit,
+  onClose,
+  onDelete
 }) => (
   <div style={{ display: 'flex', alignItems: 'center' }}>
     <Button size="small" onClick={editable ? onClose : onEdit}>
@@ -89,31 +110,31 @@ const BanHangPage = ({
   dataId
 }) => {
 
-  const [ data, setData ] = useState([]);
-  const [ customer, setCustomer ] = useState();
+  const [data, setData] = useState([]);
+  const [customer, setCustomer] = useState();
 
-  const [ localOrder, setLocalOrder ] = useState({ orderId, reload: false });
-  const [ customerOrder, setCustomerOrder ] = useState();
+  const [localOrder, setLocalOrder] = useState({ orderId, reload: false });
+  const [customerOrder, setCustomerOrder] = useState();
 
   useEffectAsync(async (isMounted) => {
     const { customer, order, data } = await OrderService.getOrderOnEdit(localOrder.orderId);
-    if(customer) {
+    if (customer) {
       setCustomer(customer);
     }
-    if(order) {
+    if (order) {
       setCustomerOrder(order);
     }
-    if(arrayNotEmpty(data)) {
+    if (arrayNotEmpty(data)) {
       setData(data);
     }
   }, [localOrder]);
 
   useEffectAsync(async (isMounted) => {
-    if(!dataId) {
+    if (!dataId) {
       return;
     }
-    const { data: response, errorCode } = await RequestUtils.Get("/data/get-customer", {dataId});
-    if(errorCode === SUCCESS_CODE) {
+    const { data: response, errorCode } = await RequestUtils.Get("/data/get-customer", { dataId });
+    if (errorCode === SUCCESS_CODE) {
       setCustomer(response.customer);
       onAddProduct(response.lead);
     }
@@ -138,15 +159,15 @@ const BanHangPage = ({
 
       const skus = mProduct?.skus ?? [];
       let listPriceRange = [];
-      if(arrayNotEmpty(order.warehouseOptions)) {
+      if (arrayNotEmpty(order.warehouseOptions)) {
         let warehouse = _.first(order.warehouseOptions);
         order.warehouse = warehouse?.stockName ?? '';
         order.stock = warehouse?.quantity ?? 0;
         listPriceRange = skus.find(s => s.id === warehouse?.skuId)?.listPriceRange ?? [];
       }
-      
+
       const dataPrice = findByQuantity(listPriceRange, order.quantity);
-      if(dataPrice?.priceRef) {
+      if (dataPrice?.priceRef) {
         order.price = dataPrice.priceRef;
         order.totalPrice = order.price * order.quantity;
       }
@@ -156,9 +177,9 @@ const BanHangPage = ({
     InAppEvent.emit(HASH_POPUP, {
       hash: "sku.add",
       title: "Thêm sản phẩm",
-      data: { 
+      data: {
         onSave: onAfterChoiseProduct,
-        ...(lead ? {productId: lead.productId} : {})
+        ...(lead ? { productId: lead.productId } : {})
       }
     });
   }, []);
@@ -365,10 +386,10 @@ const BanHangPage = ({
         />
       );
     } else {
-      if (column.dataIndex === 'warehouse') { 
+      if (column.dataIndex === 'warehouse') {
         return <Text style={{ width: 120 }} ellipsis> {text || '(Chưa nhập)'} </Text>;
       }
-      if (column.dataIndex === 'mSkuDetails') { 
+      if (column.dataIndex === 'mSkuDetails') {
         return <ShowSkuDetail skuInfo={record.mSkuDetails} width={260} />
       }
       const isFormatted = ['price', 'discountAmount', 'totalPrice'].includes(column.dataIndex);
@@ -381,19 +402,19 @@ const BanHangPage = ({
   };
 
   const onSubmitOrder = useCallback(async () => {
-    
+
     const submit = async (mCustomer) => {
       let params = { customer: mCustomer, details: data };
-      if(customerOrder?.id) {
+      if (customerOrder?.id) {
         params.id = customerOrder.id;
       }
-      if(dataId) {
+      if (dataId) {
         params.dataId = dataId;
       }
       const { message: eMsg, data: order, errorCode } = await RequestUtils.Post("/order/save", params);
       message.info(eMsg);
-      if(errorCode === SUCCESS_CODE) {
-        setLocalOrder(pre => ({orderId: order.id, reload: !pre.reload}));
+      if (errorCode === SUCCESS_CODE) {
+        setLocalOrder(pre => ({ orderId: order.id, reload: !pre.reload }));
       }
     }
 
@@ -403,7 +424,7 @@ const BanHangPage = ({
     }
 
     /* Tạo mới chưa có thông tin khách hàng */
-    if( (customer?.id || 0) !== 0) {
+    if ((customer?.id || 0) !== 0) {
       submit(customer);
       return;
     }
@@ -427,12 +448,12 @@ const BanHangPage = ({
       data: {
         customerOrder,
         details: data,
-        onSave: (_) => setLocalOrder(pre => ({...pre, reload: !pre.reload}))
+        onSave: (_) => setLocalOrder(pre => ({ ...pre, reload: !pre.reload }))
       }
     });
   }, [customerOrder, data]);
 
-   const onOpenInvoice = useCallback(() => {
+  const onOpenInvoice = useCallback(() => {
     InAppEvent.emit(HASH_MODAL, {
       hash: "#order.invoice",
       title: "Hóa đơn thanh toán",
@@ -468,7 +489,7 @@ const BanHangPage = ({
       />
       <div style={{ marginTop: 25, display: 'flex', justifyContent: 'space-between' }}>
         <div>
-          <Button 
+          <Button
             disabled={arrayEmpty(data)}
             onClick={onSubmitOrder}
             icon={<SaveOutlined />}
@@ -482,22 +503,22 @@ const BanHangPage = ({
           >
             Thêm sản phẩm
           </Button>
-          <Button 
+          <Button
             onClick={onAddStock}
-            style={{ marginLeft: 8 }} 
+            style={{ marginLeft: 8 }}
             icon={<ShoppingCartOutlined />}
           >
             Nhập kho
           </Button>
-          <Button 
-            style={{ marginLeft: 8 }} 
+          <Button
+            style={{ marginLeft: 8 }}
             icon={<TagOutlined />}
             disabled={!isOrder}
             onClick={onOpenFormPayment}
           >
             VAT + K.Mãi + Thanh toán
           </Button>
-          <Button 
+          <Button
             style={{ marginLeft: 8 }}
             onClick={onOpenInvoice}
             icon={<FilePptOutlined />}
@@ -507,8 +528,8 @@ const BanHangPage = ({
           </Button>
         </div>
         <div>
-          { isOrder && 
-            <InvoiceTable 
+          {isOrder &&
+            <InvoiceTable
               order={customerOrder}
             />
           }

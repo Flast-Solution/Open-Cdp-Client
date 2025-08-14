@@ -1,3 +1,24 @@
+/**************************************************************************/
+/*  ProductForm.js                                                        */
+/**************************************************************************/
+/*                       Tệp này là một phần của:                         */
+/*                             Open CDP                                   */
+/*                        https://flast.vn                                */
+/**************************************************************************/
+/* Bản quyền (c) 2025 - này thuộc về các cộng tác viên Flast Solution     */
+/* (xem AUTHORS.md).                                                      */
+/* Bản quyền (c) 2024-2025 Long Huu, Quang Duc, Hung Bui                  */
+/*                                                                        */
+/* Bạn được quyền sử dụng phần mềm này miễn phí cho bất kỳ mục đích nào,  */
+/* bao gồm sao chép, sửa đổi, phân phối, bán lại…                         */
+/*                                                                        */
+/* Chỉ cần giữ nguyên thông tin bản quyền và nội dung giấy phép này trong */
+/* các bản sao.                                                           */
+/*                                                                        */
+/* Đội ngũ phát triển mong rằng phần mềm được sử dụng đúng mục đích và    */
+/* có trách nghiệm                                                        */
+/**************************************************************************/
+
 import { Col, Form, Row, Select } from 'antd'
 import CustomButton from 'components/CustomButton'
 import FormHidden from 'components/form/FormHidden'
@@ -26,7 +47,7 @@ const ProductForm = ({ data, listProFile }) => {
                     />
                 </Col>
                 <Col md={12} xs={12}>
-                    <Form.Item label="User Lead" name="leaderId" rules={[{ required: true, message: 'Vui lòng chọn User'}]}>
+                    <Form.Item label="User Lead" name="leaderId" rules={[{ required: true, message: 'Vui lòng chọn User' }]}>
                         <Select placeholder="User Lead">
                             {data.map((item, i) => (
                                 <Select.Option key={i} value={item.id}>
@@ -37,7 +58,7 @@ const ProductForm = ({ data, listProFile }) => {
                     </Form.Item>
                 </Col>
                 <Col md={12} xs={12}>
-                    <Form.Item label="Loại tài khoản" name="type" rules={[{ required: true, message: 'Vui lòng chọn loại tài khoản'}]}>
+                    <Form.Item label="Loại tài khoản" name="type" rules={[{ required: true, message: 'Vui lòng chọn loại tài khoản' }]}>
                         <Select placeholder="User Lead">
                             <Select.Option value={1}>
                                 Sale
@@ -55,7 +76,7 @@ const ProductForm = ({ data, listProFile }) => {
                     </Form.Item>
                 </Col>
                 <Col md={12} xs={12}>
-                    <Form.Item label="Trạng thái" name="status" rules={[{ required: true, message: 'Vui lòng chọn Trạng thái'}]}>
+                    <Form.Item label="Trạng thái" name="status" rules={[{ required: true, message: 'Vui lòng chọn Trạng thái' }]}>
                         <Select placeholder="Trạng thái">
                             <Select.Option value={1}>
                                 Hoạt động
@@ -67,7 +88,7 @@ const ProductForm = ({ data, listProFile }) => {
                     </Form.Item>
                 </Col>
                 <Col md={24} xs={24}>
-                    <Form.Item label={"Thành viên"} name="listMember" rules={[{ required: true, message: 'Vui lòng chọn Thành viên'}]}>
+                    <Form.Item label={"Thành viên"} name="listMember" rules={[{ required: true, message: 'Vui lòng chọn Thành viên' }]}>
                         <Select mode="multiple" placeholder="Thành viên">
                             {data?.map((item, i) => {
                                 return (

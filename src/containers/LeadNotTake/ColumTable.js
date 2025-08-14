@@ -1,3 +1,24 @@
+/**************************************************************************/
+/*  ColumnTable.js                                                        */
+/**************************************************************************/
+/*                       Tệp này là một phần của:                         */
+/*                             Open CDP                                   */
+/*                        https://flast.vn                                */
+/**************************************************************************/
+/* Bản quyền (c) 2025 - này thuộc về các cộng tác viên Flast Solution     */
+/* (xem AUTHORS.md).                                                      */
+/* Bản quyền (c) 2024-2025 Long Huu, Quang Duc, Hung Bui                  */
+/*                                                                        */
+/* Bạn được quyền sử dụng phần mềm này miễn phí cho bất kỳ mục đích nào,  */
+/* bao gồm sao chép, sửa đổi, phân phối, bán lại…                         */
+/*                                                                        */
+/* Chỉ cần giữ nguyên thông tin bản quyền và nội dung giấy phép này trong */
+/* các bản sao.                                                           */
+/*                                                                        */
+/* Đội ngũ phát triển mong rằng phần mềm được sử dụng đúng mục đích và    */
+/* có trách nghiệm                                                        */
+/**************************************************************************/
+
 import { Tag } from "antd";
 import { getColorStatusLead, getStatusLead } from "configs/constant";
 import { useEffect, useState } from "react";
@@ -110,50 +131,50 @@ export const TableColumnInteract = () => {
 
 export const TableColumnOrderUnfinished = [
   {
-      title: 'Mã đơn',
-      dataIndex: 'code',
-      key: 'code',
+    title: 'Mã đơn',
+    dataIndex: 'code',
+    key: 'code',
   },
   {
-      title: 'Số điện thoại',
-      dataIndex: 'customerMobilePhone',
-      key: 'customerMobilePhone',
+    title: 'Số điện thoại',
+    dataIndex: 'customerMobilePhone',
+    key: 'customerMobilePhone',
   },
   {
-      title: 'Tên người nhận',
-      dataIndex: 'customerReceiverName',
-      key: 'customerReceiverName',
+    title: 'Tên người nhận',
+    dataIndex: 'customerReceiverName',
+    key: 'customerReceiverName',
   },
   {
-      title: 'Email',
-      render: (item) => {
-          return (
-              <div>
-                  {item?.customerEmail}
-              </div>
-          )
-      }
+    title: 'Email',
+    render: (item) => {
+      return (
+        <div>
+          {item?.customerEmail}
+        </div>
+      )
+    }
   },
   {
-      title: 'Địa chỉ',
-      render: (item) => {
-          return (
-              <div>
-                  {item?.customerAddress || 'N/A'}
-              </div>
-          )
-      }
+    title: 'Địa chỉ',
+    render: (item) => {
+      return (
+        <div>
+          {item?.customerAddress || 'N/A'}
+        </div>
+      )
+    }
   },
   {
-      title: 'Tổng tiền',
+    title: 'Tổng tiền',
 
-      render: (item) => {
-          return (
-              <div>
-                  {formatMoney(item.total)}
-              </div>
-          )
-      }
+    render: (item) => {
+      return (
+        <div>
+          {formatMoney(item.total)}
+        </div>
+      )
+    }
   },
 ];
 

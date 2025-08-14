@@ -1,3 +1,24 @@
+/**************************************************************************/
+/*  localData.js                                                          */
+/**************************************************************************/
+/*                       Tệp này là một phần của:                         */
+/*                             Open CDP                                   */
+/*                        https://flast.vn                                */
+/**************************************************************************/
+/* Bản quyền (c) 2025 - này thuộc về các cộng tác viên Flast Solution     */
+/* (xem AUTHORS.md).                                                      */
+/* Bản quyền (c) 2024-2025 Long Huu, Quang Duc, Hung Bui                  */
+/*                                                                        */
+/* Bạn được quyền sử dụng phần mềm này miễn phí cho bất kỳ mục đích nào,  */
+/* bao gồm sao chép, sửa đổi, phân phối, bán lại…                         */
+/*                                                                        */
+/* Chỉ cần giữ nguyên thông tin bản quyền và nội dung giấy phép này trong */
+/* các bản sao.                                                           */
+/*                                                                        */
+/* Đội ngũ phát triển mong rằng phần mềm được sử dụng đúng mục đích và    */
+/* có trách nghiệm                                                        */
+/**************************************************************************/
+
 import theme from 'theme';
 import mapKeys from 'lodash/mapKeys';
 import keyBy from 'lodash/keyBy';
@@ -54,19 +75,19 @@ export const CHANNEL_STATUS = [
 export const CHANNEL_STATUS_MAP_KEYS = mapKeys(CHANNEL_STATUS, 'id');
 
 export const DISCOUNT_UNIT_CONST = [
-  { text: 'Tiền mặt', value: 'money'},
-  { text: 'Phần trăm', value: 'percent'}
+  { text: 'Tiền mặt', value: 'money' },
+  { text: 'Phần trăm', value: 'percent' }
 ]
 export const DISCOUNT_MAP_KEYS = mapKeys(DISCOUNT_UNIT_CONST, 'value');
 
 export const PAYMENT_TYPE_CONST = [
-  { label: 'Tiền mặt', value: 6 }, 
+  { label: 'Tiền mặt', value: 6 },
   { label: 'Chuyển khoản MBbank', value: 1 },
-	{ label: 'Chuyển khoản TPbank', value: 7 }, 
+  { label: 'Chuyển khoản TPbank', value: 7 },
   { label: 'COD Viettel', value: 2 },
-	{ label: 'Ví Momo', value: 3 }, 
+  { label: 'Ví Momo', value: 3 },
   { label: 'Ví Vnpay', value: 4 },
-	{ label: 'Ncc thu hộ', value: 5 }
+  { label: 'Ncc thu hộ', value: 5 }
 ];
 
 export const GENDERS = [

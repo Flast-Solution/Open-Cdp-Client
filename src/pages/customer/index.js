@@ -1,3 +1,24 @@
+/**************************************************************************/
+/*  index.js                                                           		*/
+/**************************************************************************/
+/*                       Tệp này là một phần của:                         */
+/*                             Open CDP                                   */
+/*                        https://flast.vn                                */
+/**************************************************************************/
+/* Bản quyền (c) 2025 - này thuộc về các cộng tác viên Flast Solution     */
+/* (xem AUTHORS.md).                                                      */
+/* Bản quyền (c) 2024-2025 Long Huu, Quang Duc, Hung Bui                  */
+/*                                                                        */
+/* Bạn được quyền sử dụng phần mềm này miễn phí cho bất kỳ mục đích nào,  */
+/* bao gồm sao chép, sửa đổi, phân phối, bán lại…                         */
+/*                                                                        */
+/* Chỉ cần giữ nguyên thông tin bản quyền và nội dung giấy phép này trong */
+/* các bản sao.                                                           */
+/*                                                                        */
+/* Đội ngũ phát triển mong rằng phần mềm được sử dụng đúng mục đích và    */
+/* có trách nghiệm                                                        */
+/**************************************************************************/
+
 import React, { useCallback, useState } from 'react';
 import { Helmet } from 'react-helmet';
 import CustomBreadcrumb from 'components/BreadcrumbCustom';
@@ -15,11 +36,11 @@ import { SUCCESS_CODE } from 'configs';
 
 const ListCustomerRetail = () => {
 
-  const [ title ] = useState("Khách lẻ");
+  const [title] = useState("Khách lẻ");
   let navigate = useNavigate();
 
   const handleTagsChange = async (record, newTags) => {
-    RequestUtils.Post(`/customer/tags/save/${record.id}`, { tags: newTags});
+    RequestUtils.Post(`/customer/tags/save/${record.id}`, { tags: newTags });
   };
 
   const CUSTOM_ACTION = [
@@ -64,8 +85,8 @@ const ListCustomerRetail = () => {
       dataIndex: 'tags',
       width: 250,
       render: (tags, record) => (
-        <TagEditor 
-          tags={tags || []} 
+        <TagEditor
+          tags={tags || []}
           onChange={(newTags) => handleTagsChange(record, newTags)}
         />
       )
@@ -108,17 +129,17 @@ const ListCustomerRetail = () => {
       return values;
     }
     let { embedded, page } = values;
-    const saleIds = embedded.map( u => u.saleId);
+    const saleIds = embedded.map(u => u.saleId);
     const mUser = await UserService.mapId2Name(saleIds);
 
-    const customerIds = embedded.map( u => u.id);
+    const customerIds = embedded.map(u => u.id);
     let { data: tags, errorCode } = await RequestUtils.Get("/customer/tags/fetch", { ids: customerIds });
-    if(errorCode !== SUCCESS_CODE) {
+    if (errorCode !== SUCCESS_CODE) {
       tags = {};
     }
-    for(let item of embedded) {
+    for (let item of embedded) {
       item.saleName = mUser[item.saleId] || '';
-      if(arrayNotEmpty(tags[item.id])) {
+      if (arrayNotEmpty(tags[item.id])) {
         item.tags = tags[item.id].map(i => i.tag);
       } else {
         item.tags = [];
@@ -132,7 +153,7 @@ const ListCustomerRetail = () => {
     return values;
   }, []);
 
-  const onHandleEdit = ({id}) => {
+  const onHandleEdit = ({ id }) => {
     navigate(String("/customer/").concat(id));
   }
 

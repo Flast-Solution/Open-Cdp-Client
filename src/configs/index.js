@@ -1,13 +1,33 @@
+/**************************************************************************/
+/*  index.js                                                              */
+/**************************************************************************/
+/*                       Tệp này là một phần của:                         */
+/*                             Open CDP                                   */
+/*                        https://flast.vn                                */
+/**************************************************************************/
+/* Bản quyền (c) 2025 - này thuộc về các cộng tác viên Flast Solution     */
+/* (xem AUTHORS.md).                                                      */
+/* Bản quyền (c) 2024-2025 Long Huu, Quang Duc, Hung Bui                  */
+/*                                                                        */
+/* Bạn được quyền sử dụng phần mềm này miễn phí cho bất kỳ mục đích nào,  */
+/* bao gồm sao chép, sửa đổi, phân phối, bán lại…                         */
+/*                                                                        */
+/* Chỉ cần giữ nguyên thông tin bản quyền và nội dung giấy phép này trong */
+/* các bản sao.                                                           */
+/*                                                                        */
+/* Đội ngũ phát triển mong rằng phần mềm được sử dụng đúng mục đích và    */
+/* có trách nghiệm                                                        */
+/**************************************************************************/
 
 export const SUCCESS_CODE = 200;
 export const GATE_EVN = {
-  Loc:      'http://127.0.0.1:9765',
-  Pro:      'https://open.api.flast.vn',
-  BaoGia:   'https://flash-solution-eight.vercel.app/bao-gia-don-hang-i',
-  AiA2A:    'https://service.aicuatui.vn'
+  Loc: 'http://127.0.0.1:9765',
+  Pro: 'https://open.api.flast.vn',
+  BaoGia: 'https://flash-solution-eight.vercel.app/bao-gia-don-hang-i',
+  AiA2A: 'https://service.aicuatui.vn'
 };
 
-export const GATEWAY = GATE_EVN['Loc'];
+export const GATEWAY = GATE_EVN['Pro'];
 export const CHANGE_STORE = 'CHANGE_STORE';
 export const UPLOAD_PATH = GATEWAY + '/uploads'
 

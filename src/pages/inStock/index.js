@@ -1,6 +1,27 @@
+/**************************************************************************/
+/*  index.js                                                           		*/
+/**************************************************************************/
+/*                       Tệp này là một phần của:                         */
+/*                             Open CDP                                   */
+/*                        https://flast.vn                                */
+/**************************************************************************/
+/* Bản quyền (c) 2025 - này thuộc về các cộng tác viên Flast Solution     */
+/* (xem AUTHORS.md).                                                      */
+/* Bản quyền (c) 2024-2025 Long Huu, Quang Duc, Hung Bui                  */
+/*                                                                        */
+/* Bạn được quyền sử dụng phần mềm này miễn phí cho bất kỳ mục đích nào,  */
+/* bao gồm sao chép, sửa đổi, phân phối, bán lại…                         */
+/*                                                                        */
+/* Chỉ cần giữ nguyên thông tin bản quyền và nội dung giấy phép này trong */
+/* các bản sao.                                                           */
+/*                                                                        */
+/* Đội ngũ phát triển mong rằng phần mềm được sử dụng đúng mục đích và    */
+/* có trách nghiệm                                                        */
+/**************************************************************************/
+
 import React, { useCallback, useState } from 'react';
 import { Helmet } from 'react-helmet';
-import { Button, Popconfirm, Form, message  } from 'antd';
+import { Button, Popconfirm, Form, message } from 'antd';
 import CustomBreadcrumb from 'components/BreadcrumbCustom';
 import RestList from 'components/RestLayout/RestList';
 import WarehouseFilter from './Filter';
@@ -15,8 +36,8 @@ import RequestUtils from 'utils/RequestUtils';
 
 const ListInStock = () => {
 
-  const [ title ] = useState("Trong kho");
-  const [ form ] = Form.useForm();
+  const [title] = useState("Trong kho");
+  const [form] = Form.useForm();
 
   const beforeSubmitFilter = useCallback((values) => {
     dateFormatOnSubmit(values, ['from', 'to']);
@@ -27,17 +48,17 @@ const ListInStock = () => {
     title: 'Nhập kho'
   });
 
-  const onCofirmExchange = (record) => form.validateFields().then( async (values) => {
+  const onCofirmExchange = (record) => form.validateFields().then(async (values) => {
     const body = { ...values, warehouseSourceId: record.id };
     const { message: MSG } = await RequestUtils.Post('/warehouse/exchange', body);
     message.success(MSG);
     f5List("warehouse/fetch");
   });
 
-  const onClickGiaoHang = (record) =>  InAppEvent.emit(HASH_MODAL, {
+  const onClickGiaoHang = (record) => InAppEvent.emit(HASH_MODAL, {
     hash: "#warehouse.delivery",
     title: 'Giao hàng',
-    data: {  itemInStock: record }
+    data: { itemInStock: record }
   });
 
   const CUSTOM_ACTION = [
@@ -106,9 +127,9 @@ const ListInStock = () => {
       width: 200,
       render: (record) => (
         <span style={{ display: 'flex', gap: 8 }}>
-          <Button 
-            type="primary" 
-            size="small" 
+          <Button
+            type="primary"
+            size="small"
             onClick={() => onClickGiaoHang(record)}
           >
             Giao hàng
@@ -117,9 +138,9 @@ const ListInStock = () => {
             placement="topLeft"
             title="Chọn kho để chuyển"
             description={
-              <PopconfirmCustom 
+              <PopconfirmCustom
                 record={record}
-                form={form} 
+                form={form}
               />
             }
             onConfirm={() => onCofirmExchange(record)}
@@ -159,15 +180,15 @@ const ListInStock = () => {
 
 const PopconfirmCustom = ({ form }) => {
   return (
-    <div style={{ width: 300, marginTop:30 }}>
-      <Form form={form} layout='vertical'> 
-        <FormInfiniteStock 
+    <div style={{ width: 300, marginTop: 30 }}>
+      <Form form={form} layout='vertical'>
+        <FormInfiniteStock
           required
           placeholder="Chọn kho"
           label="Kho cần chuyển đến"
           name="warehouseTargetId"
         />
-        <FormInputNumber 
+        <FormInputNumber
           style={{ width: '100%' }}
           name="quantity"
           label="Số lượng"

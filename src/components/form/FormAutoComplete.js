@@ -1,3 +1,24 @@
+/**************************************************************************/
+/*  FormAutoComplete.js                                                   */
+/**************************************************************************/
+/*                       Tệp này là một phần của:                         */
+/*                             Open CDP                                   */
+/*                        https://flast.vn                                */
+/**************************************************************************/
+/* Bản quyền (c) 2025 - này thuộc về các cộng tác viên Flast Solution     */
+/* (xem AUTHORS.md).                                                      */
+/* Bản quyền (c) 2024-2025 Long Huu, Quang Duc, Hung Bui                  */
+/*                                                                        */
+/* Bạn được quyền sử dụng phần mềm này miễn phí cho bất kỳ mục đích nào,  */
+/* bao gồm sao chép, sửa đổi, phân phối, bán lại…                         */
+/*                                                                        */
+/* Chỉ cần giữ nguyên thông tin bản quyền và nội dung giấy phép này trong */
+/* các bản sao.                                                           */
+/*                                                                        */
+/* Đội ngũ phát triển mong rằng phần mềm được sử dụng đúng mục đích và    */
+/* có trách nghiệm                                                        */
+/**************************************************************************/
+
 import { useMemo, useCallback } from 'react';
 import { AutoComplete, Form, Spin } from 'antd';
 import { map, isObject, get } from 'lodash';
@@ -73,10 +94,10 @@ const FormAutoComplete = ({
     >
       <AutoComplete
         placeholder={t(placeholder)}
-        filterOption={ isFilterOption ? onSelectOption : false}
+        filterOption={isFilterOption ? onSelectOption : false}
         {...props}
       >
-        { map(resourceData, (data, index) => (
+        {map(resourceData, (data, index) => (
           <Option
             key={String(index)}
             value={formatValue(valueProp ? get(data, valueProp) : data)}
@@ -84,7 +105,7 @@ const FormAutoComplete = ({
             {formatText(titleProp ? get(data, titleProp) : data)}
           </Option>
         ))}
-        { loading && optionLoading }
+        {loading && optionLoading}
       </AutoComplete>
     </Form.Item>
   );

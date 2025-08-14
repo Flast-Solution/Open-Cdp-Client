@@ -1,3 +1,24 @@
+/**************************************************************************/
+/*  UncontrolledBoard.js                                                  */
+/**************************************************************************/
+/*                       Tệp này là một phần của:                         */
+/*                             Open CDP                                   */
+/*                        https://flast.vn                                */
+/**************************************************************************/
+/* Bản quyền (c) 2025 - này thuộc về các cộng tác viên Flast Solution     */
+/* (xem AUTHORS.md).                                                      */
+/* Bản quyền (c) 2024-2025 Long Huu, Quang Duc, Hung Bui                  */
+/*                                                                        */
+/* Bạn được quyền sử dụng phần mềm này miễn phí cho bất kỳ mục đích nào,  */
+/* bao gồm sao chép, sửa đổi, phân phối, bán lại…                         */
+/*                                                                        */
+/* Chỉ cần giữ nguyên thông tin bản quyền và nội dung giấy phép này trong */
+/* các bản sao.                                                           */
+/*                                                                        */
+/* Đội ngũ phát triển mong rằng phần mềm được sử dụng đúng mục đích và    */
+/* có trách nghiệm                                                        */
+/**************************************************************************/
+
 import React, { useCallback } from 'react'
 import Board from "@asseinfo/react-kanban";
 import { Button, Input, message } from 'antd';
@@ -16,9 +37,9 @@ import '@asseinfo/react-kanban/dist/styles.css'
 const { Search } = Input;
 const generateCart = (details, order, status) => {
   let items = [];
-  for(let detail of details ) {
+  for (let detail of details) {
     let { id, code, status: detailStatus } = detail;
-    if(detailStatus !== status) {
+    if (detailStatus !== status) {
       continue;
     }
     decodeProperty(detail, ["skuInfo"]);
@@ -29,12 +50,12 @@ const generateCart = (details, order, status) => {
 }
 
 const generateDataInBoard = (datas, columns) => {
-  if(arrayEmpty(columns) || isEmpty(datas)) {
+  if (arrayEmpty(columns) || isEmpty(datas)) {
     return []
   }
   /* Build item in card */
   let items = [];
-  for(let column of columns) {
+  for (let column of columns) {
     const { id, name, ...rest } = column;
     const orders = datas[column.id];
     let item = {
@@ -44,7 +65,7 @@ const generateDataInBoard = (datas, columns) => {
       title: column.name,
       cards: []
     }
-    for(let order of orders) {
+    for (let order of orders) {
       const { details, ...orderRest } = order;
       const items = generateCart(details, orderRest, column.id);
       item.cards = item.cards.concat(items);
@@ -56,17 +77,17 @@ const generateDataInBoard = (datas, columns) => {
 
 const UncontrolledBoard = () => {
 
-  const [ dataOrigin, setDataOrigin ] = useState([]);
-  const [ dataInBoard, setDataInBoard ] = useState([]);
-  const [ listStatus, setListStatus ] = useState([]);
+  const [dataOrigin, setDataOrigin] = useState([]);
+  const [dataInBoard, setDataInBoard] = useState([]);
+  const [listStatus, setListStatus] = useState([]);
 
-  useEffectAsync(async() => {
+  useEffectAsync(async () => {
     const dataStatus = await RequestUtils.GetAsList("/order-status/fetch");
     setListStatus(dataStatus);
   }, [])
 
-  useEffectAsync(async() => {
-    if(arrayEmpty(listStatus)) {
+  useEffectAsync(async () => {
+    if (arrayEmpty(listStatus)) {
       return;
     }
     const kanban = await RequestUtils.Get("/order/fetch-kanban");
@@ -99,7 +120,7 @@ const UncontrolledBoard = () => {
     }));
   }
 
-  const handleCardDragEnd = useCallback( async (board, card, source, destination) => {
+  const handleCardDragEnd = useCallback(async (board, card, source, destination) => {
     const { id: detailId, order } = card;
     const column = dataInBoard[destination.toColumnId - 1];
     const { message: msg, errorCode } = await RequestUtils.Post("/order/update-status-order", {}, {
@@ -107,7 +128,7 @@ const UncontrolledBoard = () => {
       detailId,
       statusId: column.id
     });
-    if(errorCode !== SUCCESS_CODE) {
+    if (errorCode !== SUCCESS_CODE) {
       message.error(msg);
     }
   }, [dataInBoard]);
@@ -134,12 +155,12 @@ const UncontrolledBoard = () => {
       </div>
       <Board
         key={boardKey}
-        initialBoard={{columns: dataInBoard}}
+        initialBoard={{ columns: dataInBoard }}
         renderColumnHeader={
           (column) => <RenderHeaderSearch column={column} handleColumnSearch={handleColumnSearch} />
         }
         onCardDragEnd={handleCardDragEnd}
-        renderCard={(card) => <KanbanCard {...card}/>}
+        renderCard={(card) => <KanbanCard {...card} />}
       />
     </ContainerStyles>
   )
@@ -147,17 +168,17 @@ const UncontrolledBoard = () => {
 
 const RenderHeaderSearch = ({ column, handleColumnSearch }) => {
 
-  const [ text, setText ] = useState("");
+  const [text, setText] = useState("");
   useEffect(() => {
     setText(column.searchQuery || '');
   }, [column.searchQuery]);
 
   return <>
-    <p className='title' style={{backgroundColor: column.color || 'unset'}}>{column.title}</p>
+    <p className='title' style={{ backgroundColor: column.color || 'unset' }}>{column.title}</p>
     <div style={{ margin: '15px 0px' }}>
       <Search
         placeholder="Tìm mã hoặc SĐT..."
-        onChange={({target}) => setText(target.value)}
+        onChange={({ target }) => setText(target.value)}
         value={text}
         onSearch={(value) => handleColumnSearch(value, { columnId: column.id })}
         onPressEnter={(e) => handleColumnSearch(e.target.value, { columnId: column.id })}

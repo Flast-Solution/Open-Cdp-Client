@@ -1,3 +1,24 @@
+/**************************************************************************/
+/*  OrderTabs.js                                                          */
+/**************************************************************************/
+/*                       Tệp này là một phần của:                         */
+/*                             Open CDP                                   */
+/*                        https://flast.vn                                */
+/**************************************************************************/
+/* Bản quyền (c) 2025 - này thuộc về các cộng tác viên Flast Solution     */
+/* (xem AUTHORS.md).                                                      */
+/* Bản quyền (c) 2024-2025 Long Huu, Quang Duc, Hung Bui                  */
+/*                                                                        */
+/* Bạn được quyền sử dụng phần mềm này miễn phí cho bất kỳ mục đích nào,  */
+/* bao gồm sao chép, sửa đổi, phân phối, bán lại…                         */
+/*                                                                        */
+/* Chỉ cần giữ nguyên thông tin bản quyền và nội dung giấy phép này trong */
+/* các bản sao.                                                           */
+/*                                                                        */
+/* Đội ngũ phát triển mong rằng phần mềm được sử dụng đúng mục đích và    */
+/* có trách nghiệm                                                        */
+/**************************************************************************/
+
 import React, { useState } from 'react';
 import { Tabs } from 'antd';
 import { arrayNotEmpty, f5List } from 'utils/dataUtils';
@@ -11,15 +32,15 @@ import EnterpriseForm from './EnterpriseForm';
 const OrderTabs = ({ data, title }) => {
 
   const { customerOrder } = data;
-  const [ details, setDetails ] = useState([]);
-  const [ customer, setCustomer ] = useState();
+  const [details, setDetails] = useState([]);
+  const [customer, setCustomer] = useState();
 
   useEffectAsync(async (isMounted) => {
     const { customer, data } = await OrderService.getOrderOnEdit(customerOrder.id);
-    if(customer) {
+    if (customer) {
       setCustomer(customer);
     }
-    if(arrayNotEmpty(data)) {
+    if (arrayNotEmpty(data)) {
       setDetails(data);
     }
   }, [customerOrder]);

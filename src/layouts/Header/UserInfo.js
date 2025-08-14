@@ -1,3 +1,24 @@
+/**************************************************************************/
+/*  UserInfo.js                                                           */
+/**************************************************************************/
+/*                       Tệp này là một phần của:                         */
+/*                             Open CDP                                   */
+/*                        https://flast.vn                                */
+/**************************************************************************/
+/* Bản quyền (c) 2025 - này thuộc về các cộng tác viên Flast Solution     */
+/* (xem AUTHORS.md).                                                      */
+/* Bản quyền (c) 2024-2025 Long Huu, Quang Duc, Hung Bui                  */
+/*                                                                        */
+/* Bạn được quyền sử dụng phần mềm này miễn phí cho bất kỳ mục đích nào,  */
+/* bao gồm sao chép, sửa đổi, phân phối, bán lại…                         */
+/*                                                                        */
+/* Chỉ cần giữ nguyên thông tin bản quyền và nội dung giấy phép này trong */
+/* các bản sao.                                                           */
+/*                                                                        */
+/* Đội ngũ phát triển mong rằng phần mềm được sử dụng đúng mục đích và    */
+/* có trách nghiệm                                                        */
+/**************************************************************************/
+
 import { useCallback, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { Link } from 'react-router-dom';
@@ -15,7 +36,7 @@ const LANGUAGE = [
 function UserInfo() {
 
   const { t, i18n } = useTranslation();
-  const [ locale, setLocale ] = useState(i18n.language);
+  const [locale, setLocale] = useState(i18n.language);
   const { user: profile } = useGetMe();
   const changeLocale = useCallback(e => {
     setLocale(e);
@@ -52,7 +73,7 @@ function UserInfo() {
       <Menu.Item key="language">
         <div className="div-menu-item">
           <GlobalOutlined className="icon-menu-item" />
-          { LANGUAGE.map(item => (
+          {LANGUAGE.map(item => (
             <div
               key={item.value}
               className={getClassItemLanguage(item.value)}

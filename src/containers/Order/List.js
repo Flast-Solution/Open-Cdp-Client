@@ -1,3 +1,24 @@
+/**************************************************************************/
+/*  List.js                                                         		  */
+/**************************************************************************/
+/*                       Tệp này là một phần của:                         */
+/*                             Open CDP                                   */
+/*                        https://flast.vn                                */
+/**************************************************************************/
+/* Bản quyền (c) 2025 - này thuộc về các cộng tác viên Flast Solution     */
+/* (xem AUTHORS.md).                                                      */
+/* Bản quyền (c) 2024-2025 Long Huu, Quang Duc, Hung Bui                  */
+/*                                                                        */
+/* Bạn được quyền sử dụng phần mềm này miễn phí cho bất kỳ mục đích nào,  */
+/* bao gồm sao chép, sửa đổi, phân phối, bán lại…                         */
+/*                                                                        */
+/* Chỉ cần giữ nguyên thông tin bản quyền và nội dung giấy phép này trong */
+/* các bản sao.                                                           */
+/*                                                                        */
+/* Đội ngũ phát triển mong rằng phần mềm được sử dụng đúng mục đích và    */
+/* có trách nghiệm                                                        */
+/**************************************************************************/
+
 import React, { useState, useCallback } from 'react';
 import { Button, message } from 'antd';
 import { CopyOutlined } from '@ant-design/icons';
@@ -10,10 +31,10 @@ import { InAppEvent } from 'utils/FuseUtils';
 import { HASH_MODAL } from 'configs';
 
 const renderArrayColor = (datas, colors) => {
-  if(arrayEmpty(datas) || arrayEmpty(colors)) {
+  if (arrayEmpty(datas) || arrayEmpty(colors)) {
     return "";
   }
-  if(datas.length !== colors.length) {
+  if (datas.length !== colors.length) {
     return ""
   }
   return datas.map((item, index) => (
@@ -33,7 +54,7 @@ const copyToClipboard = (text, setCopiedIndex, index) => {
 
 const ListOrder = ({ filter }) => {
 
-  const [ copiedIndex, setCopiedIndex ] = useState(null);
+  const [copiedIndex, setCopiedIndex] = useState(null);
   const onClickViewDetail = (customerOrder) => InAppEvent.emit(HASH_MODAL, {
     hash: "#order.tabs",
     title: "Thông tin đơn hàng " + customerOrder.code,
@@ -41,7 +62,7 @@ const ListOrder = ({ filter }) => {
   });
 
   const columns = [
-     {
+    {
       title: 'Kinh doanh',
       dataIndex: 'userCreateUsername',
       key: 'userCreateUsername',
@@ -168,9 +189,9 @@ const ListOrder = ({ filter }) => {
       width: 150,
       render: (record) => (
         <span style={{ display: 'flex', gap: 8 }}>
-          <Button 
-            type="primary" 
-            size="small" 
+          <Button
+            type="primary"
+            size="small"
             onClick={() => onClickViewDetail(record)}
           >
             Chi tiết
@@ -198,13 +219,13 @@ const ListOrder = ({ filter }) => {
       return listStatus.find(i => i.id === item.status) ?? {};
     }
 
-    for(let item of response.embedded) {
+    for (let item of response.embedded) {
       const { details } = item;
-      item.products = details.map( (detail, id) => ({ id: id + 1, name: detail.productName }));
-      item.detailstatus = details.map( (detail, id) => ({ ...getColorMeta(detail), id: id + 1 }));
+      item.products = details.map((detail, id) => ({ id: id + 1, name: detail.productName }));
+      item.detailstatus = details.map((detail, id) => ({ ...getColorMeta(detail), id: id + 1 }));
       delete item.details;
     }
-    return { embedded: response.embedded, page: response.page};
+    return { embedded: response.embedded, page: response.page };
   }, []);
 
   return (

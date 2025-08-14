@@ -1,3 +1,24 @@
+/**************************************************************************/
+/*  FormDatePicker.js                                                     */
+/**************************************************************************/
+/*                       Tệp này là một phần của:                         */
+/*                             Open CDP                                   */
+/*                        https://flast.vn                                */
+/**************************************************************************/
+/* Bản quyền (c) 2025 - này thuộc về các cộng tác viên Flast Solution     */
+/* (xem AUTHORS.md).                                                      */
+/* Bản quyền (c) 2024-2025 Long Huu, Quang Duc, Hung Bui                  */
+/*                                                                        */
+/* Bạn được quyền sử dụng phần mềm này miễn phí cho bất kỳ mục đích nào,  */
+/* bao gồm sao chép, sửa đổi, phân phối, bán lại…                         */
+/*                                                                        */
+/* Chỉ cần giữ nguyên thông tin bản quyền và nội dung giấy phép này trong */
+/* các bản sao.                                                           */
+/*                                                                        */
+/* Đội ngũ phát triển mong rằng phần mềm được sử dụng đúng mục đích và    */
+/* có trách nghiệm                                                        */
+/**************************************************************************/
+
 import { DatePicker, Form } from 'antd';
 import { FORMAT_DATE_INPUT } from 'configs/constant';
 import dayjs from 'dayjs';
@@ -11,7 +32,7 @@ const FormDatePicker = ({
   initialValue,
   rules = [],
   placeholder,
-  disabled= false,
+  disabled = false,
   format = FORMAT_DATE_INPUT,
   formItemProps,
   ...props
@@ -34,7 +55,7 @@ const FormDatePicker = ({
       {...formItemProps}
     >
       <DatePicker
-        style={{width: '100%'}}
+        style={{ width: '100%' }}
         format={format}
         disabled={disabled}
         {...(placeholder && {

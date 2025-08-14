@@ -1,3 +1,24 @@
+/**************************************************************************/
+/*  OrderTextTableOnly.js                                                 */
+/**************************************************************************/
+/*                       Tệp này là một phần của:                         */
+/*                             Open CDP                                   */
+/*                        https://flast.vn                                */
+/**************************************************************************/
+/* Bản quyền (c) 2025 - này thuộc về các cộng tác viên Flast Solution     */
+/* (xem AUTHORS.md).                                                      */
+/* Bản quyền (c) 2024-2025 Long Huu, Quang Duc, Hung Bui                  */
+/*                                                                        */
+/* Bạn được quyền sử dụng phần mềm này miễn phí cho bất kỳ mục đích nào,  */
+/* bao gồm sao chép, sửa đổi, phân phối, bán lại…                         */
+/*                                                                        */
+/* Chỉ cần giữ nguyên thông tin bản quyền và nội dung giấy phép này trong */
+/* các bản sao.                                                           */
+/*                                                                        */
+/* Đội ngũ phát triển mong rằng phần mềm được sử dụng đúng mục đích và    */
+/* có trách nghiệm                                                        */
+/**************************************************************************/
+
 import React, { useCallback, useEffect, useState } from 'react';
 import { Table, Typography } from "antd";
 import styled from "styled-components";
@@ -5,8 +26,8 @@ import { arrayEmpty, formatMoney } from 'utils/dataUtils';
 import { ShowSkuDetail } from 'containers/Product/SkuView';
 
 const { Text } = Typography;
-const COL_SPAN_0 = { props:{ colSpan: 0}};
-const COL_SPAN_4 = { props:{ colSpan: 4}};
+const COL_SPAN_0 = { props: { colSpan: 0 } };
+const COL_SPAN_4 = { props: { colSpan: 4 } };
 
 const StyledTable = styled.div`
 	.main-row td:first-child {
@@ -26,14 +47,14 @@ const StyledTable = styled.div`
 
 const OrderTextTableOnly = ({ details }) => {
 
-	const [ rawData, setRawData ] = useState([]);
+	const [rawData, setRawData] = useState([]);
 	const generateRaws = useCallback((datas) => {
 		let raws = [];
-		if(arrayEmpty(datas)) {
+		if (arrayEmpty(datas)) {
 			return []
 		}
 		let key = 0;
-		for(let detail of datas) {
+		for (let detail of datas) {
 			key++;
 			let raw = { ...detail, isNoiDungMoRong: false, key: `${key}-main` }
 			raws.push(raw);
@@ -51,7 +72,7 @@ const OrderTextTableOnly = ({ details }) => {
 		setRawData(raws);
 		/* eslint-disable-next-line */
 	}, [details]);
-	
+
 	const columns = [
 		{
 			title: "STT",
@@ -96,7 +117,7 @@ const OrderTextTableOnly = ({ details }) => {
 				<>
 					{formatMoney(price)}
 					{record.discountAmount > 0 &&
-						<strong><br/>Giảm: ({formatMoney(record.discountAmount)}) </strong>
+						<strong><br />Giảm: ({formatMoney(record.discountAmount)}) </strong>
 					}
 				</>
 			)
@@ -106,8 +127,8 @@ const OrderTextTableOnly = ({ details }) => {
 			dataIndex: "totalPrice",
 			align: "center",
 			render: (totalPrice, record) => record.isNoiDungMoRong ? COL_SPAN_0 : (
-				<Text strong>{record.discountAmount > 0 
-					? formatMoney(totalPrice - record.discountAmount) 
+				<Text strong>{record.discountAmount > 0
+					? formatMoney(totalPrice - record.discountAmount)
 					: formatMoney(totalPrice)}
 				</Text>
 			)

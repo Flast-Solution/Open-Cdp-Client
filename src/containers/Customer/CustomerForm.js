@@ -1,3 +1,24 @@
+/**************************************************************************/
+/*  CustomerForm.js                                                       */
+/**************************************************************************/
+/*                       Tệp này là một phần của:                         */
+/*                             Open CDP                                   */
+/*                        https://flast.vn                                */
+/**************************************************************************/
+/* Bản quyền (c) 2025 - này thuộc về các cộng tác viên Flast Solution     */
+/* (xem AUTHORS.md).                                                      */
+/* Bản quyền (c) 2024-2025 Long Huu, Quang Duc, Hung Bui                  */
+/*                                                                        */
+/* Bạn được quyền sử dụng phần mềm này miễn phí cho bất kỳ mục đích nào,  */
+/* bao gồm sao chép, sửa đổi, phân phối, bán lại…                         */
+/*                                                                        */
+/* Chỉ cần giữ nguyên thông tin bản quyền và nội dung giấy phép này trong */
+/* các bản sao.                                                           */
+/*                                                                        */
+/* Đội ngũ phát triển mong rằng phần mềm được sử dụng đúng mục đích và    */
+/* có trách nghiệm                                                        */
+/**************************************************************************/
+
 import { useEffect, useCallback, useState } from "react";
 import { Col, Form, Row } from "antd";
 import { FormContextCustom } from 'components/context/FormContextCustom';
@@ -14,36 +35,36 @@ import { InAppEvent } from "utils/FuseUtils";
 function mapFields(source, mapping) {
   let result = {};
   for (const [sourceKey, targetKey] of Object.entries(mapping)) {
-    if(source[sourceKey])
-    result[targetKey] = source[sourceKey];
+    if (source[sourceKey])
+      result[targetKey] = source[sourceKey];
   }
   return result;
 }
 
 const CustomerForm = ({
   details,
-  customer, 
-  onSave 
+  customer,
+  onSave
 }) => {
 
-  const [ form ] = Form.useForm();
-  const [ record, setRecord ] = useState({});
+  const [form] = Form.useForm();
+  const [record, setRecord] = useState({});
 
   useEffect(() => {
     setRecord(customer);
   }, [customer]);
 
-  const onFinish = async(values) => {
+  const onFinish = async (values) => {
     /* Tạo Lead mới nếu khách chưa tốn tại */
-    if(values.id) {
+    if (values.id) {
       onSave(values);
       return;
     }
-    if(arrayEmpty(details)) {
+    if (arrayEmpty(details)) {
       return;
     }
-    
-    let [ product ] = details;
+
+    let [product] = details;
     const defindMappingSchema = {
       name: "customerName",
       mobile: "customerMobile",
@@ -61,7 +82,7 @@ const CustomerForm = ({
     };
 
     const { errorCode, data } = await RequestUtils.Post("/data/create", payload);
-    if(errorCode !== SUCCESS_CODE) {
+    if (errorCode !== SUCCESS_CODE) {
       InAppEvent.normalError("Lỗi tạo mới dữ liệu khách hàng !");
       return;
     }
@@ -72,7 +93,7 @@ const CustomerForm = ({
   }
 
   const updateRecord = useCallback((values) => {
-    setRecord(pre => ({...pre, ...values}));
+    setRecord(pre => ({ ...pre, ...values }));
   }, []);
 
   const onChangeGetSelectedItem = (value, mCustomer) => {
@@ -93,7 +114,7 @@ const CustomerForm = ({
             />
           </Col>
           <Col span={12}>
-            <FormInput 
+            <FormInput
               label={"Tên khách hàng"}
               placeholder='Họ tên'
               name={"name"}
@@ -101,7 +122,7 @@ const CustomerForm = ({
             />
           </Col>
           <Col span={12}>
-            <FormInput 
+            <FormInput
               placeholder='Số điện thoại'
               label={"Số điện thoại"}
               name={"mobile"}
@@ -109,28 +130,28 @@ const CustomerForm = ({
             />
           </Col>
           <Col span={12}>
-            <FormInput 
+            <FormInput
               placeholder='Email'
               label={"Email"}
               name={"email"}
             />
           </Col>
           <Col span={12}>
-            <FormInput 
+            <FormInput
               label={"Địa chỉ (Nếu có)"}
               placeholder='Địa chỉ'
               name={"address"}
             />
           </Col>
           <Col span={12}>
-            <FormInput 
+            <FormInput
               placeholder='Link facebook'
               label={"Facebook"}
               name={"facebookId"}
             />
           </Col>
           <Col span={12}>
-            <FormSelect 
+            <FormSelect
               required
               placeholder='Chọn nguồn'
               resourceData={CHANNEL_SOURCE}

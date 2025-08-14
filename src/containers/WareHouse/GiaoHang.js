@@ -1,3 +1,24 @@
+/**************************************************************************/
+/*  GiaoHang.js                                                           */
+/**************************************************************************/
+/*                       Tệp này là một phần của:                         */
+/*                             Open CDP                                   */
+/*                        https://flast.vn                                */
+/**************************************************************************/
+/* Bản quyền (c) 2025 - này thuộc về các cộng tác viên Flast Solution     */
+/* (xem AUTHORS.md).                                                      */
+/* Bản quyền (c) 2024-2025 Long Huu, Quang Duc, Hung Bui                  */
+/*                                                                        */
+/* Bạn được quyền sử dụng phần mềm này miễn phí cho bất kỳ mục đích nào,  */
+/* bao gồm sao chép, sửa đổi, phân phối, bán lại…                         */
+/*                                                                        */
+/* Chỉ cần giữ nguyên thông tin bản quyền và nội dung giấy phép này trong */
+/* các bản sao.                                                           */
+/*                                                                        */
+/* Đội ngũ phát triển mong rằng phần mềm được sử dụng đúng mục đích và    */
+/* có trách nghiệm                                                        */
+/**************************************************************************/
+
 import React, { useEffect, useState } from 'react'
 import { Col, Form, Row } from 'antd'
 import CustomButton from 'components/CustomButton';
@@ -11,9 +32,9 @@ import FormSelect from 'components/form/FormSelect';
 
 const getStockId = (data) => data?.itemInStock?.stockId ?? undefined;
 const GiaoHangForm = ({ title, data }) => {
-  
-  const [ form ] = Form.useForm();
-  const [ details, setDetails ] = useState([]);
+
+  const [form] = Form.useForm();
+  const [details, setDetails] = useState([]);
 
   useEffect(() => {
     console.log(data);
@@ -22,14 +43,14 @@ const GiaoHangForm = ({ title, data }) => {
 
   const onChangeGetOrderItem = (value, order) => {
     const { id, details, ...values } = order;
-    const { 
-      customerProvinceId: provinceId, 
-      customerWardId: wardId, 
+    const {
+      customerProvinceId: provinceId,
+      customerWardId: wardId,
       customerAddress: address,
       ...params
     } = values;
     setDetails(details || []);
-    form.setFieldsValue({...params, provinceId, wardId, address});
+    form.setFieldsValue({ ...params, provinceId, wardId, address });
   }
 
   const onFinish = async (value) => {
@@ -43,7 +64,7 @@ const GiaoHangForm = ({ title, data }) => {
           <FormInfiniteOrderCode
             required
             onChangeGetSelectedItem={onChangeGetOrderItem}
-            formatText={(_, order) => `${order.code} (${order.customerMobilePhone})` }
+            formatText={(_, order) => `${order.code} (${order.customerMobilePhone})`}
             label="Mã đơn"
             placeholder={"Nhập mã đơn"}
           />
@@ -51,7 +72,7 @@ const GiaoHangForm = ({ title, data }) => {
         <Col md={12} xs={24}>
           <FormSelect
             required
-            formatText={(_, detail) => `${detail.code} (${detail.productName}), SL: ${detail.quantity}` }
+            formatText={(_, detail) => `${detail.code} (${detail.productName}), SL: ${detail.quantity}`}
             resourceData={details}
             label="Mã đơn con"
             valueProp='code'

@@ -1,3 +1,24 @@
+/**************************************************************************/
+/*  KanbanCard.js                                                         */
+/**************************************************************************/
+/*                       Tệp này là một phần của:                         */
+/*                             Open CDP                                   */
+/*                        https://flast.vn                                */
+/**************************************************************************/
+/* Bản quyền (c) 2025 - này thuộc về các cộng tác viên Flast Solution     */
+/* (xem AUTHORS.md).                                                      */
+/* Bản quyền (c) 2024-2025 Long Huu, Quang Duc, Hung Bui                  */
+/*                                                                        */
+/* Bạn được quyền sử dụng phần mềm này miễn phí cho bất kỳ mục đích nào,  */
+/* bao gồm sao chép, sửa đổi, phân phối, bán lại…                         */
+/*                                                                        */
+/* Chỉ cần giữ nguyên thông tin bản quyền và nội dung giấy phép này trong */
+/* các bản sao.                                                           */
+/*                                                                        */
+/* Đội ngũ phát triển mong rằng phần mềm được sử dụng đúng mục đích và    */
+/* có trách nghiệm                                                        */
+/**************************************************************************/
+
 import React from 'react';
 import { Avatar, Tag, Typography, Tooltip } from 'antd';
 import { ClockCircleOutlined, PlusOutlined } from '@ant-design/icons';
@@ -106,13 +127,13 @@ const getInitials = (name) => {
     .toUpperCase();
 };
 
-const KanbanCard = ({ 
+const KanbanCard = ({
   code,
   skuInfo,
   productName,
-  total, 
-  updatedAt, 
-  order 
+  total,
+  updatedAt,
+  order
 }) => {
   return (
     <KanbanCardWrapper>
@@ -126,7 +147,7 @@ const KanbanCard = ({
       </TitleWrapper>
       <Description ellipsis={false}>
         <p>{String(code).concat(" (").concat(productName).concat(")")} </p>
-        <ShowSkuDetail skuInfo={skuInfo} width={250}/>
+        <ShowSkuDetail skuInfo={skuInfo} width={250} />
       </Description>
       <MetaInfo>
         <TagsContainer>

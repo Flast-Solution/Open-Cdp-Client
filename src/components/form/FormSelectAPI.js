@@ -1,3 +1,24 @@
+/**************************************************************************/
+/*  FormSelectAPI.js                                                      */
+/**************************************************************************/
+/*                       Tệp này là một phần của:                         */
+/*                             Open CDP                                   */
+/*                        https://flast.vn                                */
+/**************************************************************************/
+/* Bản quyền (c) 2025 - này thuộc về các cộng tác viên Flast Solution     */
+/* (xem AUTHORS.md).                                                      */
+/* Bản quyền (c) 2024-2025 Long Huu, Quang Duc, Hung Bui                  */
+/*                                                                        */
+/* Bạn được quyền sử dụng phần mềm này miễn phí cho bất kỳ mục đích nào,  */
+/* bao gồm sao chép, sửa đổi, phân phối, bán lại…                         */
+/*                                                                        */
+/* Chỉ cần giữ nguyên thông tin bản quyền và nội dung giấy phép này trong */
+/* các bản sao.                                                           */
+/*                                                                        */
+/* Đội ngũ phát triển mong rằng phần mềm được sử dụng đúng mục đích và    */
+/* có trách nghiệm                                                        */
+/**************************************************************************/
+
 import { useContext, useEffect, useState, useMemo, useCallback } from 'react';
 import RequestUtils from 'utils/RequestUtils';
 import { Form, Select, Spin, Divider, Input, Button, message } from 'antd';
@@ -41,34 +62,34 @@ const FormSelectAPI = ({
 }) => {
 
   const { f5List } = useContext(MyContext);
-  const [ localFilter, setLocalFilter ] = useState(filter || {});
-  const [ loading, setLoading ] = useState(false);
-  const [ resourceData, setData ] = useState([]);
-  const [ value, setValue ] = useState('');
+  const [localFilter, setLocalFilter] = useState(filter || {});
+  const [loading, setLoading] = useState(false);
+  const [resourceData, setData] = useState([]);
+  const [value, setValue] = useState('');
 
   useEffect(() => {
     setLocalFilter(filter);
   }, [filter]);
 
   useMount(() => {
-    if(isFetchOnMount && arrayEmpty(resourceData)) {
+    if (isFetchOnMount && arrayEmpty(resourceData)) {
       fetchResource(localFilter);
     }
   });
 
   const fetchResource = useCallback((values) => {
-    if(!apiPath) {
+    if (!apiPath) {
       return;
     }
-    if(fnLoadData) {
+    if (fnLoadData) {
       Promise.resolve(fnLoadData(values)).then(onData).then(data => {
         setData(data)
       });
       return;
     }
     setLoading(true);
-    RequestUtils.Get('/' + apiPath, values).then( async ({ data, errorCode }) => {
-      if(errorCode !== 200) {
+    RequestUtils.Get('/' + apiPath, values).then(async ({ data, errorCode }) => {
+      if (errorCode !== 200) {
         return Promise.reject("Get not success from server .!");
       }
       Promise.resolve(onData(data)).then(data => {
@@ -83,7 +104,7 @@ const FormSelectAPI = ({
   }, [onData, apiPath]);
 
   useUpdateEffect(() => {
-    if(f5List?.apiPath === apiPath || (localFilter?.forceUpdate ?? false) !== false) {
+    if (f5List?.apiPath === apiPath || (localFilter?.forceUpdate ?? false) !== false) {
       fetchResource(localFilter);
     }
     /* eslint-disable-next-line */
@@ -106,15 +127,15 @@ const FormSelectAPI = ({
   }, []);
 
   const addItem = useCallback(async () => {
-    if(onCreateNewItem()) {
+    if (onCreateNewItem()) {
       /* Open Modal Create Data */
       return;
     }
     /* const value = inputRef?.current?.input?.value ?? ''; */
-    if(value && apiAddNewItem) {
-      let dataPost = { [searchKey]: value, ...(createDefaultValues || {})}
+    if (value && apiAddNewItem) {
+      let dataPost = { [searchKey]: value, ...(createDefaultValues || {}) }
       const { data, errorCode, message: msg } = await RequestUtils.Post("/" + apiAddNewItem, dataPost);
-      if(errorCode !== SUCCESS_CODE) {
+      if (errorCode !== SUCCESS_CODE) {
         message.error(msg);
       } else {
         const newData = resourceData.concat(data);
@@ -127,7 +148,7 @@ const FormSelectAPI = ({
   }, [value, createDefaultValues, fnLoadData]);
 
   const onSearch = useCallback((value) => {
-    fetchResource({...localFilter, [searchKey]: value});
+    fetchResource({ ...localFilter, [searchKey]: value });
     /* eslint-disable-next-line */
   }, [localFilter, searchKey]);
 
@@ -135,7 +156,7 @@ const FormSelectAPI = ({
     setValue(e.target.value);
   }
 
-  const handleChange = useCallback(async(value) => {
+  const handleChange = useCallback(async (value) => {
     fetchResource(localFilter);
     /* eslint-disable-next-line */
   }, [localFilter]);
@@ -157,25 +178,25 @@ const FormSelectAPI = ({
         popupMatchSelectWidth={isLimitWidth}
         dropdownRender={(menu) => (
           <>
-            { menu }
-            <Divider style={{ margin: '8px 0'}} />
-            <div  style={{ padding: "0 8px 4px", display: "flex", alignItems: "end"}} >
-              { !isShowModalCreateNewItem && 
+            {menu}
+            <Divider style={{ margin: '8px 0' }} />
+            <div style={{ padding: "0 8px 4px", display: "flex", alignItems: "end" }} >
+              {!isShowModalCreateNewItem &&
                 <Input
-                  style={{width: '100%'}}
+                  style={{ width: '100%' }}
                   placeholder="Add new item"
                   value={value}
                   onChange={handleValueInput}
                   onKeyDown={(e) => e.stopPropagation()}
-                /> 
+                />
               }
-              <Button 
-                type="text" 
-                icon={<PlusOutlined />} 
+              <Button
+                type="text"
+                icon={<PlusOutlined />}
                 onClick={addItem}
-                color="primary" 
+                color="primary"
                 variant="dashed"
-                style={{marginLeft: 20}}
+                style={{ marginLeft: 20 }}
               >
                 Add item
               </Button>
@@ -183,16 +204,16 @@ const FormSelectAPI = ({
           </>
         )}
         options={
-          resourceData?.map((item) => ({ 
-            label: formatText(titleProp ? get(item, titleProp) : item, item), 
-            value: formatValue(valueProp ? get(item, valueProp) : item, item) 
+          resourceData?.map((item) => ({
+            label: formatText(titleProp ? get(item, titleProp) : item, item),
+            value: formatValue(valueProp ? get(item, valueProp) : item, item)
           }))
         }
         onSearch={debounce(onSearch, 600)}
         onChange={handleChange}
         {...props}
       >
-        { loading && optionLoading }
+        {loading && optionLoading}
       </Select>
     </Form.Item>
   );

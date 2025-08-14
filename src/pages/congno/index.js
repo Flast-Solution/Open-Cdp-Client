@@ -1,3 +1,24 @@
+/**************************************************************************/
+/*  index.js                                                           		*/
+/**************************************************************************/
+/*                       Tệp này là một phần của:                         */
+/*                             Open CDP                                   */
+/*                        https://flast.vn                                */
+/**************************************************************************/
+/* Bản quyền (c) 2025 - này thuộc về các cộng tác viên Flast Solution     */
+/* (xem AUTHORS.md).                                                      */
+/* Bản quyền (c) 2024-2025 Long Huu, Quang Duc, Hung Bui                  */
+/*                                                                        */
+/* Bạn được quyền sử dụng phần mềm này miễn phí cho bất kỳ mục đích nào,  */
+/* bao gồm sao chép, sửa đổi, phân phối, bán lại…                         */
+/*                                                                        */
+/* Chỉ cần giữ nguyên thông tin bản quyền và nội dung giấy phép này trong */
+/* các bản sao.                                                           */
+/*                                                                        */
+/* Đội ngũ phát triển mong rằng phần mềm được sử dụng đúng mục đích và    */
+/* có trách nghiệm                                                        */
+/**************************************************************************/
+
 import React, { useCallback, useEffect, useState } from 'react';
 import { Helmet } from 'react-helmet';
 import CustomBreadcrumb from 'components/BreadcrumbCustom';
@@ -24,11 +45,11 @@ const CongnoPage = () => {
     const [title] = useState("Danh sách Công nơ theo đơn");
 
     useEffect(() => {
-    (async() => {
-        const listSalse = await RequestUtils.Get('/user/list-sale');
-        setListSale(listSalse?.data);
-    })()
-    },[])
+        (async () => {
+            const listSalse = await RequestUtils.Get('/user/list-sale');
+            setListSale(listSalse?.data);
+        })()
+    }, [])
 
     const CUSTOM_ACTION = [
         {
@@ -145,7 +166,7 @@ const CongnoPage = () => {
                 xScroll={1200}
                 onData={onData}
                 initialFilter={{ limit: 10, page: 1, phone: '', cause: '', userId: '', from: '', to: '', }}
-                filter={<LeadFilter sale={listSale}/>}
+                filter={<LeadFilter sale={listSale} />}
                 beforeSubmitFilter={beforeSubmitFilter}
                 useGetAllQuery={useGetList}
                 hasCreate={false}

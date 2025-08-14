@@ -1,3 +1,24 @@
+/**************************************************************************/
+/*  ModalAddSKU.js                                                        */
+/**************************************************************************/
+/*                       Tệp này là một phần của:                         */
+/*                             Open CDP                                   */
+/*                        https://flast.vn                                */
+/**************************************************************************/
+/* Bản quyền (c) 2025 - này thuộc về các cộng tác viên Flast Solution     */
+/* (xem AUTHORS.md).                                                      */
+/* Bản quyền (c) 2024-2025 Long Huu, Quang Duc, Hung Bui                  */
+/*                                                                        */
+/* Bạn được quyền sử dụng phần mềm này miễn phí cho bất kỳ mục đích nào,  */
+/* bao gồm sao chép, sửa đổi, phân phối, bán lại…                         */
+/*                                                                        */
+/* Chỉ cần giữ nguyên thông tin bản quyền và nội dung giấy phép này trong */
+/* các bản sao.                                                           */
+/*                                                                        */
+/* Đội ngũ phát triển mong rằng phần mềm được sử dụng đúng mục đích và    */
+/* có trách nghiệm                                                        */
+/**************************************************************************/
+
 import React, { useState, useCallback } from 'react';
 import { Col, Form, Row } from 'antd';
 import FormSelectInfiniteProduct from 'components/form/SelectInfinite/FormSelectInfiniteProduct';
@@ -15,36 +36,36 @@ import RequestUtils from 'utils/RequestUtils';
 
 const SKU_DETAIL_ID_PREFIX = 'skuDetailId_';
 const AddSKU = ({ onSave, productId }) => {
-  
-  const [ form ] = Form.useForm();
-  const [ inStocks, setInStocks ] = useState([]);
-  const [ skus, setSkus ] = useState([]);
-  const [ mProduct, setProduct ] = useState({});
-  const [ skuDetail, setSkuDetail ] = useState([]);
+
+  const [form] = Form.useForm();
+  const [inStocks, setInStocks] = useState([]);
+  const [skus, setSkus] = useState([]);
+  const [mProduct, setProduct] = useState({});
+  const [skuDetail, setSkuDetail] = useState([]);
 
   useEffectAsync(async () => {
-    if(!productId) {
+    if (!productId) {
       return;
     }
     form.setFieldValue("productId", productId);
-    const { data, errorCode } = await RequestUtils.Get("/product/find-by-id", { id: productId});
-    if(errorCode === 200) {
+    const { data, errorCode } = await RequestUtils.Get("/product/find-by-id", { id: productId });
+    if (errorCode === 200) {
       onChangeSelectedProductItem(errorCode, data);
     }
   }, [productId, form]);
 
   const onFinish = useCallback((values) => {
- 
-    const genDetail = (datas) => datas.map((id) => ({ 
+
+    const genDetail = (datas) => datas.map((id) => ({
       id,
-      text: skuDetail.find(detail => detail.id === id)?.value || '' 
+      text: skuDetail.find(detail => detail.id === id)?.value || ''
     }));
 
     const mSkuDetails = Object.entries(values).filter(([key]) => key.startsWith(SKU_DETAIL_ID_PREFIX))
-    .map(([key, values]) => {
-      const text = key.replace(SKU_DETAIL_ID_PREFIX, '');
-      return { text, values: genDetail(values) };
-    });
+      .map(([key, values]) => {
+        const text = key.replace(SKU_DETAIL_ID_PREFIX, '');
+        return { text, values: genDetail(values) };
+      });
 
     let mValues = Object.fromEntries(
       Object.entries(values).filter(([key]) => !key.startsWith(SKU_DETAIL_ID_PREFIX))
@@ -56,7 +77,7 @@ const AddSKU = ({ onSave, productId }) => {
   const onChangeSelectedProductItem = (value, item) => {
     let nProduct = _.cloneDeep(item);
     let { warehouses } = nProduct;
-    if(arrayNotEmpty(warehouses)) {
+    if (arrayNotEmpty(warehouses)) {
       setInStocks(warehouses);
     } else {
       setInStocks([]);
@@ -69,7 +90,7 @@ const AddSKU = ({ onSave, productId }) => {
   const onChangeGetSelectedSku = (value, item) => {
     setSkuDetail(item?.skuDetail || []);
     const values = form.getFieldsValue();
-    for(const key in values) {
+    for (const key in values) {
       if (key.startsWith(SKU_DETAIL_ID_PREFIX)) {
         form.setFieldsValue({ [key]: undefined });
       }
@@ -77,7 +98,7 @@ const AddSKU = ({ onSave, productId }) => {
   };
 
   const memoSkuDetail = React.useMemo(() => {
-    const groupedData  = skuDetail.reduce((oKey, item) => {
+    const groupedData = skuDetail.reduce((oKey, item) => {
       if (!oKey[item.name]) {
         oKey[item.name] = [];
       }
@@ -110,10 +131,10 @@ const AddSKU = ({ onSave, productId }) => {
     setSkuDetail(skus?.find(i => i.id === item.skuId)?.skuDetail ?? []);
 
     /* Fill vào form */
-    if(arrayEmpty(skuDetails)) {
+    if (arrayEmpty(skuDetails)) {
       return;
     }
-    for(let sku of skuDetails) {
+    for (let sku of skuDetails) {
       let key = `${SKU_DETAIL_ID_PREFIX}${sku.text}`
       form.setFieldsValue({ [key]: sku?.values?.map(i => i.id) ?? [] });
     }
@@ -144,11 +165,11 @@ const AddSKU = ({ onSave, productId }) => {
             onChangeGetSelectedItem={onChangeGetSelectedSku}
           />
         </Col>
-        { memoSkuDetail }
+        {memoSkuDetail}
         <Col span={24}>
-          <InStockTable 
-            data={inStocks} 
-            onChangeSelected={onSelectedStock} 
+          <InStockTable
+            data={inStocks}
+            onChangeSelected={onSelectedStock}
           />
         </Col>
         <Col span={12}>
@@ -173,7 +194,7 @@ const AddSKU = ({ onSave, productId }) => {
           />
         </Col>
         <Col span={24}>
-          <FormTextArea 
+          <FormTextArea
             rows={3}
             label='Ghi chú (Nếu có)'
             placeholder='Ghi chú'

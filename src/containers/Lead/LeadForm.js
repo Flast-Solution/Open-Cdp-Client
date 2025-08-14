@@ -1,3 +1,24 @@
+/**************************************************************************/
+/*  LeadForm.js                                                           */
+/**************************************************************************/
+/*                       Tệp này là một phần của:                         */
+/*                             Open CDP                                   */
+/*                        https://flast.vn                                */
+/**************************************************************************/
+/* Bản quyền (c) 2025 - này thuộc về các cộng tác viên Flast Solution     */
+/* (xem AUTHORS.md).                                                      */
+/* Bản quyền (c) 2024-2025 Long Huu, Quang Duc, Hung Bui                  */
+/*                                                                        */
+/* Bạn được quyền sử dụng phần mềm này miễn phí cho bất kỳ mục đích nào,  */
+/* bao gồm sao chép, sửa đổi, phân phối, bán lại…                         */
+/*                                                                        */
+/* Chỉ cần giữ nguyên thông tin bản quyền và nội dung giấy phép này trong */
+/* các bản sao.                                                           */
+/*                                                                        */
+/* Đội ngũ phát triển mong rằng phần mềm được sử dụng đúng mục đích và    */
+/* có trách nghiệm                                                        */
+/**************************************************************************/
+
 import { useState, useEffect, useContext } from 'react';
 import { Row, Col, Tag, List, Button } from 'antd';
 import FormHidden from 'components/form/FormHidden';
@@ -17,26 +38,26 @@ const LeadForm = ({
   listServices = [],
   listSale = []
 }) => {
-  
+
   const { record, updateRecord } = useContext(FormContextCustom);
-  const [ province, setListProvince ] = useState([]);
-  const [ fileUploads, setFileList ] = useState([]);
-  const [ fileUrls, setFileUrls ] = useState([]);
+  const [province, setListProvince] = useState([]);
+  const [fileUploads, setFileList] = useState([]);
+  const [fileUrls, setFileUrls] = useState([]);
 
   useEffect(() => {
-    if(arrayNotEmpty(record?.fileUrls)) {
+    if (arrayNotEmpty(record?.fileUrls)) {
       setFileUrls(record.fileUrls);
     }
-  },[record]);
+  }, [record]);
 
   useEffect(() => {
-    RequestUtils.GetAsList('/province/find', {id: 0}).then(setListProvince);
-  },[]);
+    RequestUtils.GetAsList('/province/find', { id: 0 }).then(setListProvince);
+  }, []);
 
   useEffect(() => {
     updateRecord({ fileUploads })
     /* eslint-disable-next-line */
-  },[fileUploads]);
+  }, [fileUploads]);
 
   const handleChange = ({ fileList }) => setFileList(prev => {
     const newFiles = fileList.filter(
@@ -54,10 +75,10 @@ const LeadForm = ({
   const props = {
     multiple: true,
     beforeUpload: () => false,
-    fileList:fileUploads,
-    onChange:handleChange,
-    onRemove:handleRemove,
-    showUploadList:false
+    fileList: fileUploads,
+    onChange: handleChange,
+    onRemove: handleRemove,
+    showUploadList: false
   }
 
   return (
@@ -122,7 +143,7 @@ const LeadForm = ({
           titleProp="name"
         />
       </Col>
-      <Col md={12} xs={24} style={{marginTop: 15}}>
+      <Col md={12} xs={24} style={{ marginTop: 15 }}>
         <FormInput
           required={false}
           label="Email"
@@ -130,7 +151,7 @@ const LeadForm = ({
           placeholder={"Nhập Email"}
         />
       </Col>
-      <Col md={12} xs={24} style={{marginTop: 15}}>
+      <Col md={12} xs={24} style={{ marginTop: 15 }}>
         <FormInput
           required={false}
           label="Facebook"
@@ -164,7 +185,7 @@ const LeadForm = ({
           dataSource={fileUploads}
           renderItem={file => <RenderFileItem file={file} handleRemove={handleRemove} />}
         />
-        <div style={{marginTop: arrayEmpty(fileUrls) ? 0 : 20}}>
+        <div style={{ marginTop: arrayEmpty(fileUrls) ? 0 : 20 }}>
           {fileUrls.map((file, key) => (<Tag key={key}>{file}</Tag>))}
         </div>
       </Col>
@@ -188,7 +209,7 @@ const LeadForm = ({
   )
 }
 
-const RenderFileItem = ({file, handleRemove }) => (
+const RenderFileItem = ({ file, handleRemove }) => (
   <List.Item
     actions={[
       <Button

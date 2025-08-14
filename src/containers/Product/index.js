@@ -1,3 +1,24 @@
+/**************************************************************************/
+/*  index.js                                                              */
+/**************************************************************************/
+/*                       Tệp này là một phần của:                         */
+/*                             Open CDP                                   */
+/*                        https://flast.vn                                */
+/**************************************************************************/
+/* Bản quyền (c) 2025 - này thuộc về các cộng tác viên Flast Solution     */
+/* (xem AUTHORS.md).                                                      */
+/* Bản quyền (c) 2024-2025 Long Huu, Quang Duc, Hung Bui                  */
+/*                                                                        */
+/* Bạn được quyền sử dụng phần mềm này miễn phí cho bất kỳ mục đích nào,  */
+/* bao gồm sao chép, sửa đổi, phân phối, bán lại…                         */
+/*                                                                        */
+/* Chỉ cần giữ nguyên thông tin bản quyền và nội dung giấy phép này trong */
+/* các bản sao.                                                           */
+/*                                                                        */
+/* Đội ngũ phát triển mong rằng phần mềm được sử dụng đúng mục đích và    */
+/* có trách nghiệm                                                        */
+/**************************************************************************/
+
 import React, { useCallback, useEffect, useState } from 'react';
 import { message } from 'antd';
 import RestEditModal from 'components/RestLayout/RestEditModal';
@@ -11,17 +32,17 @@ import { cloneDeep } from 'lodash';
 const log = (value) => console.log('[container.product.index] ', value);
 const Product = ({ closeModal, data }) => {
 
-  const [ record, setRecord ] = useState({});
-  const [ fileActive, setFileActive ] = useState('');
-  const [ sessionId, setSessionId ] = useState(null);
+  const [record, setRecord] = useState({});
+  const [fileActive, setFileActive] = useState('');
+  const [sessionId, setSessionId] = useState(null);
 
   useEffect(() => {
     (async () => {
       let dRe = {}, skus = []
-      if(arrayNotEmpty(data?.listProperties || [])) {
+      if (arrayNotEmpty(data?.listProperties || [])) {
         let attrIds = data.listProperties.map(i => i.attributedId) ?? [];
         let attrValueIds = [];
-        for(let values of data.listProperties.map(i => i.attributedValueId)) {
+        for (let values of data.listProperties.map(i => i.attributedValueId)) {
           attrValueIds = attrValueIds.concat(values);
         }
         const itemAttrs = await ProductAttrService.loadByIds(attrIds);
@@ -29,11 +50,11 @@ const Product = ({ closeModal, data }) => {
         dRe.attrs = itemAttrs;
         dRe.attrValues = itemAttrValues;
       }
-      if(data?.skus ) {
-        for(const iSkus of data?.skus) {
-          let item = {id: iSkus?.id, name: iSkus?.name, listPriceRange: iSkus?.listPriceRange }
+      if (data?.skus) {
+        for (const iSkus of data?.skus) {
+          let item = { id: iSkus?.id, name: iSkus?.name, listPriceRange: iSkus?.listPriceRange }
           let details = [];
-          for(const detail of iSkus?.sku) {
+          for (const detail of iSkus?.sku) {
             details.push([detail.attributedId, detail.attributedValueId]);
           }
           item.sku = details;
@@ -50,11 +71,11 @@ const Product = ({ closeModal, data }) => {
     return () => ProductAttrService.empty();
   }, [data]);
 
-  const onSubmit = useCallback( async (datas) => {
+  const onSubmit = useCallback(async (datas) => {
     log(datas);
     let values = cloneDeep(datas);
     let skusAdd = [];
-    for(let arrsku of values.skus) {
+    for (let arrsku of values.skus) {
       const newSkus = data?.skus?.find(f => f?.id === arrsku?.id);
       let newSku = newSkus?.sku ? [...newSkus.sku] : [];
       for (let sku of arrsku.sku) {
@@ -75,26 +96,26 @@ const Product = ({ closeModal, data }) => {
     }
 
     const newListProperties = values?.listProperties.map(item => ({
-      attributedId: item?.attributedId, 
+      attributedId: item?.attributedId,
       propertyValueId: item?.attributedValueId,
     })) || [];
 
     const newItem = {
-      ...values, 
+      ...values,
       listProperties: newListProperties,
       sessionId: !sessionId ? 0 : sessionId,
       skus: skusAdd
     }
 
-    const newValue = {...newItem, image: fileActive || data?.image}
+    const newValue = { ...newItem, image: fileActive || data?.image }
     let params = (values?.id ?? '') === '' ? {} : { id: values.id };
-    if(arrayEmpty(values.skus)) {
+    if (arrayEmpty(values.skus)) {
       message.info("Can't create Product with empty skus .!");
       return;
     }
     const { errorCode } = await RequestUtils.Post("/product/save", newValue, params);
     const isSuccess = errorCode === 200;
-    if(isSuccess) {
+    if (isSuccess) {
       f5List('product/fetch');
     }
     InAppEvent.normalInfo(isSuccess ? "Cập nhật thành công" : "Lỗi cập nhật, vui lòng thử lại sau");
@@ -103,14 +124,14 @@ const Product = ({ closeModal, data }) => {
   return (
     <RestEditModal
       isMergeRecordOnSubmit={false}
-      updateRecord={(values) => setRecord(curvals => ({...curvals, ...values}))}
+      updateRecord={(values) => setRecord(curvals => ({ ...curvals, ...values }))}
       onSubmit={onSubmit}
       record={record}
       closeModal={closeModal}
     >
-      <ProductForm 
+      <ProductForm
         data={data}
-        fileActive={fileActive} 
+        fileActive={fileActive}
         setFileActive={setFileActive}
         setSessionId={setSessionId}
       />

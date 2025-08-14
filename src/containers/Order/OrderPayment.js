@@ -1,3 +1,24 @@
+/**************************************************************************/
+/*  OrderPayment.js                                                       */
+/**************************************************************************/
+/*                       Tệp này là một phần của:                         */
+/*                             Open CDP                                   */
+/*                        https://flast.vn                                */
+/**************************************************************************/
+/* Bản quyền (c) 2025 - này thuộc về các cộng tác viên Flast Solution     */
+/* (xem AUTHORS.md).                                                      */
+/* Bản quyền (c) 2024-2025 Long Huu, Quang Duc, Hung Bui                  */
+/*                                                                        */
+/* Bạn được quyền sử dụng phần mềm này miễn phí cho bất kỳ mục đích nào,  */
+/* bao gồm sao chép, sửa đổi, phân phối, bán lại…                         */
+/*                                                                        */
+/* Chỉ cần giữ nguyên thông tin bản quyền và nội dung giấy phép này trong */
+/* các bản sao.                                                           */
+/*                                                                        */
+/* Đội ngũ phát triển mong rằng phần mềm được sử dụng đúng mục đích và    */
+/* có trách nghiệm                                                        */
+/**************************************************************************/
+
 import { Col, Form, message, Row } from 'antd'
 import FormDatePicker from 'components/form/FormDatePicker';
 import FormInputNumber from 'components/form/FormInputNumber';
@@ -11,20 +32,20 @@ import { useCallback, useEffect } from 'react';
 import FormAutoComplete from 'components/form/FormAutoComplete';
 
 const OptionPrice = [
-  { title: 'Tiền mặt', name: 'tienmat' }, 
-  { title: 'MoMo', name: 'momo' }, 
+  { title: 'Tiền mặt', name: 'tienmat' },
+  { title: 'MoMo', name: 'momo' },
   { title: 'VNpay', name: 'vnpay' }
 ]
 
 const VATOPTIONS = [
   { name: 'VAT 0%', value: 0 },
-  { name: 'VAT 8%', value: 8 }, 
+  { name: 'VAT 8%', value: 8 },
   { name: 'VAT 10%', value: 10 }
 ]
 
 const OrderPayment = ({ data }) => {
 
-  const [ form ] = Form.useForm();
+  const [form] = Form.useForm();
   const watchedVat = Form.useWatch('vat', form);
   const watchedShip = Form.useWatch('shippingCost', form);
 
@@ -41,7 +62,7 @@ const OrderPayment = ({ data }) => {
       ...values
     })
     message.info(MSG);
-    if(errorCode === SUCCESS_CODE) {
+    if (errorCode === SUCCESS_CODE) {
       onSave(data);
     }
   }, [onSave, customerOrder]);
@@ -59,7 +80,7 @@ const OrderPayment = ({ data }) => {
       <Form form={form} layout="vertical" onFinish={onSubmitPayment}>
         <Row style={{ marginTop: 20, padding: 15, border: '0.5px dashed #bdafaf' }}>
           <Col md={10} xs={24}>
-            <FormSelect 
+            <FormSelect
               label="Chọn VAT"
               name={"vat"}
               valueProp="value"
@@ -69,7 +90,7 @@ const OrderPayment = ({ data }) => {
           </Col>
           <Col md={2} />
           <Col md={10} xs={24}>
-            <FormInputNumber 
+            <FormInputNumber
               placeholder='Phí vận chuyển (nếu có)'
               label="Phí vận chuyển"
               name={"shippingCost"}
@@ -128,7 +149,7 @@ const OrderPayment = ({ data }) => {
           </Col>
           <Col md={12} xs={24}>
             <FormAutoComplete
-              resourceData={[{name: 'Đặt cọc'}, {name: 'Tất toán'}]}
+              resourceData={[{ name: 'Đặt cọc' }, { name: 'Tất toán' }]}
               valueProp='name'
               titleProp='name'
               label='Nội dung'

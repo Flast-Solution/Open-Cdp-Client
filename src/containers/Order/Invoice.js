@@ -1,3 +1,24 @@
+/**************************************************************************/
+/*  Invoice.js                                                         		*/
+/**************************************************************************/
+/*                       Tệp này là một phần của:                         */
+/*                             Open CDP                                   */
+/*                        https://flast.vn                                */
+/**************************************************************************/
+/* Bản quyền (c) 2025 - này thuộc về các cộng tác viên Flast Solution     */
+/* (xem AUTHORS.md).                                                      */
+/* Bản quyền (c) 2024-2025 Long Huu, Quang Duc, Hung Bui                  */
+/*                                                                        */
+/* Bạn được quyền sử dụng phần mềm này miễn phí cho bất kỳ mục đích nào,  */
+/* bao gồm sao chép, sửa đổi, phân phối, bán lại…                         */
+/*                                                                        */
+/* Chỉ cần giữ nguyên thông tin bản quyền và nội dung giấy phép này trong */
+/* các bản sao.                                                           */
+/*                                                                        */
+/* Đội ngũ phát triển mong rằng phần mềm được sử dụng đúng mục đích và    */
+/* có trách nghiệm                                                        */
+/**************************************************************************/
+
 import React, { useRef, useState } from 'react';
 import { Layout, Row, Col, Table, Typography } from 'antd';
 import OrderTextTableOnly from './OrderTextTableOnly';
@@ -38,27 +59,27 @@ const InvoicePage = ({
 	customerOrder
 }) => {
 	const { userCreateId } = customerOrder;
-	const [ user, setUser ] = useState();
+	const [user, setUser] = useState();
 
 	useEffectAsync(async () => {
-		const [ error, data ] = await UserService.findId(userCreateId);
-		if(!error) {
+		const [error, data] = await UserService.findId(userCreateId);
+		if (!error) {
 			setUser(data);
 		}
 	}, [userCreateId]);
 
-  return (
-    <StyledHeader style={{background: '#fff', marginBottom: 40}}>
-      <Row justify="start" align="middle">
-        <Col span={7} className='logo'>
-          <img
-            src="/logo.png"
-            alt="Logo"
-            style={{ maxHeight: 40, width: 'auto' }}
-          />
-        </Col>
-        <Col span={14} className='company'>
-          <p><strong>CÔNG TY CỔ PHẦN FLAST SOLUTUON</strong></p>
+	return (
+		<StyledHeader style={{ background: '#fff', marginBottom: 40 }}>
+			<Row justify="start" align="middle">
+				<Col span={7} className='logo'>
+					<img
+						src="/logo.png"
+						alt="Logo"
+						style={{ maxHeight: 40, width: 'auto' }}
+					/>
+				</Col>
+				<Col span={14} className='company'>
+					<p><strong>CÔNG TY CỔ PHẦN FLAST SOLUTUON</strong></p>
 					<div className='contact'>
 						<Text>Hà Nội: Số 35 Lê Văn Lương, Thanh Xuân, TP.Hà Nội</Text>
 						<Row justify="start" style={{ marginTop: '10px' }}>
@@ -67,55 +88,55 @@ const InvoicePage = ({
 							<Text className='left20'>www.flast.vn</Text>
 						</Row>
 					</div>
-        </Col>
-      </Row>
+				</Col>
+			</Row>
 
-      <Title level={3} style={{ textAlign: 'center', marginTop: '20px' }}>
-        HÓA ĐƠN BÁN HÀNG
-      </Title>
+			<Title level={3} style={{ textAlign: 'center', marginTop: '20px' }}>
+				HÓA ĐƠN BÁN HÀNG
+			</Title>
 
-      <Row gutter={4} style={{ marginTop: '20px' }}>
-        <Col span={12}>
-          <p className='title'>THÔNG TIN KHÁCH HÀNG</p>
-          <Table
+			<Row gutter={4} style={{ marginTop: '20px' }}>
+				<Col span={12}>
+					<p className='title'>THÔNG TIN KHÁCH HÀNG</p>
+					<Table
 						showHeader={false}
-            dataSource={[
-              { key: '1', label: 'Công ty:', value: customer.companyName || 'N/A' },
-              { key: '2', label: 'Địa chỉ:', value: customer.address || '' },
-              { key: '3', label: 'Số điện thoại:', value: formatPhoneNumber(customer.mobile) },
-              { key: '4', label: 'Người liên hệ:', value: customer.name }
-            ]}
-            columns={[
-              { dataIndex: 'label', key: 'label' },
-              { dataIndex: 'value', key: 'value' }
-            ]}
-            pagination={false}
-            bordered
-          />
-        </Col>
-        <Col span={12}>
-          <p className='title'>
-            THÔNG TIN ĐẠI DIỆN
-          </p>
-          <Table
+						dataSource={[
+							{ key: '1', label: 'Công ty:', value: customer.companyName || 'N/A' },
+							{ key: '2', label: 'Địa chỉ:', value: customer.address || '' },
+							{ key: '3', label: 'Số điện thoại:', value: formatPhoneNumber(customer.mobile) },
+							{ key: '4', label: 'Người liên hệ:', value: customer.name }
+						]}
+						columns={[
+							{ dataIndex: 'label', key: 'label' },
+							{ dataIndex: 'value', key: 'value' }
+						]}
+						pagination={false}
+						bordered
+					/>
+				</Col>
+				<Col span={12}>
+					<p className='title'>
+						THÔNG TIN ĐẠI DIỆN
+					</p>
+					<Table
 						showHeader={false}
-            dataSource={[
-              { key: '1', label: 'Bộ phận:', value: 'Phòng kinh doanh' },
-              { key: '2', label: 'Đại diện:', value: user?.ssoId },
-              { key: '3', label: 'Số điện thoại:', value: formatPhoneNumber(user?.phone) },
-              { key: '4', label: 'Email:', value: user?.email }
-            ]}
-            columns={[
-              { dataIndex: 'label', key: 'label' },
-              { dataIndex: 'value', key: 'value' }
-            ]}
-            pagination={false}
-            bordered
-          />
-        </Col>
-      </Row>
-    </StyledHeader>
-  )
+						dataSource={[
+							{ key: '1', label: 'Bộ phận:', value: 'Phòng kinh doanh' },
+							{ key: '2', label: 'Đại diện:', value: user?.ssoId },
+							{ key: '3', label: 'Số điện thoại:', value: formatPhoneNumber(user?.phone) },
+							{ key: '4', label: 'Email:', value: user?.email }
+						]}
+						columns={[
+							{ dataIndex: 'label', key: 'label' },
+							{ dataIndex: 'value', key: 'value' }
+						]}
+						pagination={false}
+						bordered
+					/>
+				</Col>
+			</Row>
+		</StyledHeader>
+	)
 };
 
 const Invoice = ({ data }) => {
@@ -128,7 +149,7 @@ const Invoice = ({ data }) => {
 
 	return <>
 		<div ref={contentRef} style={{ padding: 25, marginTop: 20 }}>
-			<InvoicePage 
+			<InvoicePage
 				customer={customer}
 				customerOrder={customerOrder}
 			/>
@@ -186,18 +207,18 @@ const Invoice = ({ data }) => {
 				</tbody>
 			</table>
 			<Row justify="space-between" style={{ marginTop: '40px', padding: '10px 0' }}>
-				<Col style={{textAlign: 'center'}} span={8}>
+				<Col style={{ textAlign: 'center' }} span={8}>
 					<Text strong>Khách hàng</Text>
 				</Col>
 				<Col span={8} offset={8}>
 					<Text strong>Người lập hóa đơn</Text>
-					<div style={{height: 100}} />
+					<div style={{ height: 100 }} />
 					<Text style={{ display: 'block', marginTop: '5px' }}>Ngày .... tháng .... năm 202..</Text>
 				</Col>
 			</Row>
 		</div>
 		<div style={{ display: 'flex', justifyContent: 'end', marginTop: 20 }}>
-			<CustomButton onClick={reactToPrintFn} title="In PDF"/>
+			<CustomButton onClick={reactToPrintFn} title="In PDF" />
 		</div>
 	</>
 }
