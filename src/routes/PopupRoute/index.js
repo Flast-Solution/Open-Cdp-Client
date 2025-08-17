@@ -1,3 +1,24 @@
+/**************************************************************************/
+/*  index.js                                                              */
+/**************************************************************************/
+/*                       Tệp này là một phần của:                         */
+/*                             Open CDP                                   */
+/*                        https://flast.vn                                */
+/**************************************************************************/
+/* Bản quyền (c) 2025 - này thuộc về các cộng tác viên Flast Solution     */
+/* (xem AUTHORS.md).                                                      */
+/* Bản quyền (c) 2024-2025 Long Huu, Quang Duc, Hung Bui                  */
+/*                                                                        */
+/* Bạn được quyền sử dụng phần mềm này miễn phí cho bất kỳ mục đích nào,  */
+/* bao gồm sao chép, sửa đổi, phân phối, bán lại…                         */
+/*                                                                        */
+/* Chỉ cần giữ nguyên thông tin bản quyền và nội dung giấy phép này trong */
+/* các bản sao.                                                           */
+/*                                                                        */
+/* Đội ngũ phát triển mong rằng phần mềm được sử dụng đúng mục đích và    */
+/* có trách nghiệm                                                        */
+/**************************************************************************/
+
 import React, { useCallback, useEffect, useMemo, useState } from 'react';
 import { HASH_POPUP, HASH_POPUP_CLOSE } from 'configs/constant';
 import { InAppEvent } from 'utils/FuseUtils';
@@ -29,7 +50,7 @@ const modalRoutes = [
 
 const getPopupRoute = (currentModal) => {
   const routeNotFound = { Component: () => <div /> }
-  if(!currentModal) {
+  if (!currentModal) {
     return routeNotFound;
   }
   const modalRoute = modalRoutes.find(route => currentModal.includes(route.path));
@@ -41,18 +62,18 @@ const getPopupRoute = (currentModal) => {
 
 function MyPopup() {
 
-  const [ params, setParams ] = useState({ open: false });
-  const [ reLoad, setReload ] = useState(false);
+  const [params, setParams] = useState({ open: false });
+  const [reLoad, setReload] = useState(false);
 
-  const handleEventDraw = useCallback( ({ hash, data, title }) => {
-    setParams({open: true, hash, data, title});
+  const handleEventDraw = useCallback(({ hash, data, title }) => {
+    setParams({ open: true, hash, data, title });
   }, []);
 
-  const handleCloseDraw = useCallback( () => {
-    setParams({open: false});
+  const handleCloseDraw = useCallback(() => {
+    setParams({ open: false });
   }, []);
 
-  useEffect( () => {
+  useEffect(() => {
     InAppEvent.addEventListener(HASH_POPUP, handleEventDraw);
     InAppEvent.addEventListener(HASH_POPUP_CLOSE, handleCloseDraw);
     return () => {
@@ -61,8 +82,8 @@ function MyPopup() {
     };
   }, [handleEventDraw, handleCloseDraw]);
 
-  const closePopup =useCallback(() => {
-    setParams({open: false});
+  const closePopup = useCallback(() => {
+    setParams({ open: false });
     setReload(pre => !pre);
   }, []);
 
@@ -70,7 +91,7 @@ function MyPopup() {
     () => getPopupRoute(params.hash),
     [params.hash]
   );
-  
+
   return <>
     <CustomModalStyles />
     <Modal
@@ -82,9 +103,9 @@ function MyPopup() {
       wrapClassName="custom-modal"
       width={PopupRoute?.modalOptions?.width || 800}
     >
-      <PopupRoute.Component 
+      <PopupRoute.Component
         reLoad={reLoad}
-        closeModal={closePopup} 
+        closeModal={closePopup}
         {...(params.data || {})}
       />
     </Modal>

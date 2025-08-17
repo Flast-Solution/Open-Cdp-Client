@@ -1,3 +1,24 @@
+/**************************************************************************/
+/*  dataUtils.js                                                          */
+/**************************************************************************/
+/*                       Tệp này là một phần của:                         */
+/*                             Open CDP                                   */
+/*                        https://flast.vn                                */
+/**************************************************************************/
+/* Bản quyền (c) 2025 - này thuộc về các cộng tác viên Flast Solution     */
+/* (xem AUTHORS.md).                                                      */
+/* Bản quyền (c) 2024-2025 Long Huu, Quang Duc, Hung Bui                  */
+/*                                                                        */
+/* Bạn được quyền sử dụng phần mềm này miễn phí cho bất kỳ mục đích nào,  */
+/* bao gồm sao chép, sửa đổi, phân phối, bán lại…                         */
+/*                                                                        */
+/* Chỉ cần giữ nguyên thông tin bản quyền và nội dung giấy phép này trong */
+/* các bản sao.                                                           */
+/*                                                                        */
+/* Đội ngũ phát triển mong rằng phần mềm được sử dụng đúng mục đích và    */
+/* có trách nghiệm                                                        */
+/**************************************************************************/
+
 import i18next from 'i18next';
 import { random } from "lodash";
 import { InAppEvent } from "utils/FuseUtils";
@@ -6,15 +27,15 @@ import moment from 'moment';
 import { DISCOUNT_UNIT_CONST } from 'configs/localData';
 import dayjs from 'dayjs';
 
-export const formatDataI18n = ( displayName, name ) => {
+export const formatDataI18n = (displayName, name) => {
     return displayName?.[i18next.language] || name;
 };
 
 export const f5List = (apiPath = '') =>
-InAppEvent.emit(CHANGE_STORE, { 
-    type: ACTIONS.F5_LIST, 
-    data: { apiPath, random: random() } 
-});
+    InAppEvent.emit(CHANGE_STORE, {
+        type: ACTIONS.F5_LIST,
+        data: { apiPath, random: random() }
+    });
 
 export const dataArray = (ret) => {
     const { errorCode, data } = ret;
@@ -30,16 +51,16 @@ export const arrayNotEmpty = (data) => Array.isArray(data) && data.length > 0;
 export const arrayEmpty = (data) => !arrayNotEmpty(data);
 
 export function decodeProperty(obj, propertys = []) {
-    if(arrayNotEmpty(obj)) {
+    if (arrayNotEmpty(obj)) {
         obj.forEach(elm => decodeProperty(elm, propertys));
         return obj;
     }
-    if(!obj || typeof obj !== 'object') {
+    if (!obj || typeof obj !== 'object') {
         return obj;
     }
-    for(let p of propertys) {
+    for (let p of propertys) {
         const value = obj[p];
-        if(value && typeof value === 'string') {
+        if (value && typeof value === 'string') {
             obj[p] = JSON.parse(value);
         }
     }
@@ -47,15 +68,15 @@ export function decodeProperty(obj, propertys = []) {
 }
 
 export function encodeProperty(obj, propertys = []) {
-    if(!obj || typeof obj !== 'object') {
+    if (!obj || typeof obj !== 'object') {
         return obj;
     }
-    if(!arrayNotEmpty(propertys)){
+    if (!arrayNotEmpty(propertys)) {
         return JSON.stringify(obj);
     }
-    for(let k of propertys) {
+    for (let k of propertys) {
         const value = obj[k];
-        if(value && typeof value === 'object') {
+        if (value && typeof value === 'object') {
             obj[k] = JSON.stringify(value);
         }
     }
@@ -64,28 +85,28 @@ export function encodeProperty(obj, propertys = []) {
 
 /* dateFormatForm(entity, ['startTime', 'endTime'], 'HH:mm') */
 export const dateFormatForm = (entity, propertes = [], format) => {
-    if(!entity || !propertes) {
+    if (!entity || !propertes) {
         return;
     }
-    for(let k of propertes) {
+    for (let k of propertes) {
         const value = entity[k];
-        if(value && (typeof value === 'string' || typeof value === 'number')) {
+        if (value && (typeof value === 'string' || typeof value === 'number')) {
             entity[k] = dayjs(new Date(value), format);
         }
     }
 }
 
 export const dateFormatOnSubmit = (entity, propertes = [], format = "YYYY-MM-DD HH:mm:ss") => {
-	if(typeof(entity) !== 'object') {
-		return dayjs(entity).format(format); // Trường hợp là timestamp đơn lẻ
-	}
-	for(let k of propertes) {
-		const value = entity[k];
-		if(value) {
-			entity[k] = dayjs(value).format(format);
-		}
-	}
-	return entity;
+    if (typeof (entity) !== 'object') {
+        return dayjs(entity).format(format); // Trường hợp là timestamp đơn lẻ
+    }
+    for (let k of propertes) {
+        const value = entity[k];
+        if (value) {
+            entity[k] = dayjs(value).format(format);
+        }
+    }
+    return entity;
 }
 
 export const formatTime = (text, fm = "DD-MM-YYYY") => text ? moment(new Date(text)).format(fm) : 'N/a';
@@ -100,7 +121,7 @@ export const getDiscountAmount = ({
 };
 
 export const discountAsNumber = ({ discountUnit, discountValue, total }) => {
-    if(!discountUnit || !discountValue) {
+    if (!discountUnit || !discountValue) {
         return 0;
     }
     return discountUnit === 'percent' ? (Number(discountValue) / 100) * Number(total) : discountValue
@@ -110,11 +131,10 @@ export const getDiscount = ({
     discountValue,
     discountUnit
 }) => {
-return discountValue && discountUnit
-    ? `${formatMoney(discountValue)} ${
-        DISCOUNT_UNIT_CONST[discountUnit]?.text
-    }`
-    : '0 VND';
+    return discountValue && discountUnit
+        ? `${formatMoney(discountValue)} ${DISCOUNT_UNIT_CONST[discountUnit]?.text
+        }`
+        : '0 VND';
 };
 
 export const checkValidParentInboxId = (inboxId) => inboxId && inboxId !== 'parent';
@@ -131,5 +151,5 @@ export const getUserAvatarInbox = (item) => {
 };
 
 export const formatTimeSubmit = (time) =>
-  time ? moment(time).toISOString() : null;
+    time ? moment(time).toISOString() : null;
 

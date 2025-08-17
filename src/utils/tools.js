@@ -1,3 +1,24 @@
+/**************************************************************************/
+/*  tools.js                                                              */
+/**************************************************************************/
+/*                       Tệp này là một phần của:                         */
+/*                             Open CDP                                   */
+/*                        https://flast.vn                                */
+/**************************************************************************/
+/* Bản quyền (c) 2025 - này thuộc về các cộng tác viên Flast Solution     */
+/* (xem AUTHORS.md).                                                      */
+/* Bản quyền (c) 2024-2025 Long Huu, Quang Duc, Hung Bui                  */
+/*                                                                        */
+/* Bạn được quyền sử dụng phần mềm này miễn phí cho bất kỳ mục đích nào,  */
+/* bao gồm sao chép, sửa đổi, phân phối, bán lại…                         */
+/*                                                                        */
+/* Chỉ cần giữ nguyên thông tin bản quyền và nội dung giấy phép này trong */
+/* các bản sao.                                                           */
+/*                                                                        */
+/* Đội ngũ phát triển mong rằng phần mềm được sử dụng đúng mục đích và    */
+/* có trách nghiệm                                                        */
+/**************************************************************************/
+
 import { GATEWAY } from 'configs';
 import { pickBy, identity } from 'lodash'
 import { notification } from 'antd';
@@ -11,14 +32,14 @@ export const showMeesageError = (description) => {
 };
 
 export const getQueryParamsFromUrl = (url) => {
-  if(!url) {
+  if (!url) {
     return {};
   }
   var query = url.substr(1);
   var result = {};
-  query.split("&").forEach(function(part) {
+  query.split("&").forEach(function (part) {
     var item = part.split("=");
-    if(item[1]) {
+    if (item[1]) {
       result[item[0]] = decodeURIComponent(item[1]);
     }
   });
@@ -32,32 +53,32 @@ export const convertObjToSearchStr = (params) => {
   return new URLSearchParams(newParams).toString();
 };
 
-export const onSearch = ( data, inputValue ) =>
+export const onSearch = (data, inputValue) =>
   !!inputValue && data?.toLowerCase()?.search(inputValue?.toLowerCase()) !== -1;
 
 export const getStaticImageUrl = (image) => {
   if (!image) {
     return `${GATEWAY}/uploads/image-default.png`;
   }
-  if(image.startsWith('http')) {
+  if (image.startsWith('http')) {
     return image;
   }
 
-  const path = image.startsWith('/uploads') ? image : "/uploads/".concat(image);  
+  const path = image.startsWith('/uploads') ? image : "/uploads/".concat(image);
   return String(GATEWAY).concat(path);
 };
 
 export const formatterInputNumber = (value) =>
   `${value}`
-  .replace(/\B(?=(\d{3})+(?!\d))/g, '.')
-  .replace(/\.(?=\d{0,2}$)/g, ',');
+    .replace(/\B(?=(\d{3})+(?!\d))/g, '.')
+    .replace(/\.(?=\d{0,2}$)/g, ',');
 
 export const parserInputNumber = (value) => {
   return value ? value.replace(/\$\s?|(\.*)/g, '').replace(/(,{1})/g, '.') : '';
 };
 
 export const formatPhoneNumber = (phone) => {
-  if(!phone) {
+  if (!phone) {
     return '';
   }
   const cleaned = phone.replace(/\D/g, '');
@@ -69,10 +90,10 @@ export const formatPhoneNumber = (phone) => {
 }
 
 export const calPriceOff = ({ discountValue, discountUnit, total }) => {
-  if(!discountValue || !discountUnit) {
+  if (!discountValue || !discountUnit) {
     return 0;
   }
-  if(discountUnit === "money") {
+  if (discountUnit === "money") {
     return discountValue;
   }
   return (discountValue * total) / 100;

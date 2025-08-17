@@ -1,3 +1,24 @@
+/**************************************************************************/
+/*  fileUtils.js                                                          */
+/**************************************************************************/
+/*                       Tệp này là một phần của:                         */
+/*                             Open CDP                                   */
+/*                        https://flast.vn                                */
+/**************************************************************************/
+/* Bản quyền (c) 2025 - này thuộc về các cộng tác viên Flast Solution     */
+/* (xem AUTHORS.md).                                                      */
+/* Bản quyền (c) 2024-2025 Long Huu, Quang Duc, Hung Bui                  */
+/*                                                                        */
+/* Bạn được quyền sử dụng phần mềm này miễn phí cho bất kỳ mục đích nào,  */
+/* bao gồm sao chép, sửa đổi, phân phối, bán lại…                         */
+/*                                                                        */
+/* Chỉ cần giữ nguyên thông tin bản quyền và nội dung giấy phép này trong */
+/* các bản sao.                                                           */
+/*                                                                        */
+/* Đội ngũ phát triển mong rằng phần mềm được sử dụng đúng mục đích và    */
+/* có trách nghiệm                                                        */
+/**************************************************************************/
+
 import { IMAGE_TYPES } from 'configs/localData';
 import { notification, Upload } from 'antd';
 import i18next from 'i18next';
@@ -14,37 +35,37 @@ const showErrorDownloadFile = (message) => {
 };
 
 export const isImageFile = (fileName) => {
-    const extension = getExtensionFile(fileName);
-    if (!extension) return false;
-    return IMAGE_TYPES.includes(extension.toLocaleLowerCase());
+  const extension = getExtensionFile(fileName);
+  if (!extension) return false;
+  return IMAGE_TYPES.includes(extension.toLocaleLowerCase());
 };
 
 export const getFileNameFromUrl = (url) => url?.split('/')?.pop();
 export const checkFileType = (file) => {
-    if (!file.type?.trim()) {
-      
-    }
-    return true;
+  if (!file.type?.trim()) {
+
+  }
+  return true;
 };
 
 export const getExtensionFile = (fileName) => {
-    if (typeof fileName !== 'string' || fileName.indexOf('.') === -1) return '';
-    return fileName.split('.').pop();
+  if (typeof fileName !== 'string' || fileName.indexOf('.') === -1) return '';
+  return fileName.split('.').pop();
 };
 
 export const checkValidFileSize = (file, placeholder) => {
-    const isCheckSize = Number(file.size) / 1024 / 1024 < MAX_FILE_SIZE_MB;
-    if (!isCheckSize) {
-      notification.error({
-        message: i18next.t('error.title'),
-        description: i18next.t('error.fileSize', {
-          name: i18next.t(placeholder),
-        }),
-        duration: 2,
-      });
-      return Upload.LIST_IGNORE;
-    }
-    return true;
+  const isCheckSize = Number(file.size) / 1024 / 1024 < MAX_FILE_SIZE_MB;
+  if (!isCheckSize) {
+    notification.error({
+      message: i18next.t('error.title'),
+      description: i18next.t('error.fileSize', {
+        name: i18next.t(placeholder),
+      }),
+      duration: 2,
+    });
+    return Upload.LIST_IGNORE;
+  }
+  return true;
 };
 
 export const downloadFileByURL = async (file) => {

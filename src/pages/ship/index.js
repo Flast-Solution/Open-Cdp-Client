@@ -1,6 +1,27 @@
+/**************************************************************************/
+/*  index.js                                                           		*/
+/**************************************************************************/
+/*                       Tệp này là một phần của:                         */
+/*                             Open CDP                                   */
+/*                        https://flast.vn                                */
+/**************************************************************************/
+/* Bản quyền (c) 2025 - này thuộc về các cộng tác viên Flast Solution     */
+/* (xem AUTHORS.md).                                                      */
+/* Bản quyền (c) 2024-2025 Long Huu, Quang Duc, Hung Bui                  */
+/*                                                                        */
+/* Bạn được quyền sử dụng phần mềm này miễn phí cho bất kỳ mục đích nào,  */
+/* bao gồm sao chép, sửa đổi, phân phối, bán lại…                         */
+/*                                                                        */
+/* Chỉ cần giữ nguyên thông tin bản quyền và nội dung giấy phép này trong */
+/* các bản sao.                                                           */
+/*                                                                        */
+/* Đội ngũ phát triển mong rằng phần mềm được sử dụng đúng mục đích và    */
+/* có trách nghiệm                                                        */
+/**************************************************************************/
+
 import React, { useCallback, useState } from 'react';
 import { Helmet } from 'react-helmet';
-import { Button  } from 'antd';
+import { Button } from 'antd';
 import CustomBreadcrumb from 'components/BreadcrumbCustom';
 import RestList from 'components/RestLayout/RestList';
 import ShipFilter from './Filter';
@@ -13,25 +34,25 @@ import RequestUtils from 'utils/RequestUtils';
 
 const ShipPage = () => {
 
-  const [ title ] = useState("Đã giao");
+  const [title] = useState("Đã giao");
   const beforeSubmitFilter = useCallback((values) => {
     dateFormatOnSubmit(values, ['from', 'to']);
     return values;
   }, []);
 
-  const onClickGiaoHang = (record) =>  InAppEvent.emit(HASH_MODAL, {
+  const onClickGiaoHang = (record) => InAppEvent.emit(HASH_MODAL, {
     hash: "#ship.update",
     title: 'Phiếu xuất kho #' + record.orderCode,
     data: record
   });
 
   const onData = async (values) => {
-    if(arrayEmpty(values.embedded)) {
+    if (arrayEmpty(values.embedded)) {
       return values;
     }
     const listStatus = await RequestUtils.GetAsList("/shipping/fetch-status");
-    for(let ship of values.embedded) {
-      ship.statusName = listStatus.find(i => i.id === ship.status)?.name || ''; 
+    for (let ship of values.embedded) {
+      ship.statusName = listStatus.find(i => i.id === ship.status)?.name || '';
     }
     return values;
   }
@@ -120,9 +141,9 @@ const ShipPage = () => {
       fixed: 'right',
       width: 100,
       render: (record) => (
-        <Button 
-          type="primary" 
-          size="small" 
+        <Button
+          type="primary"
+          size="small"
           onClick={() => onClickGiaoHang(record)}
         >
           Cập nhật

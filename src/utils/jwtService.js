@@ -1,3 +1,24 @@
+/**************************************************************************/
+/*  jwtService.js                                                         */
+/**************************************************************************/
+/*                       Tệp này là một phần của:                         */
+/*                             Open CDP                                   */
+/*                        https://flast.vn                                */
+/**************************************************************************/
+/* Bản quyền (c) 2025 - này thuộc về các cộng tác viên Flast Solution     */
+/* (xem AUTHORS.md).                                                      */
+/* Bản quyền (c) 2024-2025 Long Huu, Quang Duc, Hung Bui                  */
+/*                                                                        */
+/* Bạn được quyền sử dụng phần mềm này miễn phí cho bất kỳ mục đích nào,  */
+/* bao gồm sao chép, sửa đổi, phân phối, bán lại…                         */
+/*                                                                        */
+/* Chỉ cần giữ nguyên thông tin bản quyền và nội dung giấy phép này trong */
+/* các bản sao.                                                           */
+/*                                                                        */
+/* Đội ngũ phát triển mong rằng phần mềm được sử dụng đúng mục đích và    */
+/* có trách nghiệm                                                        */
+/**************************************************************************/
+
 import FuseUtils, { InAppEvent } from './FuseUtils';
 import axios from 'axios';
 import { CHANGE_STORE, ACTIONS } from "configs";
@@ -24,13 +45,13 @@ class jwtService extends FuseUtils.EventEmitter {
         }
     };
 
-    signInWithToken = async() => {
+    signInWithToken = async () => {
         try {
-            const { data, success } = await RequestUtils.Post('/auth/sign-with-token', { 
+            const { data, success } = await RequestUtils.Post('/auth/sign-with-token', {
                 token: this.getAccessToken()
             });
             this.setSession(success ? data : null);
-        } catch(e) {
+        } catch (e) {
             this.emit('onAutoLogout', 'sign-in-with-token ' + e.message);
         }
         return "done";

@@ -1,3 +1,24 @@
+/**************************************************************************/
+/*  FuseUtils.js                                                          */
+/**************************************************************************/
+/*                       Tệp này là một phần của:                         */
+/*                             Open CDP                                   */
+/*                        https://flast.vn                                */
+/**************************************************************************/
+/* Bản quyền (c) 2025 - này thuộc về các cộng tác viên Flast Solution     */
+/* (xem AUTHORS.md).                                                      */
+/* Bản quyền (c) 2024-2025 Long Huu, Quang Duc, Hung Bui                  */
+/*                                                                        */
+/* Bạn được quyền sử dụng phần mềm này miễn phí cho bất kỳ mục đích nào,  */
+/* bao gồm sao chép, sửa đổi, phân phối, bán lại…                         */
+/*                                                                        */
+/* Chỉ cần giữ nguyên thông tin bản quyền và nội dung giấy phép này trong */
+/* các bản sao.                                                           */
+/*                                                                        */
+/* Đội ngũ phát triển mong rằng phần mềm được sử dụng đúng mục đích và    */
+/* có trách nghiệm                                                        */
+/**************************************************************************/
+
 import { CHANGE_STORE, HASH_MODAL, INAPP_NOTIFICATION_EMITTER } from 'configs';
 
 class EventEmitter {
@@ -32,7 +53,7 @@ class EventEmitter {
         }.bind(this));
     }
 
-    addEventListener (eventName, fn) {
+    addEventListener(eventName, fn) {
         this.on(eventName, fn)
     }
 
@@ -42,14 +63,14 @@ class EventEmitter {
 }
 
 class FuseUtils {
-    
+
     static EventEmitter = EventEmitter;
     static hasPermission(authArr, enabled) {
-        if(authArr === '*'){
+        if (authArr === '*') {
             return true;
-        } else if ( (authArr || '' ) === '') {
+        } else if ((authArr || '') === '') {
             return true;
-        } else if(authArr.length === 0) {
+        } else if (authArr.length === 0) {
             return true;
         }
         return enabled;
@@ -68,13 +89,13 @@ class FuseUtils {
 
     static setRoutes(config, defaultAuth) {
         let routes = [...config.routes];
-        if ( config.settings || config.auth ) {
+        if (config.settings || config.auth) {
             routes = routes.map((route) => {
                 let auth = config.auth ? [...config.auth] : defaultAuth || null;
                 auth = route.auth ? [...auth, ...route.auth] : auth;
                 return {
                     ...route,
-                    settings: {...config.settings, ...route.settings},
+                    settings: { ...config.settings, ...route.settings },
                     auth
                 };
             });
@@ -85,22 +106,22 @@ class FuseUtils {
 
 class AppEvent extends EventEmitter {
     normalSuccess(content, title = null) {
-        this.emit(INAPP_NOTIFICATION_EMITTER, {type: 'success', content, title});
+        this.emit(INAPP_NOTIFICATION_EMITTER, { type: 'success', content, title });
     }
     normalInfo(content, title = null) {
-        this.emit(INAPP_NOTIFICATION_EMITTER, {type: 'info', content, title});
+        this.emit(INAPP_NOTIFICATION_EMITTER, { type: 'info', content, title });
     }
     normalError(content, title = null) {
-        this.emit(INAPP_NOTIFICATION_EMITTER, {type: 'error', content, title});
+        this.emit(INAPP_NOTIFICATION_EMITTER, { type: 'error', content, title });
     }
     modal(content, type) {
-        this.emit(INAPP_NOTIFICATION_EMITTER, {type, content, cate: 'modal'});
+        this.emit(INAPP_NOTIFICATION_EMITTER, { type, content, cate: 'modal' });
     }
     changeStore(data) {
         this.emit(CHANGE_STORE, data);
     }
-    openDrawer = (route, data) => this.emit(HASH_MODAL, { 
-        hash: '#'.concat(route), 
+    openDrawer = (route, data) => this.emit(HASH_MODAL, {
+        hash: '#'.concat(route),
         data
     });
 }

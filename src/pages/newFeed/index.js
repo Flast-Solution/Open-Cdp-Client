@@ -1,3 +1,24 @@
+/**************************************************************************/
+/*  index.js                                                           		*/
+/**************************************************************************/
+/*                       Tệp này là một phần của:                         */
+/*                             Open CDP                                   */
+/*                        https://flast.vn                                */
+/**************************************************************************/
+/* Bản quyền (c) 2025 - này thuộc về các cộng tác viên Flast Solution     */
+/* (xem AUTHORS.md).                                                      */
+/* Bản quyền (c) 2024-2025 Long Huu, Quang Duc, Hung Bui                  */
+/*                                                                        */
+/* Bạn được quyền sử dụng phần mềm này miễn phí cho bất kỳ mục đích nào,  */
+/* bao gồm sao chép, sửa đổi, phân phối, bán lại…                         */
+/*                                                                        */
+/* Chỉ cần giữ nguyên thông tin bản quyền và nội dung giấy phép này trong */
+/* các bản sao.                                                           */
+/*                                                                        */
+/* Đội ngũ phát triển mong rằng phần mềm được sử dụng đúng mục đích và    */
+/* có trách nghiệm                                                        */
+/**************************************************************************/
+
 import { Button, Card, Col, Divider, Progress, Row, Select, Space, Typography } from 'antd';
 import ChartActivityRevenue from './ChartActivityRevenue'
 import ChartSale from './ChartSale';
@@ -21,7 +42,7 @@ import {
 
 const { Text } = Typography;
 const NewFeed = () => {
- 
+
   const data = [
     {
       title: 'Khách hàng đã thêm',
@@ -120,7 +141,7 @@ const NewFeed = () => {
             <AimOutlined style={{ fontSize: 18 }} />
             <h2 style={{ fontSize: 16, fontWeight: 'bold', marginBottom: 0, marginLeft: 10 }}>KPI doanh số và trạng thái hoàn thành</h2>
           </div>
-          <ChartActivityRevenue activityRevenue={[] } />
+          <ChartActivityRevenue activityRevenue={[]} />
         </div>
       </Col>
       <Col md={8} xs={24}>
@@ -129,7 +150,7 @@ const NewFeed = () => {
             <FunnelPlotOutlined style={{ fontSize: 18, marginBottom: 10 }} />
             <h2 style={{ fontSize: 16, fontWeight: 'bold', marginLeft: 10 }}>Phễu chuyển đổi cơ hội sang đơn hàng</h2>
           </div>
-          <ChartSale activityRevenue={ [] } />
+          <ChartSale activityRevenue={[]} />
         </div>
       </Col>
       <Col md={8} xs={24}>

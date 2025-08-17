@@ -1,3 +1,24 @@
+/**************************************************************************/
+/*  index.js                                                           		*/
+/**************************************************************************/
+/*                       Tệp này là một phần của:                         */
+/*                             Open CDP                                   */
+/*                        https://flast.vn                                */
+/**************************************************************************/
+/* Bản quyền (c) 2025 - này thuộc về các cộng tác viên Flast Solution     */
+/* (xem AUTHORS.md).                                                      */
+/* Bản quyền (c) 2024-2025 Long Huu, Quang Duc, Hung Bui                  */
+/*                                                                        */
+/* Bạn được quyền sử dụng phần mềm này miễn phí cho bất kỳ mục đích nào,  */
+/* bao gồm sao chép, sửa đổi, phân phối, bán lại…                         */
+/*                                                                        */
+/* Chỉ cần giữ nguyên thông tin bản quyền và nội dung giấy phép này trong */
+/* các bản sao.                                                           */
+/*                                                                        */
+/* Đội ngũ phát triển mong rằng phần mềm được sử dụng đúng mục đích và    */
+/* có trách nghiệm                                                        */
+/**************************************************************************/
+
 import React, { useCallback, useState } from 'react';
 import { Helmet } from 'react-helmet';
 import CustomBreadcrumb from 'components/BreadcrumbCustom';
@@ -15,8 +36,8 @@ import { CHANNEL_SOURCE_MAP_KEYS } from 'configs/localData';
 
 const Lead3DayPage = () => {
 
-  const [ title ] = useState("Khách hàng 3 ngày chưa ra cơ hội bán hàng");
-  
+  const [title] = useState("Khách hàng 3 ngày chưa ra cơ hội bán hàng");
+
   const onEdit = (item) => {
     let title = 'Cập nhật tương tác khách hàng# ' + item.id;
     let hash = '#draw/lead3day.edit';
@@ -88,19 +109,19 @@ const Lead3DayPage = () => {
       width: 120,
       fixed: 'right',
       render: (record) => (
-        <Button color="primary"variant="dashed" onClick={() => onEdit(record)} size='small'>
+        <Button color="primary" variant="dashed" onClick={() => onEdit(record)} size='small'>
           Cập nhật
         </Button>
       )
     }
   ];
 
-  const onData = useCallback( async (values) => {
+  const onData = useCallback(async (values) => {
     if (arrayEmpty(values.embedded)) {
       return values;
     }
     const services = await RequestUtils.GetAsList('/service/list');
-    for(let item of values.embedded) {
+    for (let item of values.embedded) {
       item.serviceName = services.find(i => i.id === item.serviceId)?.name ?? "";
     }
     return values;
@@ -122,7 +143,7 @@ const Lead3DayPage = () => {
       <RestList
         xScroll={1200}
         onData={onData}
-        initialFilter={{ limit: 10, page: 1}}
+        initialFilter={{ limit: 10, page: 1 }}
         filter={<LeadFilter />}
         beforeSubmitFilter={beforeSubmitFilter}
         useGetAllQuery={useGetList}

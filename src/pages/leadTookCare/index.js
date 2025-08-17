@@ -1,3 +1,24 @@
+/**************************************************************************/
+/*  index.js                                                           		*/
+/**************************************************************************/
+/*                       Tệp này là một phần của:                         */
+/*                             Open CDP                                   */
+/*                        https://flast.vn                                */
+/**************************************************************************/
+/* Bản quyền (c) 2025 - này thuộc về các cộng tác viên Flast Solution     */
+/* (xem AUTHORS.md).                                                      */
+/* Bản quyền (c) 2024-2025 Long Huu, Quang Duc, Hung Bui                  */
+/*                                                                        */
+/* Bạn được quyền sử dụng phần mềm này miễn phí cho bất kỳ mục đích nào,  */
+/* bao gồm sao chép, sửa đổi, phân phối, bán lại…                         */
+/*                                                                        */
+/* Chỉ cần giữ nguyên thông tin bản quyền và nội dung giấy phép này trong */
+/* các bản sao.                                                           */
+/*                                                                        */
+/* Đội ngũ phát triển mong rằng phần mềm được sử dụng đúng mục đích và    */
+/* có trách nghiệm                                                        */
+/**************************************************************************/
+
 import React, { useCallback, useState } from 'react';
 import { Helmet } from 'react-helmet';
 import CustomBreadcrumb from 'components/BreadcrumbCustom';
@@ -20,7 +41,7 @@ const LeadTookCarePage = () => {
     let data = cloneDeep(item);
     InAppEvent.emit(HASH_MODAL, { hash, title, data });
   }
-  
+
   const CUSTOM_ACTION = [
     {
       title: "Nguyên nhân",
@@ -30,7 +51,7 @@ const LeadTookCarePage = () => {
       render: (item) => {
         return (
           <div>
-             <Tag color="orange">{item?.cause}</Tag>
+            <Tag color="orange">{item?.cause}</Tag>
           </div>
         )
       }
@@ -93,7 +114,7 @@ const LeadTookCarePage = () => {
       fixed: 'right',
       render: (record) => (
         <div>
-          <Button color="primary"variant="dashed" onClick={() => onEdit(record)} size='small'>
+          <Button color="primary" variant="dashed" onClick={() => onEdit(record)} size='small'>
             Detail
           </Button>
         </div>
@@ -106,7 +127,7 @@ const LeadTookCarePage = () => {
       return values;
     }
     const data = values.embedded.map(v => {
-      const newItem = {...v?.dataCare, ...v?.data };
+      const newItem = { ...v?.dataCare, ...v?.data };
       return newItem;
     });
     const newData = {
@@ -116,10 +137,10 @@ const LeadTookCarePage = () => {
     return newData;
   }, []);
 
-   const beforeSubmitFilter = useCallback((values) => {
-      dateFormatOnSubmit(values, ['from', 'to']);
-      return values;
-    }, []);
+  const beforeSubmitFilter = useCallback((values) => {
+    dateFormatOnSubmit(values, ['from', 'to']);
+    return values;
+  }, []);
 
   const onCreateLead = () => {
 
@@ -136,7 +157,7 @@ const LeadTookCarePage = () => {
       <RestList
         xScroll={1200}
         onData={onData}
-        initialFilter={{ limit: 10, page: 1, phone: '', cause: '', userId: '', from: '', to: '',}}
+        initialFilter={{ limit: 10, page: 1, phone: '', cause: '', userId: '', from: '', to: '', }}
         filter={<LeadFilter />}
         beforeSubmitFilter={beforeSubmitFilter}
         useGetAllQuery={useGetList}

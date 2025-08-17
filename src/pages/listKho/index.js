@@ -1,3 +1,24 @@
+/**************************************************************************/
+/*  index.js                                                           		*/
+/**************************************************************************/
+/*                       Tệp này là một phần của:                         */
+/*                             Open CDP                                   */
+/*                        https://flast.vn                                */
+/**************************************************************************/
+/* Bản quyền (c) 2025 - này thuộc về các cộng tác viên Flast Solution     */
+/* (xem AUTHORS.md).                                                      */
+/* Bản quyền (c) 2024-2025 Long Huu, Quang Duc, Hung Bui                  */
+/*                                                                        */
+/* Bạn được quyền sử dụng phần mềm này miễn phí cho bất kỳ mục đích nào,  */
+/* bao gồm sao chép, sửa đổi, phân phối, bán lại…                         */
+/*                                                                        */
+/* Chỉ cần giữ nguyên thông tin bản quyền và nội dung giấy phép này trong */
+/* các bản sao.                                                           */
+/*                                                                        */
+/* Đội ngũ phát triển mong rằng phần mềm được sử dụng đúng mục đích và    */
+/* có trách nghiệm                                                        */
+/**************************************************************************/
+
 import React, { useCallback, useEffect, useState } from 'react';
 import { Helmet } from 'react-helmet';
 import CustomBreadcrumb from 'components/BreadcrumbCustom';
@@ -20,7 +41,7 @@ const ListWareHouse = () => {
   const [form] = useForm();
 
   useEffect(() => {
-    if(detailWareHouse) {
+    if (detailWareHouse) {
       form.setFieldsValue({
         name: detailWareHouse?.name,
         mobile: detailWareHouse?.mobile,
@@ -28,8 +49,8 @@ const ListWareHouse = () => {
         area: detailWareHouse?.area,
       })
     }
-  },[form, detailWareHouse])
-  
+  }, [form, detailWareHouse])
+
   const CUSTOM_ACTION = [
     {
       title: "Tên kho",
@@ -117,7 +138,7 @@ const ListWareHouse = () => {
 
   const onHandleCreateWareHouse = async (value) => {
     const data = detailWareHouse ? await RequestUtils.Post('/warehouse/update-stock', value) : await RequestUtils.Post('/warehouse/created-stock', value);
-    if(data.errorCode) {
+    if (data.errorCode) {
       f5List('warehouse/fetch-stock');
       setIsOpen(false);
       InAppEvent.normalSuccess('Tạo kho thành công');
