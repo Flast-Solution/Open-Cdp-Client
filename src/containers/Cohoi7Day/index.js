@@ -1,5 +1,5 @@
 /**************************************************************************/
-/*  Filter.js                                                           	*/
+/*  index.js                                                          		*/
 /**************************************************************************/
 /*                       Tệp này là một phần của:                         */
 /*                             Open CDP                                   */
@@ -19,24 +19,39 @@
 /* có trách nghiệm                                                        */
 /**************************************************************************/
 
-import { Row, Col } from 'antd';
-import FormInput from 'components/form/FormInput';
+import React from 'react';
+import RestEditModal from 'components/RestLayout/RestEditModal';
+import Form7Day from 'containers/Lead3DayForm/Form3Day';
+import RequestUtils from 'utils/RequestUtils';
+import { InAppEvent } from 'utils/FuseUtils';
+import { f5List } from 'utils/dataUtils';
 
-const LeadFilter = () => (
-  <Row gutter={16}>
-    <Col xl={6} lg={6} md={6} xs={24}>
-      <FormInput
-        name={'customerMobile'}
-        placeholder="Số điện thoại"
-      />
-    </Col>
-    <Col xl={6} lg={6} md={6} xs={24}>
-      <FormInput
-        name={'customerEmail'}
-        placeholder="Email"
-      />
-    </Col>
-  </Row>
-)
+const CoHoi7DayForm = ({ data }) => {
 
-export default LeadFilter;
+  const onSubmit = async (values) => {
+    const { priority, cause, action, newFeatures = "", supportRequest = "", ...lead3Day } = values;
+    const { message } = await RequestUtils.Post("/cs/order-update", {
+      priority,
+      cause,
+      action,
+      objectId: data.id,
+      objectType: 'cohoi',
+      lead3Day: { ...lead3Day, newFeatures, supportRequest },
+    });
+    f5List('cs/co-hoi-order-fetch');
+    InAppEvent.normalSuccess(message);
+  }
+
+  return <>
+    <RestEditModal
+      isMergeRecordOnSubmit={false}
+      updateRecord={(values) => values}
+      onSubmit={onSubmit}
+      record={data}
+    >
+      <Form7Day />
+    </RestEditModal>
+  </>
+}
+
+export default CoHoi7DayForm;

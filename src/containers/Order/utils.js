@@ -18,7 +18,18 @@
 /* Đội ngũ phát triển mong rằng phần mềm được sử dụng đúng mục đích và    */
 /* có trách nghiệm                                                        */
 /**************************************************************************/
+import { arrayEmpty } from 'utils/dataUtils';
 
-export const calTotal = async (order) => {
-
+export const renderArrayColor = (datas, colors) => {
+  if (arrayEmpty(datas) || arrayEmpty(colors)) {
+    return "";
+  }
+  if (datas.length !== colors.length) {
+    return ""
+  }
+  return datas.map((item, index) => (
+    <div key={item.id} style={{ color: colors[index]?.color || 'inherit' }}>
+      {item.id} - {item.name}
+    </div>
+  ));
 }

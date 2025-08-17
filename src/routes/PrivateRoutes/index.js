@@ -24,9 +24,7 @@ import { ListUserSystemConfig } from './ListUserSysTemConfig';
 
 /* CSKH */
 import { Lead3DayConfig } from './Lead3DayConfig'
-import { LeadTookCareConfig } from './LeadTookCareConfig';
-import { CohoiTakeConfig } from './CohoiTakeConfig';
-import { CohoiNotTakeConfig } from './CohoiNotTakeConfig';
+import { Cohoi7DayConfig } from './Cohoi7DayConfig';
 import { OrderTakeConfig } from './OrderTakeCareConfig';
 
 /* Kế  toán */
@@ -43,18 +41,16 @@ const routeConfigs = [
     HomeConfig,
     LeadConfig,
     Lead3DayConfig,
-    LeadTookCareConfig,
     CohoiConfig,
     InstockConfig,
     WareHouseConfig,
     CustomerConfig,
     ListAcountConfig,
     ListAcountGroupConfig,
-    CohoiNotTakeConfig,
+    Cohoi7DayConfig,
     DuyetTienConfig,
     ListUserSystemConfig,
     NewfeedConfig,
-    CohoiTakeConfig,
     ShipConfig,
     OrderConfig,
     OrderTakeConfig,

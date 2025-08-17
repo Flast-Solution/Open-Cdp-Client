@@ -52,42 +52,27 @@ import useCollapseSidebar from 'hooks/useCollapseSidebar';
 import { useTranslation } from 'react-i18next';
 import { Link } from "react-router-dom";
 import SideBarStyles from './styles';
-import useGetMe from 'hooks/useGetMe';
 
 function getItem(label, key, icon, children) {
   return { key, icon, children, label };
 }
 const { Sider } = Layout;
-
 const iconSize = { fontSize: 18 };
-const roleUserSale = "ROLE_SALE";
-const roleUserAdmin = "ROLE_ADMIN";
-const roleUser = "ROLE_USER";
 
 function SideBar() {
 
-  const { user: profile } = useGetMe();
   const { t } = useTranslation();
   const { isCollapseSidebar: collapsed, toggleCollapse } = useCollapseSidebar();
-
-  const newRoleUser = profile?.userProfiles?.map(item => item?.type);
-  const hasAdminRole = newRoleUser.some(role => role === roleUserAdmin);
-  const hasSaleRole = newRoleUser.some(role => role === roleUserSale);
-  const hasUserRole = newRoleUser.some(role => role === roleUser);
-  const shouldHideLeadLinks = (hasSaleRole || hasUserRole) && !hasAdminRole;
 
   const items = [
     getItem(<Link to="/sale/report-common">{t('sideBar.dashboard')}</Link>, 'home', <FundViewOutlined />),
     getItem(<Link to="/project/list">Dự án</Link>, 'project_list', <PieChartOutlined />),
     getItem(<Link to="/lead">Lead</Link>, 'tong_lead', <FolderOpenOutlined />),
-
-    !shouldHideLeadLinks && getItem('Chăm sóc K.H', 'chua_cham_soc', <FolderOpenOutlined style={iconSize} />, [
-      getItem(<Link to="/customer-service/lead">Lead</Link>, "lead_chua_cham_doc", <ScheduleOutlined />),
-      getItem(<Link to="/customer-service/co-hoi">Cơ hội</Link>, "co_hoi_chua_cham_soc", <AppstoreOutlined />),
-      getItem(<Link to="/customer-service/hoan-thanh">Đơn hoàn thành</Link>, "don_hang_hoan_thanh", <AuditOutlined />),
-      getItem(<Link to="/customer-service/su-co">Đơn sự cố</Link>, "don_hang_su_co", <ScheduleOutlined />),
-    ].filter(Boolean)),
-
+    getItem('Chăm sóc K.H', 'chua_cham_soc', <FolderOpenOutlined style={iconSize} />, [
+      getItem(<Link to="/customer-service/lead">Lead</Link>, "cs_lead", <ScheduleOutlined />),
+      getItem(<Link to="/customer-service/co-hoi">Cơ hội</Link>, "cs_co_hoi", <AppstoreOutlined />),
+      getItem(<Link to="/customer-service/don-hang">Đơn hàng</Link>, "cs_don_hang", <AuditOutlined />)
+    ]),
     getItem(<Link to="/sale/co-hoi"> Cơ hội </Link>, 'co_hoi', <TagOutlined />),
     getItem('Đơn hàng', 'order_solve', <PaperClipOutlined style={iconSize} />, [
       getItem(<Link to="/sale/order">Tổng hợp</Link>, 'list_order', <UnorderedListOutlined />),

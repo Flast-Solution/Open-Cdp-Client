@@ -37,6 +37,24 @@ const OrderService = {
     this.allStatus = await RequestUtils.GetAsList("/order-status/fetch");
     return this.allStatus;
   },
+  async viewInTable(response) {
+    if (arrayEmpty(response.embedded)) {
+      return response;
+    }
+
+    const listStatus = await this.fetchStatus();
+    const getColorMeta = (item) => {
+      return listStatus.find(i => i.id === item.status) ?? {};
+    }
+
+    for (let item of response.embedded) {
+      const { details } = item;
+      item.products = details.map((detail, id) => ({ id: id + 1, name: detail.productName }));
+      item.detailstatus = details.map((detail, id) => ({ ...getColorMeta(detail), id: id + 1 }));
+      delete item.details;
+    }
+    return { embedded: response.embedded, page: response.page };
+  },
   async getOrderOnEdit(orderId) {
     let response = { customer: null, order: null, data: [] };
     if(!orderId) {
