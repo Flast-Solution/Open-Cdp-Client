@@ -21,7 +21,6 @@
 
 import theme from 'theme';
 import mapKeys from 'lodash/mapKeys';
-import keyBy from 'lodash/keyBy';
 import {
   AudioOutlined,
   FileExcelOutlined,
@@ -30,10 +29,7 @@ import {
   FileTextOutlined,
   FileWordOutlined,
   FileZipOutlined,
-  KeyOutlined,
-  ManOutlined,
-  VideoCameraOutlined,
-  WomanOutlined
+  VideoCameraOutlined
 } from '@ant-design/icons';
 
 export const ACTIVE_TYPES = [
@@ -90,36 +86,13 @@ export const PAYMENT_TYPE_CONST = [
   { label: 'Ncc thu hộ', value: 5 }
 ];
 
-export const GENDERS = [
-  {
-    value: 'male',
-    text: 'gender.male',
-    IconCPN: ManOutlined,
-    color: theme.color.blue,
-  },
-  {
-    value: 'female',
-    text: 'gender.female',
-    IconCPN: WomanOutlined,
-    color: theme.color.red,
-  },
-  {
-    value: 'other',
-    text: 'gender.other',
-    IconCPN: KeyOutlined,
-    color: theme.color.violet,
-  }
+export const PRIORITY_TYPE_TAGS = [
+  { text: 'Cao', value: 'cao', color: 'red' },
+  { text: 'Trung bình', value: 'trungbinh', color: 'purple' },
+  { text: 'Thấp', value: 'thap', color: 'green' }
 ];
-export const GENDERS_MAPS_KEY = keyBy(GENDERS, 'value');
-
-export const CUSTOMERS_TYPE_TAGS = [
-  { text: 'Khách mới', value: 'newCustomer', color: 'red' },
-  { text: 'Visitor', value: 'visitor', color: 'purple' },
-  { text: 'Member', value: 'member', color: 'green' },
-  { text: 'Company', value: 'company', color: 'orange' }
-];
-export const CUSTOMERS_TYPE_TAGS_MAP_KEYS = mapKeys(
-  CUSTOMERS_TYPE_TAGS,
+export const PRIORITY_TYPE_TAGS_MAP_KEYS = mapKeys(
+  PRIORITY_TYPE_TAGS,
   'value',
 );
 

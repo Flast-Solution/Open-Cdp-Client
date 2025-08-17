@@ -25,24 +25,11 @@ import { CopyOutlined } from '@ant-design/icons';
 import RestList from "components/RestLayout/RestList";
 import useGetList from "hooks/useGetList";
 import Filter from './Filter';
-import { arrayEmpty, dateFormatOnSubmit, formatMoney, formatTime } from 'utils/dataUtils';
+import { dateFormatOnSubmit, formatMoney, formatTime } from 'utils/dataUtils';
 import OrderService from 'services/OrderService';
 import { InAppEvent } from 'utils/FuseUtils';
 import { HASH_MODAL } from 'configs';
-
-const renderArrayColor = (datas, colors) => {
-  if (arrayEmpty(datas) || arrayEmpty(colors)) {
-    return "";
-  }
-  if (datas.length !== colors.length) {
-    return ""
-  }
-  return datas.map((item, index) => (
-    <div key={item.id} style={{ color: colors[index]?.color || 'inherit' }}>
-      {item.id} - {item.name}
-    </div>
-  ));
-}
+import { renderArrayColor } from './utils';
 
 const copyToClipboard = (text, setCopiedIndex, index) => {
   navigator.clipboard.writeText(text).then(() => {
@@ -54,7 +41,7 @@ const copyToClipboard = (text, setCopiedIndex, index) => {
 
 const ListOrder = ({ filter }) => {
 
-  const [copiedIndex, setCopiedIndex] = useState(null);
+  const [ copiedIndex, setCopiedIndex ] = useState(null);
   const onClickViewDetail = (customerOrder) => InAppEvent.emit(HASH_MODAL, {
     hash: "#order.tabs",
     title: "Thông tin đơn hàng " + customerOrder.code,
@@ -210,22 +197,7 @@ const ListOrder = ({ filter }) => {
   }, []);
 
   const onData = useCallback(async (response) => {
-    if (arrayEmpty(response.embedded)) {
-      return [];
-    }
-
-    const listStatus = await OrderService.fetchStatus();
-    const getColorMeta = (item) => {
-      return listStatus.find(i => i.id === item.status) ?? {};
-    }
-
-    for (let item of response.embedded) {
-      const { details } = item;
-      item.products = details.map((detail, id) => ({ id: id + 1, name: detail.productName }));
-      item.detailstatus = details.map((detail, id) => ({ ...getColorMeta(detail), id: id + 1 }));
-      delete item.details;
-    }
-    return { embedded: response.embedded, page: response.page };
+    return OrderService.viewInTable(response);
   }, []);
 
   return (

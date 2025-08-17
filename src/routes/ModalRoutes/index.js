@@ -32,7 +32,7 @@ import LeadTakeRouter from './LeadTakeRouter.js';
 import WareHoseRouter from './WareHouseRouter.js';
 import OrderRouter from './UserAccountRouter.js';
 import UserGroupRouter from './UserGroupRouter.js';
-import CohoiNotTakeRouter from './CohoiNotTakeRouter.js';
+import Cohoi7DayRouter from './Cohoi7DayRouter.js';
 import ActionChamSocDonHangRouter from './ChamSocDonHangRouter.js';
 
 const notFoundHash = { Component: () => <div /> };
@@ -45,7 +45,7 @@ const modalRoutes = [
   ...WareHoseRouter,
   ...OrderRouter,
   ...UserGroupRouter,
-  ...CohoiNotTakeRouter,
+  ...Cohoi7DayRouter,
   ...ActionChamSocDonHangRouter
 ]
 
