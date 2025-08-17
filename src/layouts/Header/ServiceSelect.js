@@ -25,7 +25,7 @@ import i18next from 'i18next';
 const { Option } = Select;
 function ServiceSelect({ serviceId, setServiceId }) {
 
-  const locations = [
+  const SEARCH_TYPE = [
     { name: 'Cơ hội', 'link': '/sale/co-hoi' },
     { name: 'Đơn hàng', 'link': '/sale/order' },
     { name: 'Sản phẩm', 'link': '/sale/co-hoi' },
@@ -39,11 +39,12 @@ function ServiceSelect({ serviceId, setServiceId }) {
   return (
     <Select
       value={serviceId}
+      style={{alignItems: 'center'}}
       className="border-none w-160 h-40"
       onChange={onChangeLocation}
       placeholder={i18next.t('services.all')}
     >
-      {locations?.map((item, idx) => (
+      {SEARCH_TYPE?.map((item, idx) => (
         <Option key={String(idx)} value={item?.id}>
           {item?.name}
         </Option>

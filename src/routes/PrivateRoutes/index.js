@@ -27,8 +27,7 @@ import { Lead3DayConfig } from './Lead3DayConfig'
 import { Cohoi7DayConfig } from './Cohoi7DayConfig';
 
 /* Kế  toán */
-import { DuyetTienConfig } from './DuyetTienConfig';
-import { CongnoConfig } from './ConnoConfig';
+import { KeToanConfig } from './KeToanConfig';
 
 /* NewFeed - Quy trình */
 import { NewfeedConfig } from './NewFeedConfig';
@@ -47,12 +46,11 @@ const routeConfigs = [
     ListAcountConfig,
     ListAcountGroupConfig,
     Cohoi7DayConfig,
-    DuyetTienConfig,
+    KeToanConfig,
     ListUserSystemConfig,
     NewfeedConfig,
     ShipConfig,
     OrderConfig,
-    CongnoConfig,
     DragDropConfig
 ];
 

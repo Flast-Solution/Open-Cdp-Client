@@ -1,5 +1,5 @@
 /**************************************************************************/
-/*  index.js                                                           		*/
+/* pages.ketoan.index.js                                                  */
 /**************************************************************************/
 /*                       Tệp này là một phần của:                         */
 /*                             Open CDP                                   */
@@ -24,79 +24,71 @@ import { Button } from 'antd';
 import { Helmet } from 'react-helmet';
 import CustomBreadcrumb from 'components/BreadcrumbCustom';
 import RestList from 'components/RestLayout/RestList';
+import Filter from './Filter';
 import useGetList from "hooks/useGetList";
-import { HASH_MODAL } from 'configs';
-import { InAppEvent } from 'utils/FuseUtils';
-import { cloneDeep } from 'lodash';
 import { dateFormatOnSubmit } from 'utils/dataUtils';
 import { ORDER_COLUMN_ACTION } from 'containers/Order/utils';
-import Filter from './Filter';
+import { HASH_MODAL } from 'configs';
+import { InAppEvent } from 'utils/FuseUtils';
 import OrderService from 'services/OrderService';
-import { useEffectAsync } from 'hooks/MyHooks';
 
-const CoHoi7DayPage = ( { type }) => {
+const CongnoPage = () => {
 
-  const [ title, setTitle ] = useState("");
-  useEffectAsync(() => setTitle(type === 'cohoi' 
-    ? 'Danh sách Cơ hội 7 ngày chưa ra đơn hàng' 
-    : 'Đơn hàng chưa chăm sóc sau bán'
-  ), [type]);
-
-  const onEdit = (item) => {
-    let title = 'Cập nhật mã Cơ hội / Đơn hàng #' + item.code
-    let hash = '#draw/cohoi7Day.edit';
-    let data = cloneDeep(item);
-    InAppEvent.emit(HASH_MODAL, { hash, title, data });
-  }
+	const [ title ] = useState("Đơn hàng chưa thanh toán đủ");
+	const onClickViewDetail = (customerOrder) => InAppEvent.emit(HASH_MODAL, {
+		hash: "#order.tabs",
+		title: "Thông tin đơn hàng " + customerOrder.code,
+		data: { customerOrder }
+	});
 
   const CUSTOM_ACTION = [
-    ...ORDER_COLUMN_ACTION,
-    {
-      title: 'Action',
-      fixed: 'right',
-      width: 100,
-      render: (record) => (
-        <Button
-          type="primary"
-          size="small"
-          onClick={() => onEdit(record)}
-        >
-          Cập nhật
-        </Button>
-      )
-    }
+		...ORDER_COLUMN_ACTION,
+		{
+			title: 'Action',
+			fixed: 'right',
+			width: 100,
+			render: (record) => (
+			<Button
+				type="primary"
+				size="small"
+				onClick={() => onClickViewDetail(record)}
+			>
+				Chi tiết
+			</Button>
+			)
+		}
   ];
 
   const beforeSubmitFilter = useCallback((values) => {
-    dateFormatOnSubmit(values, ['from', 'to']);
-    return values;
+		dateFormatOnSubmit(values, ['from', 'to']);
+		return values;
   }, []);
 
   const onData = useCallback(async (response) => {
-    return OrderService.viewInTable(response);
+		return OrderService.viewInTable(response);
   }, []);
 
   return (
-    <div>
-      <Helmet>
-        <title>{title}</title>
-      </Helmet>
-      <CustomBreadcrumb
-        data={[{ title: 'Trang chủ' }, { title: title }]}
-      />
-      <RestList
-        xScroll={1200}
-        onData={onData}
-        initialFilter={{ limit: 10, page: 1, type }}
-        filter={<Filter />}
-        beforeSubmitFilter={beforeSubmitFilter}
-        useGetAllQuery={useGetList}
-        hasCreate={false}
-        apiPath={'cs/co-hoi-order-fetch'}
-        columns={CUSTOM_ACTION}
-      />
-    </div>
+		<div>
+			<Helmet>
+				<title>{title}</title>
+			</Helmet>
+			<CustomBreadcrumb
+				data={[{ title: 'Trang chủ' }, { title: title }]}
+			/>
+			<RestList
+				xScroll={1200}
+				onData={onData}
+				initialFilter={{ limit: 10, page: 1, type:'order', paidStatus: '0' }}
+				filter={<Filter />}
+				beforeSubmitFilter={beforeSubmitFilter}
+				useGetAllQuery={useGetList}
+				hasCreate={false}
+				apiPath={'order/fetch'}
+				columns={CUSTOM_ACTION}
+			/>
+		</div>
   )
 }
 
-export default CoHoi7DayPage
+export default CongnoPage
