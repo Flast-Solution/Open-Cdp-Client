@@ -35,7 +35,7 @@ const CoHoi7DayForm = ({ data }) => {
       cause,
       action,
       objectId: data.id,
-      objectType: 'cohoi',
+      objectType: data.type,
       lead3Day: { ...lead3Day, newFeatures, supportRequest },
     });
     f5List('cs/co-hoi-order-fetch');

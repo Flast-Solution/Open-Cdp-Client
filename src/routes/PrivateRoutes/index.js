@@ -25,7 +25,6 @@ import { ListUserSystemConfig } from './ListUserSysTemConfig';
 /* CSKH */
 import { Lead3DayConfig } from './Lead3DayConfig'
 import { Cohoi7DayConfig } from './Cohoi7DayConfig';
-import { OrderTakeConfig } from './OrderTakeCareConfig';
 
 /* Kế  toán */
 import { DuyetTienConfig } from './DuyetTienConfig';
@@ -53,7 +52,6 @@ const routeConfigs = [
     NewfeedConfig,
     ShipConfig,
     OrderConfig,
-    OrderTakeConfig,
     CongnoConfig,
     DragDropConfig
 ];

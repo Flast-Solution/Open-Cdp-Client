@@ -32,12 +32,18 @@ import { dateFormatOnSubmit, formatMoney, formatTime } from 'utils/dataUtils';
 import { renderArrayColor } from 'containers/Order/utils';
 import Filter from './Filter';
 import OrderService from 'services/OrderService';
+import { useEffectAsync } from 'hooks/MyHooks';
 
-const CoHoi7DayPage = () => {
+const CoHoi7DayPage = ( { type }) => {
 
-  const [ title ] = useState("Danh sách Cơ hội 7 ngày chưa ra đơn hàng");
+  const [ title, setTitle ] = useState("");
+  useEffectAsync(() => setTitle(type === 'cohoi' 
+    ? 'Danh sách Cơ hội 7 ngày chưa ra đơn hàng' 
+    : 'Đơn hàng chưa chăm sóc sau bán'
+  ), [type]);
+
   const onEdit = (item) => {
-    let title = 'Chăm sóc cơ hội #' + item.code
+    let title = 'Cập nhật mã Cơ hội / Đơn hàng #' + item.code
     let hash = '#draw/cohoi7Day.edit';
     let data = cloneDeep(item);
     InAppEvent.emit(HASH_MODAL, { hash, title, data });
@@ -140,7 +146,7 @@ const CoHoi7DayPage = () => {
       title: 'Action',
       key: 'action',
       fixed: 'right',
-      width: 120,
+      width: 100,
       render: (record) => (
         <Button
           type="primary"
@@ -173,7 +179,7 @@ const CoHoi7DayPage = () => {
       <RestList
         xScroll={1200}
         onData={onData}
-        initialFilter={{ limit: 10, page: 1, type: 'cohoi' }}
+        initialFilter={{ limit: 10, page: 1, type }}
         filter={<Filter />}
         beforeSubmitFilter={beforeSubmitFilter}
         useGetAllQuery={useGetList}
