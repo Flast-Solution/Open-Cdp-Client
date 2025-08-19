@@ -1,5 +1,5 @@
 /**************************************************************************/
-/*  formatFieldUtils.js                                                   */
+/*  LeadTakeRouter.js                                                     */
 /**************************************************************************/
 /*                       Tệp này là một phần của:                         */
 /*                             Open CDP                                   */
@@ -19,54 +19,14 @@
 /* có trách nghiệm                                                        */
 /**************************************************************************/
 
-import i18next from 'i18next';
-import {
-  PAYMENT_STATUS_MAP_KEYS,
-  CONTRACT_TYPES, CONTRACT_STATUS
-} from 'configs/localData';
-import { Tag } from 'antd';
-import { formatDataI18n } from './dataUtils';
-import UserInfo from 'components/common/UserInfo';
+import React from 'react';
 
-export const formatPaymentStatus = (data) => {
-  if (!data) {
-    return null;
+const LeadTakeRouter = [
+  {
+    path: 'leadTake.edit',
+    Component: React.lazy(() => import('containers/LeadTake.js')),
+    modalOptions: { title: '', width: 750 }
   }
-  const restItem = PAYMENT_STATUS_MAP_KEYS[data];
-  return (
-    <Tag color={restItem?.color}>
-      {restItem?.text ? i18next.t(restItem.text) : data}
-    </Tag>
-  );
-};
+];
 
-export const formatContractType = (data) => {
-  const restItem = CONTRACT_TYPES.find(item => item.value === data);
-  return restItem?.text ? (
-    <Tag color={restItem?.color || 'blue'}>{i18next.t(restItem?.text)}</Tag>
-  ) : null;
-};
-
-export const formatContractTemplate = (data) => {
-  return data ? (
-    <Tag color="blue">{formatDataI18n(data.displayName)}</Tag>
-  ) : null;
-};
-
-export const formatContractStatus = (data) => {
-  const contractStatusItem = CONTRACT_STATUS.find(item => item.value === data);
-  return contractStatusItem?.text ? (
-    <Tag color={contractStatusItem.color}>
-      {i18next.t(contractStatusItem.text)}
-    </Tag>
-  ) : null;
-};
-
-export const formatCustomerOrTeamInfo = ({ data, size }) => (
-  <UserInfo
-    item={data}
-    path={`/customer/show?id=${data?.id}`}
-    noteProp="email"
-    size={size}
-  />
-);
+export default LeadTakeRouter;

@@ -1,3 +1,24 @@
+/**************************************************************************/
+/*  index.js                                                              */
+/**************************************************************************/
+/*                       Tệp này là một phần của:                         */
+/*                             Open CDP                                   */
+/*                        https://flast.vn                                */
+/**************************************************************************/
+/* Bản quyền (c) 2025 - này thuộc về các cộng tác viên Flast Solution     */
+/* (xem AUTHORS.md).                                                      */
+/* Bản quyền (c) 2024-2025 Long Huu, Quang Duc, Hung Bui                  */
+/*                                                                        */
+/* Bạn được quyền sử dụng phần mềm này miễn phí cho bất kỳ mục đích nào,  */
+/* bao gồm sao chép, sửa đổi, phân phối, bán lại…                         */
+/*                                                                        */
+/* Chỉ cần giữ nguyên thông tin bản quyền và nội dung giấy phép này trong */
+/* các bản sao.                                                           */
+/*                                                                        */
+/* Đội ngũ phát triển mong rằng phần mềm được sử dụng đúng mục đích và    */
+/* có trách nghiệm                                                        */
+/**************************************************************************/
+
 import { HASH_MODAL, HASH_MODAL_CLOSE } from 'configs';
 import { useEffect, useMemo, useState, useCallback } from 'react';
 import { InAppEvent } from 'utils/FuseUtils';
@@ -27,7 +48,7 @@ const modalRoutes = [
 ]
 
 const getModalRoute = (urlHash) => {
-  if(!urlHash) {
+  if (!urlHash) {
     return notFoundHash;
   }
   const iHash = urlHash.replaceAll('/', '.')
@@ -35,7 +56,7 @@ const getModalRoute = (urlHash) => {
   if (!modalRoute) {
     return notFoundHash;
   }
-  if(modalRoute['Component']) {
+  if (modalRoute['Component']) {
     return modalRoute;
   }
   const route = modalRoute.routes.find(route => iHash.includes(route.path));
@@ -44,16 +65,16 @@ const getModalRoute = (urlHash) => {
 
 function ModalRoutes() {
 
-  const [ params, setParams ] = useState({ open: false });
-  const handleEventDraw = useCallback( ({ hash, data, title }) => {
+  const [params, setParams] = useState({ open: false });
+  const handleEventDraw = useCallback(({ hash, data, title }) => {
     setParams({ open: true, hash, data, title });
   }, []);
 
-  const handleCloseDraw = useCallback( () => {
-    setParams({open: false});
+  const handleCloseDraw = useCallback(() => {
+    setParams({ open: false });
   }, []);
 
-  useEffect( () => {
+  useEffect(() => {
     InAppEvent.addEventListener(HASH_MODAL, handleEventDraw);
     InAppEvent.addEventListener(HASH_MODAL_CLOSE, handleCloseDraw);
     return () => {
@@ -63,7 +84,7 @@ function ModalRoutes() {
   }, [handleEventDraw, handleCloseDraw]);
 
   const closeModal = useCallback(() => {
-    setParams({open: false})
+    setParams({ open: false })
   }, []);
 
   const ModalRoute = useMemo(

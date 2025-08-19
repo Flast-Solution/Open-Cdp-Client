@@ -1,3 +1,24 @@
+/**************************************************************************/
+/*  index.js                                                           		*/
+/**************************************************************************/
+/*                       Tệp này là một phần của:                         */
+/*                             Open CDP                                   */
+/*                        https://flast.vn                                */
+/**************************************************************************/
+/* Bản quyền (c) 2025 - này thuộc về các cộng tác viên Flast Solution     */
+/* (xem AUTHORS.md).                                                      */
+/* Bản quyền (c) 2024-2025 Long Huu, Quang Duc, Hung Bui                  */
+/*                                                                        */
+/* Bạn được quyền sử dụng phần mềm này miễn phí cho bất kỳ mục đích nào,  */
+/* bao gồm sao chép, sửa đổi, phân phối, bán lại…                         */
+/*                                                                        */
+/* Chỉ cần giữ nguyên thông tin bản quyền và nội dung giấy phép này trong */
+/* các bản sao.                                                           */
+/*                                                                        */
+/* Đội ngũ phát triển mong rằng phần mềm được sử dụng đúng mục đích và    */
+/* có trách nghiệm                                                        */
+/**************************************************************************/
+
 import React, { useCallback, useEffect, useState } from 'react';
 import { Helmet } from 'react-helmet';
 import CustomBreadcrumb from 'components/BreadcrumbCustom';
@@ -19,16 +40,16 @@ import { CHANNEL_SOURCE_MAP_KEYS } from 'configs/localData';
 
 const LeadPage = () => {
 
-  const [ form ] = Form.useForm();
-  const [ title ] = useState("Danh sách Lead");
-  const [ listSale, setListSale ] = useState([]);
-  const [ detailRecord, setDetailRecord ] = useState({});
-  const [ listServices, setlistServices ] = useState([])
+  const [form] = Form.useForm();
+  const [title] = useState("Danh sách Lead");
+  const [listSale, setListSale] = useState([]);
+  const [detailRecord, setDetailRecord] = useState({});
+  const [listServices, setlistServices] = useState([])
 
   useEffect(() => {
     RequestUtils.GetAsList('/service/list').then(setlistServices);
     RequestUtils.GetAsList('/user/list-name-id').then(setListSale);
-  },[])
+  }, [])
 
   useEffect(() => {
     form.setFieldsValue({ saleId: detailRecord?.saleId })
@@ -36,9 +57,9 @@ const LeadPage = () => {
 
   const onEdit = (item) => {
     let data = cloneDeep(item);
-    InAppEvent.emit(HASH_MODAL, { 
-      hash: '#draw/lead.edit', 
-      title: 'Cập nhật lead #' + item.id, 
+    InAppEvent.emit(HASH_MODAL, {
+      hash: '#draw/lead.edit',
+      title: 'Cập nhật lead #' + item.id,
       data: {
         record: data,
         listServices,
@@ -48,8 +69,8 @@ const LeadPage = () => {
   }
 
   let navigate = useNavigate();
-  const onCreateOpportunity = useCallback(({id}) => {
-    navigate(RequestUtils.generateUrlGetParams("/sale/ban-hang", {dataId: id}));
+  const onCreateOpportunity = useCallback(({ id }) => {
+    navigate(RequestUtils.generateUrlGetParams("/sale/ban-hang", { dataId: id }));
   }, [navigate]);
 
   const CUSTOM_ACTION = [
@@ -110,9 +131,9 @@ const LeadPage = () => {
       width: 100,
       fixed: 'right',
       render: (record) => (
-       <Button 
-          color="danger" 
-          variant="dashed" onClick={() => onCreateOpportunity(record)} 
+        <Button
+          color="danger"
+          variant="dashed" onClick={() => onCreateOpportunity(record)}
           size='small'
         >
           Tạo cơ hội
@@ -126,13 +147,13 @@ const LeadPage = () => {
       ellipsis: true,
       render: (record) => (
         <div style={{ display: 'flex', gap: 20 }}>
-          <Tooltip style={{cursor: 'pointer'}} title="Chuyển sale">
+          <Tooltip style={{ cursor: 'pointer' }} title="Chuyển sale">
             <UserAddOutlined style={{ color: '#1677ff', fontSize: 16 }} onClick={() => {
               setDetailRecord(record)
-            }}/>
+            }} />
           </Tooltip>
-          <Tooltip style={{cursor: 'pointer'}} title={'Cập nhật'}>
-            <SelectOutlined style={{ color: '#1677ff', fontSize: 16 }} onClick={() => onEdit(record)}/>
+          <Tooltip style={{ cursor: 'pointer' }} title={'Cập nhật'}>
+            <SelectOutlined style={{ color: '#1677ff', fontSize: 16 }} onClick={() => onEdit(record)} />
           </Tooltip>
         </div>
       )
@@ -188,14 +209,14 @@ const LeadPage = () => {
         columns={CUSTOM_ACTION}
       />
 
-      <ModaleStyles 
+      <ModaleStyles
         title={
           <div style={{ color: '#fff' }}>
             Chọn sale chăm sóc lead
           </div>
         }
-        open={(detailRecord?.id ?? 0) !== 0} 
-        footer={<NoFooter />} 
+        open={(detailRecord?.id ?? 0) !== 0}
+        footer={<NoFooter />}
         onCancel={() => setDetailRecord({})}
       >
         <div style={{ padding: 15 }}>
