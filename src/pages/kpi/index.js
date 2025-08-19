@@ -28,7 +28,6 @@ import { HASH_POPUP } from 'configs/constant';
 import ListLayoutStyles from 'components/RestLayout/RestList/styles';
 import { useEffectAsync } from 'hooks/MyHooks';
 import RequestUtils from 'utils/RequestUtils';
-import { f5List } from 'utils/dataUtils';
 
 const TITLE = "Thiết lập KPI";
 const KpiPage = () => {
