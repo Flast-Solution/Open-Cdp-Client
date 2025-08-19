@@ -3,7 +3,6 @@ import { random } from "lodash";
 import { InAppEvent } from "utils/FuseUtils";
 import { ACTIONS, CHANGE_STORE } from "configs";
 import moment from 'moment';
-import { DISCOUNT_UNIT_CONST } from 'configs/localData';
 import dayjs from 'dayjs';
 
 export const formatDataI18n = ( displayName, name ) => {
@@ -77,7 +76,7 @@ export const dateFormatForm = (entity, propertes = [], format) => {
 
 export const dateFormatOnSubmit = (entity, propertes = [], format = "YYYY-MM-DD HH:mm:ss") => {
 	if(typeof(entity) !== 'object') {
-		return dayjs(entity).format(format); // Trường hợp là timestamp đơn lẻ
+		return dayjs(entity).format(format);
 	}
 	for(let k of propertes) {
 		const value = entity[k];
@@ -91,13 +90,6 @@ export const dateFormatOnSubmit = (entity, propertes = [], format = "YYYY-MM-DD 
 export const formatTime = (text, fm = "DD-MM-YYYY") => text ? moment(new Date(text)).format(fm) : 'N/a';
 export const formatMoney = (x) => x ? x.toLocaleString('it-IT') + ' đ' : '0 đ';
 export const calVat = ({ total, vatPercent }) => (total || 0) * (vatPercent / 100);
-export const getDiscountAmount = ({
-    discountValue,
-    discountUnit,
-    estimatedAmount
-}) => {
-    return formatMoney(discountAsNumber({ discountUnit, discountValue, total: estimatedAmount }));
-};
 
 export const discountAsNumber = ({ discountUnit, discountValue, total }) => {
     if(!discountUnit || !discountValue) {
@@ -105,17 +97,6 @@ export const discountAsNumber = ({ discountUnit, discountValue, total }) => {
     }
     return discountUnit === 'percent' ? (Number(discountValue) / 100) * Number(total) : discountValue
 }
-
-export const getDiscount = ({
-    discountValue,
-    discountUnit
-}) => {
-return discountValue && discountUnit
-    ? `${formatMoney(discountValue)} ${
-        DISCOUNT_UNIT_CONST[discountUnit]?.text
-    }`
-    : '0 VND';
-};
 
 export const checkValidParentInboxId = (inboxId) => inboxId && inboxId !== 'parent';
 export const checkValidInboxId = (inboxId) => inboxId && inboxId !== 'inbox';
@@ -132,4 +113,3 @@ export const getUserAvatarInbox = (item) => {
 
 export const formatTimeSubmit = (time) =>
   time ? moment(time).toISOString() : null;
-

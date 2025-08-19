@@ -7,7 +7,6 @@ import ProductRoute from './ProductRoute.js';
 import OrderRoute from './OrderRoute';
 import LeadRoute from './LeadRouter.js';
 import Lead3DayRouter from './Lead3DayRouter.js';
-import LeadTakeRouter from './LeadTakeRouter.js';
 import WareHoseRouter from './WareHouseRouter.js';
 import OrderRouter from './UserAccountRouter.js';
 import UserGroupRouter from './UserGroupRouter.js';
@@ -20,7 +19,6 @@ const modalRoutes = [
   ...OrderRoute,
   ...LeadRoute,
   ...Lead3DayRouter,
-  ...LeadTakeRouter,
   ...WareHoseRouter,
   ...OrderRouter,
   ...UserGroupRouter,

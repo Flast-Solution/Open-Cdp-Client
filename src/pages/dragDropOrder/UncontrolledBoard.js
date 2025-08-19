@@ -77,9 +77,9 @@ const generateDataInBoard = (datas, columns) => {
 
 const UncontrolledBoard = () => {
 
-  const [dataOrigin, setDataOrigin] = useState([]);
-  const [dataInBoard, setDataInBoard] = useState([]);
-  const [listStatus, setListStatus] = useState([]);
+  const [ dataOrigin, setDataOrigin ] = useState([]);
+  const [ dataInBoard, setDataInBoard ] = useState([]);
+  const [ listStatus, setListStatus ] = useState([]);
 
   useEffectAsync(async () => {
     const dataStatus = await RequestUtils.GetAsList("/order-status/fetch");

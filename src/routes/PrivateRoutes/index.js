@@ -5,6 +5,7 @@ import FuseUtils from 'utils/FuseUtils';
 import { LoginConfig } from './AuthConfig';
 import { HomeConfig } from './HomeConfig';
 import { ProductConfig } from './ProductConfig';
+import { KpiConfig } from './KpiConfig';
 
 /* Lead - Cơ hội - Đơn hàng */
 import { LeadConfig } from './LeadConfig';
@@ -35,6 +36,7 @@ import { DragDropConfig } from './DragDropOrderConfig';
 
 const routeConfigs = [
     LoginConfig,
+    KpiConfig,
     ProductConfig,
     HomeConfig,
     LeadConfig,

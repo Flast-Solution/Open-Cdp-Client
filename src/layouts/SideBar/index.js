@@ -93,7 +93,7 @@ function SideBar() {
       getItem(<Link to="/ship"> Giao hàng </Link>, 'da-giao-theo-don', <GiftOutlined />),
       getItem(<Link to="/warehouse/danh-sach-kho">Danh sách kho</Link>, 'd.s.kho', <DeploymentUnitOutlined />)
     ]),
-    getItem(<Link to="/sale-kpi/list"> Kpi</Link>, 'Kpi', <RiseOutlined />),
+    getItem(<Link to="/kpi"> Kpi</Link>, 'Kpi', <RiseOutlined />),
     getItem(<Link to="/data/bot-collection">Bot dữ liệu</Link>, 'bot_data', <PullRequestOutlined />),
     getItem(<Link to="/product"> Sản phẩm</Link>, 'product_list', <UngroupOutlined />),
     getItem('Tài khoản', 'tai_khoan', <UserOutlined />, [

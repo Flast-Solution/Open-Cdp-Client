@@ -8,6 +8,7 @@ import { createGlobalStyle } from 'styled-components';
 import Order from './Order';
 import NhapKho from './NhapKho';
 import Cusomter from './Customer';
+import KPI from './KPI';
 
 const CustomModalStyles = createGlobalStyle`
   .custom-modal {
@@ -24,7 +25,8 @@ const CustomModalStyles = createGlobalStyle`
 const modalRoutes = [
   ...Order,
   ...NhapKho,
-  ...Cusomter
+  ...Cusomter,
+  ...KPI
 ];
 
 const getPopupRoute = (currentModal) => {

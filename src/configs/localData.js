@@ -70,11 +70,12 @@ export const CHANNEL_STATUS = [
 ];
 export const CHANNEL_STATUS_MAP_KEYS = mapKeys(CHANNEL_STATUS, 'id');
 
-export const DISCOUNT_UNIT_CONST = [
-  { text: 'Tiền mặt', value: 'money' },
-  { text: 'Phần trăm', value: 'percent' }
+export const KPI_TYPE = [
+  { text: 'Doanh số', value: 'doanhso' },
+  { text: 'SQL', value: 'sql' },
+  { text: 'Trafic', value: 'trafic' }
 ]
-export const DISCOUNT_MAP_KEYS = mapKeys(DISCOUNT_UNIT_CONST, 'value');
+export const KPI_TYPE_MAP_KEYS = mapKeys(KPI_TYPE, 'value');
 
 export const PAYMENT_TYPE_CONST = [
   { label: 'Tiền mặt', value: 6 },

@@ -36,9 +36,9 @@ import FileUploadView from "components/common/File/FileUploadView";
 
 const EnterpriseForm = ({ customerOrder }) => {
 
-  const [form] = Form.useForm();
-  const [filesUrl, setFileUrls] = useState([]);
-  const [multiPathFile, setMultiPathFile] = useState([]);
+  const [ form ] = Form.useForm();
+  const [ filesUrl, setFileUrls ] = useState([]);
+  const [ multiPathFile, setMultiPathFile ] = useState([]);
 
   const propsFile = {
     name: 'file',
