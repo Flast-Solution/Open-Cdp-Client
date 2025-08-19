@@ -38,7 +38,7 @@ const KpiPage = () => {
 
   const onClickAddKPI = useCallback(() => {
     const onAfterSubmit = (values) => {
-      f5List("kpi/fetch");
+      fetchKPI();
     };
     InAppEvent.emit(HASH_POPUP, {
       hash: "kpi.add",
