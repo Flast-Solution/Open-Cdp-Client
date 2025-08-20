@@ -39,7 +39,7 @@ const LeadCollectionForm = ({ data }) => {
         <Col md={12} xs={24}>
           <FormInput
             required
-            name={'number'}
+            name={'mobile'}
             label="SĐT"
             placeholder="Nhập SĐT"
           />

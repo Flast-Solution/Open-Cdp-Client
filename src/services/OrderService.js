@@ -45,6 +45,7 @@ export const getWarehouseByProduct = (mSkuDetails, mProduct) => {
 
 const OrderService = {
   allStatus: [],
+  allService: [],
   getListOrderName() {
     return [
       { name: "Bán lẻ", color: "rgb(0, 176, 216)" },
@@ -55,8 +56,16 @@ const OrderService = {
     this.allStatus = [];
   },
   async fetchStatus() {
-    this.allStatus = await RequestUtils.GetAsList("/order-status/fetch");
+    if(arrayEmpty(this.allStatus)) {
+      this.allStatus = await RequestUtils.GetAsList("/order-status/fetch");
+    }
     return this.allStatus;
+  },
+  async fetchService() {
+    if(arrayEmpty(this.allService)) {
+      this.allService = await RequestUtils.GetAsList("/service/list");
+    }
+    return this.allService;
   },
   async viewInTable(response) {
     if (arrayEmpty(response.embedded)) {
