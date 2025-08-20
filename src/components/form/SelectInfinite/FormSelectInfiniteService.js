@@ -1,5 +1,5 @@
 /**************************************************************************/
-/*  LeadConfig.js                                                         */
+/*  FormSelectInfiniteProvince.js                                         */
 /**************************************************************************/
 /*                       Tệp này là một phần của:                         */
 /*                             Open CDP                                   */
@@ -19,16 +19,21 @@
 /* có trách nghiệm                                                        */
 /**************************************************************************/
 
-import React from 'react';
-import { authRoles } from 'auth';
+import { useGetServiceQuery } from 'hooks/useData';
+import FormSelectInfinite from './FormSelectInfinite';
 
-const LeadPage = React.lazy(() => import('pages/lead'));
-const BotPage = React.lazy(() => import('pages/lead/Bot'));
-
-export const LeadConfig = {
-    auth: authRoles.user,
-    routes: [
-        { path: '/lead', element: <LeadPage /> },
-        { path: '/bot', element: <BotPage /> }
-    ]
+const FormSelectInfiniteService = ({ name, ...props }) => {
+  return (
+    <FormSelectInfinite
+      useGetAllQuery={useGetServiceQuery}
+      name={name || "serviceId"}
+      valueProp="id"
+      titleProp="name"
+      searchKey="name"
+      filterField="id"
+      {...props}
+    />
+  );
 };
+
+export default FormSelectInfiniteService;

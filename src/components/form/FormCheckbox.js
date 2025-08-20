@@ -25,6 +25,7 @@ import { useTranslation } from 'react-i18next';
 const FormCheckbox = ({
   name,
   label,
+  text,
   rules = [],
   formItemProps,
   initialValue,
@@ -43,7 +44,7 @@ const FormCheckbox = ({
       rules={rules}
       valuePropName="checked"
     >
-      <Checkbox {...props} />
+      <Checkbox {...props}> {text} </Checkbox>
     </Form.Item>
   );
 };

@@ -20,7 +20,7 @@
 /**************************************************************************/
 
 import React, { useState, useCallback } from 'react'
-import { Button, Pagination, Row, Tooltip, Tag } from 'antd';
+import { Button, Pagination, Row, Col, Tooltip, Tag } from 'antd';
 import { ClockCircleOutlined } from '@ant-design/icons';
 import { Helmet } from 'react-helmet';
 import CustomBreadcrumb from 'components/BreadcrumbCustom';
@@ -29,7 +29,7 @@ import { HASH_POPUP } from 'configs/constant';
 import ListLayoutStyles from 'components/RestLayout/RestList/styles';
 import { useEffectAsync } from 'hooks/MyHooks';
 import RequestUtils from 'utils/RequestUtils';
-import { arrayEmpty, arrayNotEmpty, formatMoney } from 'utils/dataUtils';
+import { arrayEmpty, formatMoney } from 'utils/dataUtils';
 import {
   KanbanCardWrapper,
   TitleWrapper,
@@ -105,14 +105,17 @@ const KpiPage = () => {
       <CustomBreadcrumb
         data={[{ title: 'Trang chủ' }, { title: TITLE }]}
       />
-      <div style={{ display: 'flex', justifyContent: 'end', marginBottom: 20 }}>
+      <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: 20 }}>
+        <h3>Bảng KPI trong tháng {filter.month}</h3>
         <Button type="primary" onClick={onClickAddKPI}>Thêm mới KPI</Button>
       </div>
       <ListLayoutStyles>
         <Row gutter={16} >
-          {arrayNotEmpty(data.embedded) ?
-            data.embedded.map(item => <KPICard onAdd={onClickAddKPI} key={item.id} item={item} />) : ""
-          }
+          {(data?.embedded || []).map(item => 
+            <Col key={item.id}>
+              <KPICard onAdd={onClickAddKPI} item={item} />
+            </Col>
+          )}
         </Row>
         <div className="list-layout__pagination-bottom">
           <Pagination {...mPageProps} onChange={onChangePagination} />

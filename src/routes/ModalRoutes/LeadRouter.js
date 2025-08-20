@@ -23,6 +23,11 @@ import React from 'react';
 
 const LeadRoute = [
   {
+    path: 'lead.collection',
+    Component: React.lazy(() => import('containers/Lead/LeadCollectionForm')),
+    modalOptions: { title: '', width: 750 }
+  },
+  {
     path: 'lead.edit',
     Component: React.lazy(() => import('containers/Lead')),
     modalOptions: { title: '', width: 750 }

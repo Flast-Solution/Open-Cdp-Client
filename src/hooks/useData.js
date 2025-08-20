@@ -109,4 +109,7 @@ export const useGetShipStatusQuery = ({ queryParams, onCompleted }) =>
 export const useGetOrderCodeQuery = ({ queryParams, onCompleted }) =>
 	useData({ queryParams, onCompleted, api: 'order/fetch' });
 
+export const useGetServiceQuery = ({ queryParams, onCompleted }) =>
+	useData({ queryParams, onCompleted, api: 'service/list' });
+
 export default useData;

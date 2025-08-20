@@ -35,88 +35,51 @@ import RequestUtils from 'utils/RequestUtils';
 
 const ListWareHouse = () => {
 
-  const [title] = useState("Danh sách kho");
-  const [isOpen, setIsOpen] = useState(false);
-  const [detailWareHouse, setDetailWareHouse] = useState({});
-  const [form] = useForm();
+  const [ title ] = useState("Danh sách kho");
+  const [ isOpen, setIsOpen ] = useState(false);
+  const [ detailWareHouse, setDetailWareHouse ] = useState({});
+  const [ form ] = useForm();
 
   useEffect(() => {
-    if (detailWareHouse) {
-      form.setFieldsValue({
-        name: detailWareHouse?.name,
-        mobile: detailWareHouse?.mobile,
-        address: detailWareHouse?.address,
-        area: detailWareHouse?.area,
-      })
-    }
+    form.setFieldsValue(detailWareHouse);
   }, [form, detailWareHouse])
 
   const CUSTOM_ACTION = [
     {
       title: "Tên kho",
-      ataIndex: 'status',
+      dataIndex: 'name',
       width: 200,
-      ellipsis: true,
-      render: (item) => {
-        return (
-          <div>
-            {item?.name}
-          </div>
-        )
-      }
+      ellipsis: true
     },
     {
       title: "Số điện thoại",
-      ataIndex: 'mobile',
+      dataIndex: 'mobile',
       width: 200,
-      ellipsis: true,
-      render: (item) => {
-        return (
-          <div>
-            {item?.mobile}
-          </div>
-        )
-      }
+      ellipsis: true
     },
     {
       title: "Địa chỉ",
-      ataIndex: 'address',
+      dataIndex: 'address',
       width: 200,
-      ellipsis: true,
-      render: (item) => {
-        return (
-          <div>
-            {item?.address || 'N/A'}
-          </div>
-        )
-      }
+      ellipsis: true
     },
     {
       title: "Khu vực",
-      ataIndex: 'area',
+      dataIndex: 'area',
       width: 200,
-      ellipsis: true,
-      render: (item) => {
-        return (
-          <div>
-            {item?.area}
-          </div>
-        )
-      }
+      ellipsis: true
     },
     {
       title: "Thao tác",
       width: 120,
       fixed: 'right',
       render: (record) => (
-        <div>
-          <Button color="primary" variant="dashed" size='small' onClick={() => {
-            setDetailWareHouse(record)
-            setIsOpen(true)
-          }}>
-            Update
-          </Button>
-        </div>
+        <Button color="primary" variant="dashed" size='small' onClick={() => {
+          setDetailWareHouse(record)
+          setIsOpen(true)
+        }}>
+          Update
+        </Button>
       )
     }
   ];
@@ -164,13 +127,14 @@ const ListWareHouse = () => {
         customClickCreate={onCreateLead}
         columns={CUSTOM_ACTION}
       />
-      <ModaleStyles title={
-        <div style={{ color: '#fff' }}>
-          Tạo kho
-        </div>
-      } open={isOpen} footer={false} onCancel={() => {
-        setIsOpen(false);
-      }}>
+      <ModaleStyles 
+        title={<div style={{ color: '#fff' }}>Tạo kho</div>}
+        open={isOpen} 
+        footer={false} 
+        onCancel={() => {
+          setIsOpen(false);
+        }}
+      >
         <div style={{ padding: 15 }}>
           <Form
             name="basic"
