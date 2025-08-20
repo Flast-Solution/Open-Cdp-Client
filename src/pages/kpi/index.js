@@ -89,8 +89,8 @@ const KpiPage = () => {
     /* eslint-disable-next-line */
   }, []);
 
-  const paginationResult = {
-    current: data?.current ?? 1,
+  const mPageProps = {
+    current: filter?.page ?? 1,
     pageSize: 10,
     total: data?.page?.totalElements ?? 0,
     showQuickJumper: false,
@@ -115,7 +115,7 @@ const KpiPage = () => {
           }
         </Row>
         <div className="list-layout__pagination-bottom">
-          <Pagination {...paginationResult} onChange={onChangePagination} />
+          <Pagination {...mPageProps} onChange={onChangePagination} />
         </div>
       </ListLayoutStyles>
     </div>
