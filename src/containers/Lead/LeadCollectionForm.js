@@ -1,5 +1,5 @@
-import React from 'react';
-import { Row, Col, Form } from 'antd';
+import React, { useEffect } from 'react';
+import { Row, Col, Form, message } from 'antd';
 import FormSelectInfiniteProduct from 'components/form/SelectInfinite/FormSelectInfiniteProduct';
 import FormSelectInfiniteService from 'components/form/SelectInfinite/FormSelectInfiniteService';
 import FormSelect from 'components/form/FormSelect';
@@ -8,11 +8,24 @@ import FormInput from 'components/form/FormInput';
 import { CHANNEL_SOURCE } from 'configs/localData';
 import FormHidden from 'components/form/FormHidden';
 import FormTextArea from 'components/form/FormTextArea';
+import RequestUtils from 'utils/RequestUtils';
+import { f5List } from 'utils/dataUtils';
 
 const LeadCollectionForm = ({ data }) => {
   const [ form ] = Form.useForm();
+
+  useEffect(() => {
+    form.setFieldsValue(data);
+  }, [data, form]);
+
+  const onFinish = async (values) => {
+    const { message: MSG } = await RequestUtils.Post("/data-collection/save", values);
+    f5List("data-collection/fetch");
+    message.info(MSG);
+  }
+
   return (
-    <Form form={form} layout='vertical'>
+    <Form form={form} layout='vertical' onFinish={onFinish}>
       <Row gutter={16} style={{marginTop: 20}}>
         <FormHidden name={'id'} />
         <Col md={12} xs={24}>
