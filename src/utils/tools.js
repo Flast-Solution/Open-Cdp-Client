@@ -21,15 +21,6 @@
 
 import { GATEWAY } from 'configs';
 import { pickBy, identity } from 'lodash'
-import { notification } from 'antd';
-import i18next from 'i18next';
-
-export const showMeesageError = (description) => {
-  notification.error({
-    message: i18next.t('error.title'),
-    description: i18next.t(description),
-  });
-};
 
 export const getQueryParamsFromUrl = (url) => {
   if (!url) {

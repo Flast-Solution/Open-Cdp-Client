@@ -19,6 +19,7 @@
 /* có trách nghiệm                                                        */
 /**************************************************************************/
 
+import { useEffect } from "react";
 import { Form, Row, Col, message } from "antd";
 import FormHidden from "components/form/FormHidden";
 import CustomButton from "components/CustomButton";
@@ -31,7 +32,6 @@ import { KPI_TYPE } from "configs/localData";
 import FormDatePicker from "components/form/FormDatePicker";
 import { dateFormatOnSubmit } from "utils/dataUtils";
 import RequestUtils from "utils/RequestUtils";
-import { useEffect } from "react";
 
 const KPIForm = ({ onSave, kpi }) => {
 

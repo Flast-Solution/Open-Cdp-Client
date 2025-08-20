@@ -20,7 +20,8 @@
 /**************************************************************************/
 
 import React, { useState, useCallback } from 'react'
-import { Button, Pagination } from 'antd';
+import { Button, Pagination, Row, Tooltip, Tag } from 'antd';
+import { ClockCircleOutlined } from '@ant-design/icons';
 import { Helmet } from 'react-helmet';
 import CustomBreadcrumb from 'components/BreadcrumbCustom';
 import { InAppEvent } from 'utils/FuseUtils';
@@ -28,28 +29,56 @@ import { HASH_POPUP } from 'configs/constant';
 import ListLayoutStyles from 'components/RestLayout/RestList/styles';
 import { useEffectAsync } from 'hooks/MyHooks';
 import RequestUtils from 'utils/RequestUtils';
+import { arrayEmpty, arrayNotEmpty, formatMoney } from 'utils/dataUtils';
+import {
+  KanbanCardWrapper,
+  TitleWrapper,
+  Title,
+  NoteIcon,
+  MetaInfo,
+  TagsContainer,
+  DateText,
+  AssigneeAvatar,
+  getInitials
+} from 'css/cardStyle';
+import UserService from 'services/UserService';
 
 const TITLE = "Thiết lập KPI";
+const CURRENT_DATE = new Date();
+
 const KpiPage = () => {
 
   const [ data, setKPI ] = useState({});
-  const [ filter ] = useState({});
+  const [ filter ] = useState({ 
+    month: CURRENT_DATE.getMonth() + 1, 
+    year: CURRENT_DATE.getFullYear()
+  });
 
-  const onClickAddKPI = useCallback(() => {
+  const fetchKPI = useCallback(async (params = {}) => {
+    const { data } = await RequestUtils.Get("/kpi/fetch", {...filter, ...params});
+    if(arrayEmpty(data.embedded)) {
+      return;
+    }
+    const { embedded } = data;
+    const userIds = embedded.map(i => i.userId);
+    const mUser = await UserService.mapId2Name(userIds);
+    for(let item of embedded) {
+      item.ssoId = mUser[item.userId];
+      item.inTime = new Date(String(item.year).concat("-").concat(item.month).concat("-01"));
+    }
+    setKPI(data);
+  }, [ filter ]);
+  
+  const onClickAddKPI = useCallback((kpi = {}) => {
     const onAfterSubmit = (values) => {
       fetchKPI();
     };
     InAppEvent.emit(HASH_POPUP, {
       hash: "kpi.add",
       title: "Thiết lập KPI mới",
-      data: { onSave: onAfterSubmit }
+      data: { onSave: onAfterSubmit, kpi }
     });
-  }, []);
-
-  const fetchKPI = useCallback(async (params = {}) => {
-    const { data } = await RequestUtils.Get("/kpi/fetch", params);
-    setKPI(data);
-  }, []);
+  }, [fetchKPI]);
 
   useEffectAsync( async() => {
     fetchKPI();
@@ -58,7 +87,7 @@ const KpiPage = () => {
   const onChangePagination = useCallback(async (page) => {
     fetchKPI();
     /* eslint-disable-next-line */
-  }, [ filter ]);
+  }, []);
 
   const paginationResult = {
     current: data?.current ?? 1,
@@ -80,11 +109,45 @@ const KpiPage = () => {
         <Button type="primary" onClick={onClickAddKPI}>Thêm mới KPI</Button>
       </div>
       <ListLayoutStyles>
+        <Row gutter={16} >
+          {arrayNotEmpty(data.embedded) ?
+            data.embedded.map(item => <KPICard onAdd={onClickAddKPI} key={item.id} item={item} />) : ""
+          }
+        </Row>
         <div className="list-layout__pagination-bottom">
           <Pagination {...paginationResult} onChange={onChangePagination} />
         </div>
       </ListLayoutStyles>
     </div>
+  )
+}
+
+const KPICard = ({ item, onAdd }) => {
+  const { listKpi } = item;
+  return (
+    <KanbanCardWrapper>
+      <TitleWrapper>
+        <Title ellipsis={{ tooltip: 'Sửa KPI' }}>
+          {item.ssoId}
+        </Title>
+        <Tooltip title="KPI tháng">
+          <NoteIcon onClick={() => onAdd(item)} />
+        </Tooltip>
+      </TitleWrapper>
+      { listKpi?.map( (kpi, key) => (
+        <MetaInfo key={key} style={{marginBottom: 10}}>
+          <TagsContainer>
+            <DateText>📅 {item.month} - {item.year}</DateText>
+            <Tag icon={<ClockCircleOutlined />} color="default" style={{ fontSize: '12px', padding: '0 8px' }}>
+              {formatMoney(kpi.target)}
+            </Tag>
+          </TagsContainer>
+          <AssigneeAvatar>
+            {getInitials(kpi.name)}
+          </AssigneeAvatar>
+        </MetaInfo>
+      ))}
+    </KanbanCardWrapper>
   )
 }
 
