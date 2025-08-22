@@ -23,9 +23,12 @@ import React from 'react';
 import { authRoles } from 'auth';
 
 const HomePage = React.lazy(() => import('pages/home'));
-export const HomeConfig = {
+const TaskPage = React.lazy(() => import('pages/task'));
+
+export const CommonConfig = {
     auth: authRoles.user,
     routes: [
-        { path: '/', element: <HomePage /> }
+        { path: '/', element: <HomePage /> },
+        { path: '/task', element: <TaskPage /> }
     ]
 };

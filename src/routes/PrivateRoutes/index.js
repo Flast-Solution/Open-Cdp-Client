@@ -24,7 +24,7 @@ import { Navigate } from 'react-router-dom';
 import FuseUtils from 'utils/FuseUtils';
 
 import { LoginConfig } from './AuthConfig';
-import { HomeConfig } from './HomeConfig';
+import { CommonConfig } from './CommonConfig';
 import { ProductConfig } from './ProductConfig';
 import { KpiConfig } from './KpiConfig';
 
@@ -60,7 +60,7 @@ const routeConfigs = [
     LoginConfig,
     KpiConfig,
     ProductConfig,
-    HomeConfig,
+    CommonConfig,
     LeadConfig,
     Lead3DayConfig,
     CohoiConfig,

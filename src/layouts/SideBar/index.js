@@ -66,7 +66,7 @@ function SideBar() {
 
   const items = [
     getItem(<Link to="/sale/report-common">{t('sideBar.dashboard')}</Link>, 'home', <FundViewOutlined />),
-    getItem(<Link to="/ai-agent">Dự án</Link>, 'project_list', <PieChartOutlined />),
+    getItem(<Link to="/task">Dự án</Link>, 'project_list', <PieChartOutlined />),
     getItem(<Link to="/lead">Lead</Link>, 'tong_lead', <FolderOpenOutlined />),
     getItem('Chăm sóc K.H', 'chua_cham_soc', <FolderOpenOutlined style={iconSize} />, [
       getItem(<Link to="/customer-service/lead">Lead</Link>, "cs_lead", <ScheduleOutlined />),
