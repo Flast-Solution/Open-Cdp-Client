@@ -54,6 +54,7 @@ import { KeToanConfig } from './KeToanConfig';
 /* NewFeed - Quy trình */
 import { NewfeedConfig } from './NewFeedConfig';
 import { DragDropConfig } from './DragDropOrderConfig';
+import { AiAgentConfig } from './AiAgentConfig';
 
 const routeConfigs = [
     LoginConfig,
@@ -74,6 +75,7 @@ const routeConfigs = [
     NewfeedConfig,
     ShipConfig,
     OrderConfig,
+    AiAgentConfig,
     DragDropConfig
 ];
 

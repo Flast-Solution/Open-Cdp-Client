@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useCallback, useState } from 'react';
 import RestList from "components/RestLayout/RestList";
 import useGetList from "hooks/useGetList";
 import { Helmet } from "react-helmet";
@@ -8,14 +8,15 @@ import { Avatar, Button, Tag } from 'antd';
 import { InAppEvent } from "utils/FuseUtils";
 import { CHANNEL_SOURCE_MAP_KEYS } from 'configs/localData';
 import { HASH_MODAL } from 'configs';
-import { formatTime } from 'utils/dataUtils';
+import { arrayEmpty, formatTime } from 'utils/dataUtils';
+import OrderService from 'services/OrderService';
 
 const BotData = () => {
 
   const [ title ] = useState("Bộ sưu tập dữ liệu đa kênh");
 
   const onEdit = (item) => InAppEvent.emit(HASH_MODAL, { 
-    hash: '#draw/lead.colletion.edit', 
+    hash: '#draw/lead.collection', 
     title: 'Sửa dữ liệu # ' + item.id,
     data: item 
   });
@@ -36,13 +37,13 @@ const BotData = () => {
     },
     {
       title:"Dịch vụ",
-      dataIndex:'service',
+      dataIndex:'serviceName',
       width:110,
       ellipsis: true
     },
     {
       title:"SĐT",
-      dataIndex:'number',
+      dataIndex:'mobile',
       width:150,
       ellipsis: true
     },
@@ -79,7 +80,7 @@ const BotData = () => {
     },
     {
       title:"",
-      width:150,
+      width:100,
       fixed:'right',
       render: (record) => (
         <div style={{display: 'flex', flexDirection: 'row', gap: 10}}>
@@ -90,6 +91,18 @@ const BotData = () => {
     }
   ]
 
+  const onData = useCallback(async (data) => {
+    if(arrayEmpty(data?.embedded)) {
+      return data;
+    }
+    const services = await OrderService.fetchService();
+    const { embedded } = data;
+    for(let item of embedded) {
+      item.serviceName = services.find(s => s.id === item.service)?.name ?? '';
+    }
+    return data;
+  }, []);
+
   return (
     <div className="wap-group">
       <Helmet>
@@ -99,6 +112,7 @@ const BotData = () => {
         data={[ { title: 'Trang chủ' }, { title: title} ]} 
       />
       <RestList 
+        onData={onData}
         initialFilter={{ limit: 10, page: 1 }}
         hasCreate={false}
         useGetAllQuery={ useGetList }

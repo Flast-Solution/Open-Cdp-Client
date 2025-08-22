@@ -81,15 +81,14 @@ const Index = () => {
       dataIndex: 'image',
       width: 150,
       ellipsis: true,
-      render: (image) => {
-        return (
-          <Image
-            width={70}
-            src={`${image ? `${GATEWAY}${image}` : '/img/image_not_found.png'}`}
-            alt='image'
-          />
-        )
-      }
+      render: (image) => (
+        <Image
+          preview={false}
+          width={50}
+          src={`${image ? `${GATEWAY}${image}` : '/img/image_not_found.png'}`}
+          alt='image'
+        />
+      )
     },
     {
       title: "Sản phẩm",
@@ -110,25 +109,6 @@ const Index = () => {
       width: 250,
       ellipsis: true,
       render: (skus) => <PriceView skus={skus} />
-    },
-    {
-      title: "Số lượng tổng",
-      width: 150,
-      ellipsis: true,
-      render: (item) => {
-        const results = item?.warehouses.filter(w =>
-          item?.skus?.some(sku => sku?.id === w?.skuId)
-        );
-        return (
-          <div style={{ textAlign: 'center' }}>
-            {results.length > 0
-              ? results.map((r, idx) => (
-                <div key={idx}>{r?.quantity || 'Chưa cập nhật'}</div>
-              ))
-              : 'Chưa cập nhật'}
-          </div>
-        );
-      }
     },
     {
       title: "Created",
