@@ -9,8 +9,6 @@ Dự án Open-Cdp được phát triển và duy trì bởi đội ngũ: Công t
 ## Kiến trúc Backend [https://flast.vn/architectrue/java]
 ## Kiến trúc Frontend [https://flast.vn/architectrue/react-js]
 
-![screenshot](public/img/intro.png)
-
 1. Phân hệ Marketing: Thu thập dữ liệu từ nhiều nguồn khác nhau, tự động chia dữ liệu cho các kinh doanh theo nguyên tắc cân bằng.
 
 2. Phân hệ bán hàng: Khi có dự liệu đã thu thập từ trước đó.
@@ -96,11 +94,6 @@ Với những doanh nghiệp cần điều phối quá trình sản xuất từ 
 
 Flast-Solution luôn tích cực tham gia đóng góp cho sự nghiệp phát triển Công nghệ Thông tin của đất nước nói chung và của SMB nói riêng. <br/>
 Hướng tới đóng góp tích cực vào quá trình chuyển đối số của doanh nghiệp theo "Phương Châm" Nhanh - Hiệu quả - Tiết Kiệm.
-
-Nếu bạn cần tư vấn về Xây dựng hệ thống CNTT thì đừng ngần ngại, hãy liên hệ với chúng tôi theo thông tin bên dưới:
-
-- Mobile:   0987.938.491
-- Email:    flast.vn@gmail.com
 
 ## Đội ngũ phát triển ##
 HuuNV, TrungThanh, QuangDuc, Minh3N
