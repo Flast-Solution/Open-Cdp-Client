@@ -1,5 +1,5 @@
 /**************************************************************************/
-/*  FormSelectInfiniteBusinessUser.js                                     */
+/*  Filter.js                                                             */
 /**************************************************************************/
 /*                       Tệp này là một phần của:                         */
 /*                             Open CDP                                   */
@@ -19,25 +19,39 @@
 /* có trách nghiệm                                                        */
 /**************************************************************************/
 
-import { useGetAllBusinessUsersQuery } from 'hooks/useData';
-import FormSelectInfinite from './FormSelectInfinite';
+import { Row, Col } from 'antd';
+import FormDatePicker from 'components/form/FormDatePicker';
+import FormInput from 'components/form/FormInput';
+import FormSelectInfiniteBusinessUser from 'components/form/SelectInfinite/FormSelectInfiniteBusinessUser';
 
-const FormSelectInfiniteBusinessUser = ({
-  name = "assigneeId",
-  valueProp="id",
-  ...props
-}) => {
-  return (
-    <FormSelectInfinite
-      useGetAllQuery={useGetAllBusinessUsersQuery}
-      name={name}
-      valueProp={valueProp}
-      titleProp="fullName"
-      searchKey="fullName"
-      filterField="id"
-      {...props}
-    />
-  )
-};
+const Filter = () => (
+  <Row gutter={16}>
+    <Col xl={6} lg={6} md={6} xs={24}>
+      <FormInput
+        name={'name'}
+        placeholder="Tên dự án"
+      />
+    </Col>
+    <Col xl={6} lg={6} md={6} xs={24}>
+      <FormSelectInfiniteBusinessUser
+        placeholder="Chủ dự án"
+      />
+    </Col>
+    <Col xl={6} lg={6} md={6} xs={24}>
+      <FormDatePicker
+        format='YYYY-MM-DD'
+        name='from'
+        placeholder="Từ ngày"
+      />
+    </Col>
+    <Col xl={6} lg={6} md={6} xs={24}>
+      <FormDatePicker
+        format='YYYY-MM-DD'
+        name='to'
+        placeholder="Đến ngày"
+      />
+    </Col>
+  </Row>
+)
 
-export default FormSelectInfiniteBusinessUser;
+export default Filter;

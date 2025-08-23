@@ -1,5 +1,5 @@
 /**************************************************************************/
-/*  FormSelectInfiniteBusinessUser.js                                     */
+/*  ProductRoute.js                                                       */
 /**************************************************************************/
 /*                       Tệp này là một phần của:                         */
 /*                             Open CDP                                   */
@@ -19,25 +19,14 @@
 /* có trách nghiệm                                                        */
 /**************************************************************************/
 
-import { useGetAllBusinessUsersQuery } from 'hooks/useData';
-import FormSelectInfinite from './FormSelectInfinite';
+import React from 'react';
 
-const FormSelectInfiniteBusinessUser = ({
-  name = "assigneeId",
-  valueProp="id",
-  ...props
-}) => {
-  return (
-    <FormSelectInfinite
-      useGetAllQuery={useGetAllBusinessUsersQuery}
-      name={name}
-      valueProp={valueProp}
-      titleProp="fullName"
-      searchKey="fullName"
-      filterField="id"
-      {...props}
-    />
-  )
-};
+const CommonRoute = [
+  {
+    path: 'work.edit',
+    Component: React.lazy(() => import('containers/Works')),
+    modalOptions: { title: '', width: 750 }
+  }
+];
 
-export default FormSelectInfiniteBusinessUser;
+export default CommonRoute;

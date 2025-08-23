@@ -33,9 +33,11 @@ import OrderRouter from './UserAccountRouter.js';
 import UserGroupRouter from './UserGroupRouter.js';
 import Cohoi7DayRouter from './Cohoi7DayRouter.js';
 import ActionChamSocDonHangRouter from './ChamSocDonHangRouter.js';
+import CommonRoute from './CommonRoute.js';
 
 const notFoundHash = { Component: () => <div /> };
 const modalRoutes = [
+  ...CommonRoute,
   ...ProductRoute,
   ...OrderRoute,
   ...LeadRoute,

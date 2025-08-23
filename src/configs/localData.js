@@ -21,16 +21,6 @@
 
 import theme from 'theme';
 import mapKeys from 'lodash/mapKeys';
-import {
-  AudioOutlined,
-  FileExcelOutlined,
-  FilePdfOutlined,
-  FilePptOutlined,
-  FileTextOutlined,
-  FileWordOutlined,
-  FileZipOutlined,
-  VideoCameraOutlined
-} from '@ant-design/icons';
 
 export const ACTIVE_TYPES = [
   {
@@ -102,22 +92,10 @@ export const PRODUCT_STATUS = [
   { value: 1, text: 'Kích hoạt', color: 'green' }
 ];
 
-export const FILE_TYPES = [
-  { value: 'pdf', IconCPN: FilePdfOutlined, color: theme.color.red },
-  { value: 'ppt', IconCPN: FilePptOutlined, color: theme.color.pink },
-  { value: 'pptx', IconCPN: FilePptOutlined, color: theme.color.pink },
-  { value: 'doc', IconCPN: FileWordOutlined, color: theme.color.blue },
-  { value: 'docx', IconCPN: FileWordOutlined, color: theme.color.blue },
-  { value: 'xlsx', IconCPN: FileExcelOutlined, color: theme.color.green },
-  { value: 'xls', IconCPN: FileExcelOutlined, color: theme.color.green },
-  { value: 'csv', IconCPN: FileExcelOutlined, color: theme.color.green },
-  { value: 'zip', IconCPN: FileZipOutlined, color: theme.color.violet },
-  { value: 'zar', IconCPN: FileZipOutlined, color: theme.color.violet },
-  { value: 'txt', IconCPN: FileTextOutlined, color: 'currentColor' },
-  { value: 'mov', IconCPN: VideoCameraOutlined, color: 'currentColor' },
-  { value: 'mp4', IconCPN: VideoCameraOutlined, color: 'currentColor' },
-  { value: 'avi', IconCPN: VideoCameraOutlined, color: 'currentColor' },
-  { value: 'flv', IconCPN: VideoCameraOutlined, color: 'currentColor' },
-  { value: 'wmv', IconCPN: VideoCameraOutlined, color: 'currentColor' },
-  { value: 'mp3', IconCPN: AudioOutlined, color: theme.color.lightGreen },
+export const DEPARTMENT = [
+  { value: 1, name: "IT", color: 'blue' },
+  { value: 2, name: "Marketing", color: 'green' },
+  { value: 3, name: "Kinhdoanh", color: 'purple' },
+  { value: 4, name: "default", color: 'orange' }
 ];
+export const DEPARTMENT_MAP_KEYS_VALUE = mapKeys(DEPARTMENT, 'value');
