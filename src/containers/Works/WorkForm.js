@@ -1,6 +1,7 @@
 import { Col, Row } from 'antd';
 import CustomButton from 'components/CustomButton';
 import FormDatePicker from 'components/form/FormDatePicker';
+import FormHidden from 'components/form/FormHidden';
 import FormInput from 'components/form/FormInput';
 import FormInputNumber from 'components/form/FormInputNumber';
 import FormSelect from 'components/form/FormSelect';
@@ -8,15 +9,30 @@ import FormTextArea from 'components/form/FormTextArea';
 import FormSelectInfiniteBusinessUser from 'components/form/SelectInfinite/FormSelectInfiniteBusinessUser';
 import { DEPARTMENT } from 'configs/localData';
 
+const STATUS_LIST = ['Not Started', 'In Progress', 'Completed', 'On Hold'];
 const WorkForm = () => {
   return (
     <Row gutter={16} style={{ marginTop: 20 }}>
       <Col md={24} xs={26}>
+        <FormHidden name="id" />
+      </Col>
+      <Col md={12} xs={26}>
         <FormInput 
           required
           name="name"
           placeholder="Nhập tên dự án"
           label="Tên dự án"
+        />
+      </Col>
+      <Col md={12} xs={24}>
+        <FormSelect 
+          required
+          resourceData={[{name: 'Low'}, {name: "Medium"}, {name: "High"}]}
+          name="priority"
+          titleProp='name'
+          valueProp='name'
+          placeholder="Độ ưu tiên"
+          label="Ưu tiên"
         />
       </Col>
       <Col md={24} xs={24}>
@@ -81,12 +97,12 @@ const WorkForm = () => {
       <Col md={12} xs={24}>
         <FormSelect 
           required
-          resourceData={[{name: 'Low'}, {name: "Medium"}, {name: "High"}]}
-          name="priority"
+          resourceData={STATUS_LIST.map(item => ({name: item}))}
+          name="status"
           titleProp='name'
           valueProp='name'
-          placeholder="Độ ưu tiên"
-          label="Ưu tiên"
+          placeholder="Chọn trạng thái"
+          label="Trạng thái"
         />
       </Col>
       <Col md={24} xs={24}>
