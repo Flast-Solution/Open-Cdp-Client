@@ -83,7 +83,7 @@ function SideBar() {
       getItem(<Link to="/ke-toan/confirm">Duyệt tiền</Link>, 'list_order_update', <UnorderedListOutlined />),
       getItem(<Link to="/ke-toan/cong-no">Công nợ</Link>, 'can_giai_quyet', <BankOutlined />)
     ]),
-    getItem(<Link to="/ai-agent">Ai Agent</Link>, 'ai-agent', <OpenAIOutlined />),
+    getItem(<Link to="/ai-agent">Trợ lý Ai</Link>, 'ai-agent', <OpenAIOutlined />),
     getItem('Khách hàng', 'client', <WalletOutlined />, [
       getItem(<Link to="/sale/m-customer">Khách lẻ</Link>, 'customer', <GroupOutlined />),
       getItem(<Link to="/sale/m-enterprice">Doanh nghiệp</Link>, 'enterprice', <GroupOutlined />)

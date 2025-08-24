@@ -31,102 +31,58 @@ import { InAppEvent } from 'utils/FuseUtils';
 import { Button, Image } from 'antd';
 
 const ListUserSystem = () => {
-  const [title] = useState("Danh sách tài khoản hệ thống");
+
+  const [ title ] = useState("Danh sách tài khoản hệ thống");
   const CUSTOM_ACTION = [
     {
       title: "Tên",
-      ataIndex: 'fullName',
-      ellipsis: true,
-      render: (item) => {
-        return (
-          <div>
-            {item?.fullName}
-          </div>
-        )
-      }
+      dataIndex: 'fullName',
+      ellipsis: true
     },
     {
       title: "Avatar",
-      ataIndex: 'avartar',
+      dataIndex: 'avartar',
       ellipsis: true,
-      render: (item) => {
-        return (
-          <div>
-            <Image
-              width={70}
-              src={`${item?.avartar ? `${GATEWAY}${item?.avartar}` : '/img/image_not_found.png'}`}
-              alt='image'
-            />
-          </div>
-        )
-      }
+      render: (avartar) => (
+        <Image
+          width={50}
+          src={`${avartar ? `${GATEWAY}${avartar}` : '/img/image_not_found.png'}`}
+          alt='image'
+        />
+      )
     },
     {
       title: "Số điện thoại",
-      ataIndex: 'phone',
-      ellipsis: true,
-      render: (item) => {
-        return (
-          <div>
-            {item?.phone || 'N/A'}
-          </div>
-        )
-      }
+      dataIndex: 'phone',
+      ellipsis: true
     },
     {
       title: "Email",
-      ataIndex: 'email',
-      ellipsis: true,
-      render: (item) => {
-        return (
-          <div>
-            {item?.email}
-
-          </div>
-        )
-      }
+      dataIndex: 'email',
+      ellipsis: true
     },
     {
       title: "Địa chỉ",
-      ataIndex: 'address',
-      ellipsis: true,
-      render: (item) => {
-        return (
-          <div>
-            {item?.address || 'N/A'}
-          </div>
-        )
-      }
+      dataIndex: 'address',
+      ellipsis: true
     },
     {
       title: "Role tài khoản",
-      ataIndex: 'userProfiles',
+      dataIndex: 'userProfiles',
       ellipsis: true,
-      render: (item) => {
-        return (
-          <div>
-            {item?.userProfiles?.map(f => f.type).join(",") || 'N/A'}
-          </div>
-        )
-      }
+      render: (userProfiles) => userProfiles?.map(f => f.type).join(",") || 'N/A'
     },
     {
       title: "Thao tác",
       width: 120,
       fixed: 'right',
       render: (record) => (
-        <div>
-          <Button color="primary" variant="dashed" size='small' onClick={() => onHandleUpdateUser(record)}>
-            Update
-          </Button>
-        </div>
+        <Button color="primary" variant="dashed" size='small' onClick={() => onHandleUpdateUser(record)}>
+          Update
+        </Button>
       )
     }
   ];
-
-  const onData = useCallback((values) => {
-    return values;
-  }, []);
 
   const beforeSubmitFilter = useCallback((values) => {
     dateFormatOnSubmit(values, ['from', 'to']);
@@ -157,7 +113,6 @@ const ListUserSystem = () => {
       />
       <RestList
         xScroll={1200}
-        onData={onData}
         initialFilter={{ limit: 10, page: 1, fullName: '', ssoId: '' }}
         filter={<LeadFilter />}
         beforeSubmitFilter={beforeSubmitFilter}

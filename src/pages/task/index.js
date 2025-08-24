@@ -293,7 +293,7 @@ const TASK = () => {
             type="primary" 
             icon={<EyeOutlined />} 
             size="small"
-            onClick={() => onView(record)} 
+            onClick={() => onView(record.id)} 
           />
           <Button 
             icon={<EditOutlined />} 
