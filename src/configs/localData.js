@@ -99,3 +99,4 @@ export const DEPARTMENT = [
   { value: 4, name: "default", color: 'orange' }
 ];
 export const DEPARTMENT_MAP_KEYS_VALUE = mapKeys(DEPARTMENT, 'value');
+export const PROJECT_STATUS_LIST = ['Not Started', 'In Progress', 'Completed', 'On Hold'];

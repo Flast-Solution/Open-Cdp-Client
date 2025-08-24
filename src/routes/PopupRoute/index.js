@@ -43,7 +43,16 @@ const CustomModalStyles = createGlobalStyle`
   }
 `;
 
+const Common = [
+  {
+    path: 'task.add',
+    Component: React.lazy(() => import('containers/Works/TaskForm')),
+    modalOptions: { title: '', width: 600 }
+  }
+];
+
 const modalRoutes = [
+  ...Common,
   ...Order,
   ...NhapKho,
   ...Cusomter,

@@ -7,9 +7,8 @@ import FormInputNumber from 'components/form/FormInputNumber';
 import FormSelect from 'components/form/FormSelect';
 import FormTextArea from 'components/form/FormTextArea';
 import FormSelectInfiniteBusinessUser from 'components/form/SelectInfinite/FormSelectInfiniteBusinessUser';
-import { DEPARTMENT } from 'configs/localData';
+import { DEPARTMENT, PROJECT_STATUS_LIST } from 'configs/localData';
 
-const STATUS_LIST = ['Not Started', 'In Progress', 'Completed', 'On Hold'];
 const WorkForm = () => {
   return (
     <Row gutter={16} style={{ marginTop: 20 }}>
@@ -97,7 +96,7 @@ const WorkForm = () => {
       <Col md={12} xs={24}>
         <FormSelect 
           required
-          resourceData={STATUS_LIST.map(item => ({name: item}))}
+          resourceData={PROJECT_STATUS_LIST.map(item => ({name: item}))}
           name="status"
           titleProp='name'
           valueProp='name'
