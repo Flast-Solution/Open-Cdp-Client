@@ -31,6 +31,8 @@ import {
   message,
   Popconfirm
 } from 'antd';
+import { Helmet } from 'react-helmet';
+import CustomBreadcrumb from 'components/BreadcrumbCustom';
 import Filter from './Filter';
 import useGetList from "hooks/useGetList";
 import RestList from 'components/RestLayout/RestList';
@@ -86,6 +88,7 @@ const UserAvatar = ({ name, size = 'default' }) => {
   )
 };
 
+const TITLE = "Danh sách dự án nội bộ";
 const TASK = () => {
 
   const navigate = useNavigate();
@@ -337,18 +340,26 @@ const TASK = () => {
   }, [])
 
   return (
-    <RestList
-      xScroll={1200}
-      onData={onData}
-      initialFilter={{ limit: 10, page: 1 }}
-      filter={<Filter />}
-      beforeSubmitFilter={beforeSubmitFilter}
-      useGetAllQuery={useGetList}
-      apiPath={'works/fetch'}
-      hasCreate={true}
-      customClickCreate={onEdit}
-      columns={CUSTOM_ACTION}
-    />
+    <div>
+      <Helmet>
+        <title>{TITLE}</title>
+      </Helmet>
+      <CustomBreadcrumb
+        data={[{ title: 'Trang chủ' }, { title: TITLE }]}
+      />
+      <RestList
+        xScroll={1200}
+        onData={onData}
+        initialFilter={{ limit: 10, page: 1 }}
+        filter={<Filter />}
+        beforeSubmitFilter={beforeSubmitFilter}
+        useGetAllQuery={useGetList}
+        apiPath={'works/fetch'}
+        hasCreate={true}
+        customClickCreate={onEdit}
+        columns={CUSTOM_ACTION}
+      />
+    </div>
   )
 }
 

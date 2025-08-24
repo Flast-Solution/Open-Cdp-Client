@@ -6,18 +6,12 @@ import interactionPlugin from '@fullcalendar/interaction';
 import listPlugin from '@fullcalendar/list';
 import { message } from 'antd';
 import dayjs from 'dayjs';
-import styled from 'styled-components';
 import { InAppEvent } from 'utils/FuseUtils';
 import { HASH_POPUP } from 'configs/constant';
 import RequestUtils from 'utils/RequestUtils';
 import { useParams } from 'react-router-dom';
 import { useEffectAsync } from 'hooks/MyHooks';
-
-const LayoutWrapper = styled.div`
-  .fc-toolbar-title {
-    text-transform: capitalize;
-  }
-`
+import { EventTime, EventTitle, EventContainer, LayoutWrapper } from './style'
 
 export default function MyCalendar() {
   
@@ -30,12 +24,15 @@ export default function MyCalendar() {
       return;
     }
     const { tasks } = data;
-    setEvents(tasks.map(i => ({...i, id: String(i.id)})))
+    setEvents(tasks.map(i => ({...i, id: String(i.taskIdentity)})))
   }, [projectId]);
 
-  const handleDelete = (id) => {
-    setEvents(events.filter(event => event.id !== id));
-    message.success('Xóa sự kiện thành công!');
+  const handleDelete = async (id) => {
+    const { errorCode, message: MSG } = await RequestUtils.Post(String("/works/delete/task/").concat(id), {});
+    message.success(MSG);
+    if(errorCode === 200) {
+      setEvents(events.filter(event => event.id !== id));
+    }
   };
 
   const handleSubmit = async (id, values) => {
@@ -53,16 +50,18 @@ export default function MyCalendar() {
       } else {
         setEvents([...events, newEvent]);
       }
-      let { id: mId, ...dataPost } = newEvent;
-      let { message: MSG } = await RequestUtils.Post("/works/save/task", {
+      let { id: taskIdentity, ...dataPost } = newEvent;
+      let { message: MSG, data } = await RequestUtils.Post("/works/save/task", {
         ...dataPost,
         projectId,
-        ...(id ? { id } : {})
+        taskIdentity
       });
       message.success(MSG);
+      return data?.taskIdentity || '';
     } catch (error) {
       console.log('Validate Failed:', error);
     }
+    return '';
   };
 
   const handleDateClick = (arg) => {
@@ -83,14 +82,14 @@ export default function MyCalendar() {
   };
 
   const eventContent = (eventInfo) => (
-    <div className="p-1 h-full">
-      <div className="font-medium text-sm truncate" title={eventInfo.event.title}>
+    <EventContainer>
+      <EventTitle title={eventInfo.event.title}>
         {eventInfo.event.title}
-      </div>
-      <div className="text-xs opacity-75">
-        {dayjs(eventInfo.event.start).format('HH:mm')} - {dayjs(eventInfo.event.end).format('HH:mm')}
-      </div>
-    </div>
+      </EventTitle>
+      <EventTime>
+        [ {eventInfo.event?.extendedProps?.ssoId} ] {dayjs(eventInfo.event.start).format('HH:mm')} - {dayjs(eventInfo.event.end).format('HH:mm')}
+      </EventTime>
+    </EventContainer>
   );
 
   return (
@@ -116,6 +115,7 @@ export default function MyCalendar() {
         dateClick={handleDateClick}
         eventClick={handleEventClick}
         eventContent={eventContent}
+        timeZone="Asia/Ho_Chi_Minh"
         locale="vi"
         buttonText={{
           today: 'Hôm nay',
@@ -125,7 +125,7 @@ export default function MyCalendar() {
           list: 'Danh sách'
         }}
         allDayText="Cả ngày"
-        moreLinkText={(num) => `+ ${num} sự kiện`}
+        moreLinkText={(num) => `+ ${num} Sự kiện`}
         noEventsText="Không có sự kiện nào để hiển thị"
       />
     </LayoutWrapper>

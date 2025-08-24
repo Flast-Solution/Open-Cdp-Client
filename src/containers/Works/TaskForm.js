@@ -1,8 +1,9 @@
+import { useState } from 'react';
 import { Form, DatePicker, ColorPicker, Row, Col, Slider, Button, Flex } from 'antd';
 import FormInput from 'components/form/FormInput';
 import FormSelect from 'components/form/FormSelect';
 import FormTextArea from 'components/form/FormTextArea';
-import { PROJECT_STATUS_LIST } from 'configs/localData';
+import { PROJECT_TASK_STATUS_LIST } from 'configs/localData';
 import { isEmpty } from 'lodash';
 import { useEffectAsync } from 'hooks/MyHooks';
 import dayjs from 'dayjs';
@@ -11,23 +12,26 @@ import FormSelectInfiniteBusinessUser from 'components/form/SelectInfinite/FormS
 const { RangePicker } = DatePicker;
 const TaskForm = ({ 
   record,
-  onSave = (id, values) => values,
+  onSave,
   onDelete,
   closeModal 
 }) => {
 
+  const [ taskIdentity, setIdentity ] = useState();
   const [ form ] = Form.useForm();
-  const onFinish = (values) => {
-    onSave(record?.id || undefined, values);
+  const onFinish = async (values) => {
+    const newIdentity = await onSave(taskIdentity, values);
+    setIdentity(newIdentity);
   }
 
   useEffectAsync(async () => {
+    setIdentity(record?.id || '');
     if(isEmpty(record)) {
       return;
     }
     const progress = record?.extendedProps?.progress || 0;
-    const ssoId = record?.extendedProps?.ssoId || undefined;
-    const status = record?.extendedProps?.status || 'Not Started';
+    const ssoId = record?.extendedProps?.ssoId;
+    const status = record?.extendedProps?.status || PROJECT_TASK_STATUS_LIST[0];
 
     form.setFieldsValue({
       progress,
@@ -111,7 +115,7 @@ const TaskForm = ({
           <FormSelect 
             name="status"
             required
-            resourceData={PROJECT_STATUS_LIST.map(item => ({name: item}))}
+            resourceData={PROJECT_TASK_STATUS_LIST.map(item => ({name: item}))}
             valueProp='name'
             label="Trạng thái"
             placeholder="Chọn trạng thái"

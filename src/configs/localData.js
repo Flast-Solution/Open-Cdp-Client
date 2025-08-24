@@ -100,3 +100,4 @@ export const DEPARTMENT = [
 ];
 export const DEPARTMENT_MAP_KEYS_VALUE = mapKeys(DEPARTMENT, 'value');
 export const PROJECT_STATUS_LIST = ['Not Started', 'In Progress', 'Completed', 'On Hold'];
+export const PROJECT_TASK_STATUS_LIST = ['To Do', 'In Progress','Done','Cancelled'];
