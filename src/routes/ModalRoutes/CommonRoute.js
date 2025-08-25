@@ -1,5 +1,5 @@
 /**************************************************************************/
-/*  ProductRoute.js                                                       */
+/*  CommonRoute.js                                                        */
 /**************************************************************************/
 /*                       Tệp này là một phần của:                         */
 /*                             Open CDP                                   */
@@ -25,6 +25,11 @@ const CommonRoute = [
   {
     path: 'work.edit',
     Component: React.lazy(() => import('containers/Works')),
+    modalOptions: { title: '', width: 750 }
+  },
+  {
+    path: 'customer.edit',
+    Component: React.lazy(() => import('containers/Customer/CustomerAddressForm')),
     modalOptions: { title: '', width: 750 }
   }
 ];

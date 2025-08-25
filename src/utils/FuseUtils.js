@@ -120,9 +120,10 @@ class AppEvent extends EventEmitter {
     changeStore(data) {
         this.emit(CHANGE_STORE, data);
     }
-    openDrawer = (route, data) => this.emit(HASH_MODAL, {
-        hash: '#'.concat(route),
-        data
+    openDrawer = (route, { title, ...rest }) => this.emit(HASH_MODAL, {
+        hash: route,
+        title,
+        data: rest
     });
 }
 

@@ -36,7 +36,7 @@ import { SUCCESS_CODE } from 'configs';
 
 const ListCustomerRetail = () => {
 
-  const [title] = useState("Khách lẻ");
+  const [ title ] = useState("Khách lẻ");
   let navigate = useNavigate();
 
   const handleTagsChange = async (record, newTags) => {

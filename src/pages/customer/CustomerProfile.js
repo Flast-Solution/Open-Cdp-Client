@@ -41,6 +41,7 @@ import { useEffectAsync } from 'hooks/MyHooks';
 import RequestUtils from 'utils/RequestUtils';
 import { SUCCESS_CODE } from 'configs';
 import { formatTime } from 'utils/dataUtils';
+import { InAppEvent } from 'utils/FuseUtils';
 
 const { Title, Text, Paragraph } = Typography;
 const customer = {
@@ -94,8 +95,8 @@ const alerts = [
 
 const CustomerProfile = () => {
 
-  const [data, setData] = useState({});
-  const [iCustomer, setCustomer] = useState({});
+  const [ data, setData ] = useState({});
+  const [ iCustomer, setCustomer ] = useState({});
 
   useEffectAsync(async () => {
     let { data, errorCode } = await RequestUtils.Get(`/customer/report-by-id/${24}`);
@@ -105,6 +106,12 @@ const CustomerProfile = () => {
       setCustomer(iCustomer)
     }
   }, []);
+
+  const onEditCustomer = () => InAppEvent.openDrawer("#customer.edit", {
+    title: 'Cập nhật thông tin khách hàng #' + iCustomer.id,
+    iCustomer,
+    onSave: (newCustomer) => newCustomer
+  })
 
   return (
     <div style={{ padding: '24px', backgroundColor: '#f5f5f5', minHeight: '100vh' }}>
@@ -135,7 +142,7 @@ const CustomerProfile = () => {
             </div>
           </Col>
           <Col xs={24} md={8} style={{ textAlign: 'right' }}>
-            <Button onClick={() => { }} style={{ marginRight: 8 }}>
+            <Button onClick={onEditCustomer} style={{ marginRight: 8 }}>
               Sửa
             </Button>
             <Button disabled type="dashed" onClick={() => { }} style={{ marginRight: 8 }}>
