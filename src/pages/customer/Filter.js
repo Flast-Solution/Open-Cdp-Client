@@ -23,8 +23,22 @@ import { Row, Col } from 'antd';
 import FormInput from 'components/form/FormInput';
 import FormSelectUser from 'components/form/FormSelectUser';
 
-const CustomerFilter = () => (
+const CustomerFilter = ({ taxCode = false }) => (
   <Row gutter={16}>
+    {taxCode && 
+      <Col xl={6} lg={6} md={6} xs={24}>
+        <FormInput
+          name={'tax'}
+          placeholder="Mã số thuế"
+        />
+      </Col>
+    }
+    <Col xl={6} lg={6} md={6} xs={24}>
+      <FormInput
+        name={'name'}
+        placeholder="Tìm theo tên"
+      />
+    </Col>
     <Col xl={6} lg={6} md={6} xs={24}>
       <FormInput
         name={'phone'}

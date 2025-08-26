@@ -86,7 +86,7 @@ function SideBar() {
     getItem(<Link to="/ai-agent">Trợ lý Ai</Link>, 'ai-agent', <OpenAIOutlined />),
     getItem('Khách hàng', 'client', <WalletOutlined />, [
       getItem(<Link to="/sale/m-customer">Khách lẻ</Link>, 'customer', <GroupOutlined />),
-      getItem(<Link to="/sale/m-enterprice">Doanh nghiệp</Link>, 'enterprice', <GroupOutlined />)
+      getItem(<Link to="/customer/enterprise">Doanh nghiệp</Link>, 'enterprice', <GroupOutlined />)
     ]),
     getItem('Kho - Giao hàng', 'warehouse', <OrderedListOutlined />, [
       getItem(<Link to="/warehouse/trong-kho"> Trong kho </Link>, 'tt-theo-don', <UnorderedListOutlined />),
