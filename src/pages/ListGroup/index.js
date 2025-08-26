@@ -25,10 +25,11 @@ import CustomBreadcrumb from 'components/BreadcrumbCustom';
 import RestList from 'components/RestLayout/RestList';
 import LeadFilter from './Filter';
 import useGetList from "hooks/useGetList";
-import { dateFormatOnSubmit } from 'utils/dataUtils';
+import { arrayNotEmpty, dateFormatOnSubmit } from 'utils/dataUtils';
 import { HASH_MODAL } from 'configs';
 import { InAppEvent } from 'utils/FuseUtils';
 import { Button } from 'antd';
+import UserService from 'services/UserService';
 
 const ListUserGroup = () => {
 
@@ -55,9 +56,10 @@ const ListUserGroup = () => {
     },
     {
       title: "D/s thành viên",
-      dataIndex: 'listMember',
+      dataIndex: 'members',
       width: 200,
-      ellipsis: true
+      ellipsis: true,
+      render: (members) => members?.join(", ")
     },
     {
       title: "S/L thành viên",
@@ -83,7 +85,14 @@ const ListUserGroup = () => {
     }
   ];
 
-  const onData = useCallback((values) => {
+  const onData = useCallback(async (values) => {
+    if(arrayNotEmpty(values)) {
+      const uIds = values.flatMap(item => item.listMember);
+      const mUsers = await UserService.mapId2Name(uIds);
+      for(let item of values) {
+        item.members = item.listMember.map(i => mUsers[i] || '');
+      }
+    }
     return { embedded : values, page: {} };
   }, []);
 
@@ -102,7 +111,9 @@ const ListUserGroup = () => {
   const onHandleUpdateUser = (datas) => {
     let title = 'Sửa tài khoản Group';
     let hash = '#draw/userGroup.edit';
-    let data = { record: datas };
+
+    const { members, ...valuse } = datas;
+    let data = { record: valuse };
     InAppEvent.emit(HASH_MODAL, { hash, title, data });
   }
 

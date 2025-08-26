@@ -45,6 +45,7 @@ const ListUserSystem = () => {
       ellipsis: true,
       render: (avartar) => (
         <Image
+          preview={false}
           width={50}
           src={`${avartar ? `${GATEWAY}${avartar}` : '/img/image_not_found.png'}`}
           alt='image'
@@ -62,8 +63,8 @@ const ListUserSystem = () => {
       ellipsis: true
     },
     {
-      title: "Địa chỉ",
-      dataIndex: 'address',
+      title: "Tài khoản",
+      dataIndex: 'ssoId',
       ellipsis: true
     },
     {

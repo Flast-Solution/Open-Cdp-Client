@@ -19,67 +19,74 @@
 /* có trách nghiệm                                                        */
 /**************************************************************************/
 
-import React, { useContext } from 'react'
+import React from 'react'
 import { Col, Row } from 'antd'
 import CustomButton from 'components/CustomButton'
 import FormHidden from 'components/form/FormHidden'
 import FormInput from 'components/form/FormInput'
 import FormSelect from 'components/form/FormSelect'
-import FormSelectInfiniteBusinessUser from 'components/form/SelectInfinite/FormSelectInfiniteBusinessUser'
-import { ACTIVE_TYPES, DEPARTMENT } from 'configs/localData'
-import { FormContextCustom } from 'components/context/FormContextCustom'
+import { ACTIVE_TYPES } from 'configs/localData'
 
-const UserGroupForm = () => {
-	const { record } = useContext(FormContextCustom);
+const UserForm = ({ listProFile }) => {
 	return (
-		<Row gutter={16} style={{ marginTop: 20 }}>
+	   <Row gutter={16} style={{ marginTop: 20 }}>
 			<FormHidden name={'id'} />
-			<Col md={12} xs={12}>
+			<Col md={24} xs={12}>
 				<FormInput
 					required
-					label="Tên nhóm"
-					name="name"
+					label="Họ tên"
+					name="fullName"
 					placeholder={"Nhập họ tên"}
 				/>
 			</Col>
 			<Col md={12} xs={12}>
-				<FormSelect 
+				<FormInput
 					required
-					name="department"
-					label="Phòng ban"
-					placeholder='Chọn phòng ban'
-					resourceData={DEPARTMENT}
-					titleProp='name'
-					valueProp='name'
+					label="Số điện thoại"
+					name="phone"
+					placeholder={"Số điện thoại"}
 				/>
 			</Col>
 			<Col md={12} xs={12}>
-				<FormSelectInfiniteBusinessUser 
-					disabled={ (record?.leaderId || '') !== ''}
-					label="Trưởng nhóm" 
-					name="leaderId"
+				<FormInput
 					required
-					placeholder="Vui lòng chọn User"
+					label="Email"
+					name="email"
+					placeholder={"Số điện thoại"}
+				/>
+			</Col>
+			<Col md={12} xs={12}>
+				<FormInput
+					required
+					label="Tên tài khoản"
+					name="ssoId"
+					placeholder={"Tên tài khoản"}
+				/>
+			</Col>
+			<Col md={12} xs={12}>
+				<FormInput
+					required
+					label="Mật khẩu"
+					name="password"
+					placeholder={"Mật khẩu"}
 				/>
 			</Col>
 			<Col md={12} xs={12}>
 				<FormSelect 
-					required
+					label="Trạng thái" 
 					name="status"
-					label="Trạng thái"
-					placeholder='Vui lòng chọn Trạng thái'
 					resourceData={ACTIVE_TYPES}
 					titleProp='text'
 					valueProp='value'
 				/>
 			</Col>
-			<Col md={24} xs={24}>
-				<FormSelectInfiniteBusinessUser 
-					mode="multiple"
-					label="Thành viên" 
-					name="listMember"
-					required
-					placeholder="Vui lòng chọn Thành viên"
+			<Col md={12} xs={24}>
+				<FormSelect 
+					label="Quyền thao tác" 
+					name="userProfiles"
+					resourceData={listProFile}
+					titleProp='type'
+					valueProp='id'
 				/>
 			</Col>
 			<Col md={24} xs={24}>
@@ -94,4 +101,4 @@ const UserGroupForm = () => {
 	)
 }
 
-export default UserGroupForm
+export default UserForm
