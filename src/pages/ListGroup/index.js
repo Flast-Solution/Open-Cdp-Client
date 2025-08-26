@@ -19,7 +19,7 @@
 /* có trách nghiệm                                                        */
 /**************************************************************************/
 
-import React, { useCallback, useEffect, useState } from 'react';
+import React, { useCallback, useState } from 'react';
 import { Helmet } from 'react-helmet';
 import CustomBreadcrumb from 'components/BreadcrumbCustom';
 import RestList from 'components/RestLayout/RestList';
@@ -29,121 +29,62 @@ import { dateFormatOnSubmit } from 'utils/dataUtils';
 import { HASH_MODAL } from 'configs';
 import { InAppEvent } from 'utils/FuseUtils';
 import { Button } from 'antd';
-import { getTypeGroup } from 'configs/constant';
-import RequestUtils from 'utils/RequestUtils';
 
 const ListUserGroup = () => {
 
-  const [title] = useState("Danh sách tài khoản Team");
-  const [listMember, setListMember] = useState([])
-
-  useEffect(() => {
-    (async () => {
-      await RequestUtils.Get('/user/list-name-id').then(list => {
-        setListMember(list.data)
-      })
-    })()
-  }, [])
-
+  const [ title ] = useState("Danh sách tài khoản Team");
   const CUSTOM_ACTION = [
     {
       title: "Tên Team",
-      ataIndex: 'name',
+      dataIndex: 'name',
       width: 200,
       ellipsis: true,
-      render: (item) => {
-        return (
-          <div>
-            {item?.name}
-          </div>
-        )
-      }
     },
     {
       title: "Tên Leader",
-      ataIndex: 'leaderName',
+      dataIndex: 'leaderName',
       width: 200,
-      ellipsis: true,
-      render: (item) => {
-        return (
-          <div>
-            {item?.leaderName || 'N/A'}
-          </div>
-        )
-      }
+      ellipsis: true
     },
     {
       title: "Thời gian",
-      ataIndex: 'inTime',
+      dataIndex: 'inTime',
       width: 200,
       ellipsis: true,
-      render: (item) => {
-        return (
-          <div>
-            {dateFormatOnSubmit(item?.inTime)}
-
-          </div>
-        )
-      }
+      render: (inTime) => dateFormatOnSubmit(inTime)
     },
     {
       title: "D/s thành viên",
-      ataIndex: 'listMember',
+      dataIndex: 'listMember',
       width: 200,
-      ellipsis: true,
-      render: (item) => {
-        const nameUser = listMember.filter(f => item?.listMember.includes(f?.id))
-        return (
-          <div>
-            {nameUser.map(item => item.name).join(",") || 'N/A'}
-          </div>
-        )
-      }
+      ellipsis: true
     },
     {
       title: "S/L thành viên",
-      ataIndex: 'memberNumber',
+      dataIndex: 'memberNumber',
       width: 200,
-      ellipsis: true,
-      render: (item) => {
-        const nameUser = listMember.find(f => f.id === item?.memberNumber)
-        return (
-          <div>
-            {nameUser?.name || 'N/A'}
-          </div>
-        )
-      }
+      ellipsis: true
     },
     {
       title: "Phòng ban",
-      ataIndex: 'address',
+      dataIndex: 'department',
       width: 200,
       ellipsis: true,
-      render: (item) => {
-        return (
-          <div>
-            {getTypeGroup(item?.type)}
-          </div>
-        )
-      }
     },
     {
       title: "Thao tác",
       width: 120,
       fixed: 'right',
       render: (record) => (
-        <div>
-          <Button color="primary" variant="dashed" size='small' onClick={() => onHandleUpdateUser(record)}>
-            Update
-          </Button>
-        </div>
+        <Button color="primary" variant="dashed" size='small' onClick={() => onHandleUpdateUser(record)}>
+          Update
+        </Button>
       )
     }
   ];
 
   const onData = useCallback((values) => {
-    const newData = { embedded: values, page: { pageSize: 10, total: 1 } }
-    return newData;
+    return { embedded : values, page: {} };
   }, []);
 
   const beforeSubmitFilter = useCallback((values) => {
@@ -154,14 +95,14 @@ const ListUserGroup = () => {
   const onCreateLead = () => {
     let title = 'Tạo tài khoản Group';
     let hash = '#draw/userGroup.edit';
-    let data = { listMember: listMember }
+    let data = { record: {}};
     InAppEvent.emit(HASH_MODAL, { hash, title, data });
   }
 
   const onHandleUpdateUser = (datas) => {
     let title = 'Sửa tài khoản Group';
     let hash = '#draw/userGroup.edit';
-    let data = { listMember: listMember, datas };
+    let data = { record: datas };
     InAppEvent.emit(HASH_MODAL, { hash, title, data });
   }
 

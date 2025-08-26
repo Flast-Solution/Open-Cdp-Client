@@ -30,8 +30,8 @@ function useGetList({
 }) {
 
 	const { f5List } = useContext(MyContext)
-	const [loading, setLoading] = useState(true);
-	const [data, setData] = useState();
+	const [ loading, setLoading ] = useState(true);
+	const [ data, setData ] = useState();
 
 	const fetchResource = useCallback((values) => {
 		const { apiPath, ...params } = values;
