@@ -25,12 +25,20 @@ import CustomBreadcrumb from 'components/BreadcrumbCustom';
 import RestList from 'components/RestLayout/RestList';
 import CustomerFilter from './Filter';
 import useGetList from 'hooks/useGetList';
-import { Button } from 'antd';
+import { Button, Tag } from 'antd';
 import { dateFormatOnSubmit, formatTime } from 'utils/dataUtils';
-import { InAppEvent } from 'utils/FuseUtils';
+import { useNavigate } from 'react-router-dom';
+import { ShoppingCartOutlined } from '@ant-design/icons';
+import styled from 'styled-components';
+import RequestUtils from 'utils/RequestUtils';
+
+const StyledTag = styled(Tag)`
+  cursor: pointer;
+`;
 
 const ListEnterprise = () => {
 
+  let navigate = useNavigate();
   const [ title ] = useState("Khách doanh nghiệp");
   const CUSTOM_ACTION = [
     {
@@ -73,7 +81,10 @@ const ListEnterprise = () => {
     {
       title: "Đ.Hàng",
       dataIndex: 'numOfOrder',
-      width: 90
+      width: 90,
+      render: (value) => (Number.isInteger(value) && value > 0) ? (
+        <StyledTag color="blue" icon={<ShoppingCartOutlined />}>{value} Đơn</StyledTag>
+      ) : '(Chưa có)'
     },
     {
       title: "Ngày tạo",
@@ -87,11 +98,11 @@ const ListEnterprise = () => {
       width: 120,
       fixed: 'right',
       ellipsis: true,
-      render: (record) => (
+      render: (record) => record.numOfOrder ? (
         <Button color="primary" variant="dashed" onClick={() => onHandleEdit(record)} size='small'>
           Chi tiết
         </Button>
-      )
+      ) : '(no order)'
     }
   ];
 
@@ -100,10 +111,10 @@ const ListEnterprise = () => {
     return values;
   }, []);
 
-  const onHandleEdit = (record) => InAppEvent.openDrawer("#enterprise.edit", {
-    title: 'Sửa thông tin công ty #' + record.id,
-    data: { record }
-  });
+  const onHandleEdit = (record) => {
+    let uri = RequestUtils.generateUrlGetParams("/sale/order", {enterpriseId: record.id});
+    navigate(uri);
+  };
 
   return (
     <div>
