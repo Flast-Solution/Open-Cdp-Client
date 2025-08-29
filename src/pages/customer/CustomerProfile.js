@@ -28,7 +28,6 @@ import {
   Button,
   List,
   Avatar,
-  Progress,
   Statistic,
   Row,
   Col,
@@ -41,9 +40,12 @@ import { DollarCircleOutlined, MailOutlined, FileDoneOutlined } from "@ant-desig
 import { useEffectAsync } from 'hooks/MyHooks';
 import RequestUtils from 'utils/RequestUtils';
 import { SUCCESS_CODE } from 'configs';
-import { formatTime } from 'utils/dataUtils';
+import { arrayNotEmpty, formatMoney, formatTime } from 'utils/dataUtils';
 import { InAppEvent } from 'utils/FuseUtils';
 import { useNavigate } from 'react-router-dom';
+import { useParams } from 'react-router-dom';
+import OrderService from 'services/OrderService';
+import { renderArrayColor } from 'containers/Order/utils';
 
 const { Title, Text, Paragraph } = Typography;
 const customer = {
@@ -59,11 +61,6 @@ const customer = {
   priority: 'Cao',
   leadScore: 85
 };
-
-const opportunities = [
-  { key: '1', name: 'CRM cho doanh nghiệp', stage: 'Proposal', amount: '300 triệu ₫', closeDate: '30/04', probability: 70 },
-  { key: '2', name: 'Dịch vụ bảo trì nâng cao', stage: 'Negotiation', amount: '80 triệu ₫', closeDate: '15/05', probability: 85 },
-];
 
 const wonDeals = [
   { amount: '150 triệu ₫', date: '03/2025' },
@@ -97,19 +94,30 @@ const alerts = [
 
 const CustomerProfile = () => {
 
+  const { id } = useParams();
   const navigate = useNavigate();
   const [ data, setData ] = useState({});
   const [ iCustomer, setCustomer ] = useState({});
 
   useEffectAsync(async () => {
-    let { data, errorCode } = await RequestUtils.Get(`/customer/report-by-id/${24}`);
-    if (errorCode === SUCCESS_CODE) {
-      let { iCustomer, ...rest } = data;
-      setData(rest);
-      setCustomer(iCustomer)
+    let { data, errorCode } = await RequestUtils.Get('/customer/report-by-id/' + id);
+    if (errorCode !== SUCCESS_CODE) {
+      return;
     }
-  }, []);
+    let { iCustomer, ...rest } = data;
+    if(arrayNotEmpty(rest?.opportunities)) {
+      const { embedded } = await OrderService.viewInTable({ embedded: rest.opportunities, page: {}});
+      rest.opportunities = embedded
+    }
+    if(arrayNotEmpty(rest?.orders)) {
+      const { embedded } = await OrderService.viewInTable({ embedded: rest.orders, page: {}});
+      rest.orders = embedded;
+    }
+    setData(rest);
+    setCustomer(iCustomer);
+  }, [id]);
 
+  console.log(data);
   const onEditCustomer = () => InAppEvent.openDrawer("#customer.edit", {
     title: 'Cập nhật thông tin khách hàng #' + iCustomer.id,
     iCustomer,
@@ -185,22 +193,59 @@ const CustomerProfile = () => {
                 <Statistic title="CLV ước tính" value={stats.clv} prefix="₫" />
               </Col>
             </Row>
+
             <Divider />
-            <Title level={5}>Cơ hội đang xử lý</Title>
             <Table
-              dataSource={opportunities}
-              pagination={false}
+              rowKey={"id"}
+              dataSource={data?.opportunities ?? []}
+              pagination={(data?.opportunities ?? []).length > 5 ? true : false}
               size="small"
               columns={[
-                { title: 'Tên', dataIndex: 'name' },
-                { title: 'Giai đoạn', dataIndex: 'stage' },
-                { title: 'Giá trị', dataIndex: 'amount' },
-                { title: 'Dự kiến chốt', dataIndex: 'closeDate' },
                 {
-                  title: 'Xác suất',
-                  dataIndex: 'probability',
-                  render: (prob) => <Progress percent={prob} size="small" />,
+                  title: 'Kinh doanh',
+                  dataIndex: 'userCreateUsername',
+                  key: 'userCreateUsername',
+                  width: 120,
+                  ellipsis: true
                 },
+                {
+                  title: 'Mã cơ hội',
+                  dataIndex: 'code',
+                  key: 'code',
+                  width: 150,
+                  ellipsis: true
+                },
+                {
+                  title: 'Sản phẩm',
+                  dataIndex: 'products',
+                  width: 150,
+                  ellipsis: true,
+                  render: (products, record) => renderArrayColor(products, record.detailstatus)
+                },
+                {
+                  title: 'Ngày đặt',
+                  dataIndex: 'createdAt',
+                  key: 'createdAt',
+                  width: 130,
+                  ellipsis: true,
+                  render: (time) => formatTime(time)
+                },
+                {
+                  title: 'Tổng tiền',
+                  dataIndex: 'total',
+                  key: 'total',
+                  width: 130,
+                  ellipsis: true,
+                  render: (total) => formatMoney(total)
+                },
+                {
+                  title: 'Giảm giá',
+                  dataIndex: 'priceOff',
+                  key: 'priceOff',
+                  width: 130,
+                  ellipsis: true,
+                  render: (priceOff) => formatMoney(priceOff)
+                }
               ]}
             />
             <div style={{ marginTop: 12 }}>
