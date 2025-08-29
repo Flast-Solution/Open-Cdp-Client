@@ -51,6 +51,7 @@ const FormSelect = ({
   onChangeGetSelectedItem,
   onChange,
   isLimitWidth = false,
+  model,
   ...props
 }) => {
   const { t } = useTranslation();
@@ -112,6 +113,7 @@ const FormSelect = ({
         placeholder={t(placeholder)}
         filterOption={isFilterOption ? onSelectOption : false}
         popupMatchSelectWidth={isLimitWidth}
+        mode={model}
         {...props}
         onChange={onChange || handleChange}
       >

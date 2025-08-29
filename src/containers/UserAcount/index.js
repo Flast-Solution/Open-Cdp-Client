@@ -46,12 +46,16 @@ const UserAccount = ({ data }) => {
       InAppEvent.normalInfo('Vui lòng nhập đúng Email định dạng');
       return;
     }
-
+    const newDataUserInfo = dataCreate?.userProfiles?.map(item => ({id: item || 0}));
+    const dataUpdate = {
+      ...dataCreate,
+      userProfiles: newDataUserInfo
+    }
     if (Object.keys(data)?.length > 0) {
-      const { message } = await RequestUtils.Post('/user/update', dataCreate, {id: data.id});
+      const { message } = await RequestUtils.Post('/user/update', dataUpdate, {id: data.id});
       InAppEvent.normalSuccess(message);
     } else {
-      const { message } = await RequestUtils.Post('/user/create', dataCreate);
+      const { message } = await RequestUtils.Post('/user/create', dataUpdate);
       InAppEvent.normalSuccess(message);
     }
     f5List("user/list");

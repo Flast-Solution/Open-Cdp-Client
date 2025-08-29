@@ -87,6 +87,7 @@ const UserForm = ({ listProFile }) => {
 					resourceData={listProFile}
 					titleProp='type'
 					valueProp='id'
+					model="multiple" 
 				/>
 			</Col>
 			<Col md={24} xs={24}>

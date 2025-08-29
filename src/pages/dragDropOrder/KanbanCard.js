@@ -48,7 +48,7 @@ const KanbanCard = ({
   return (
     <KanbanCardWrapper>
       <TitleWrapper>
-        <Title ellipsis={{ tooltip: 'Ghi chú đơn hàng' }}>
+        <Title ellipsis={{ tooltip: 'Ghi chú đơn hàng' }} style={{ whiteSpace: 'wrap' }}>
           {String(order?.customerReceiverName).concat(" (").concat(order?.customerMobilePhone).concat(")")}
         </Title>
         <Tooltip title="Ghi chú đơn hàng">
