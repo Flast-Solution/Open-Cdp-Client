@@ -27,12 +27,16 @@ import {
   Avatar, 
   Tooltip, 
   Typography,
-  Slider
+  Slider,
+  message,
+  Popconfirm
 } from 'antd';
+import { Helmet } from 'react-helmet';
+import CustomBreadcrumb from 'components/BreadcrumbCustom';
 import Filter from './Filter';
 import useGetList from "hooks/useGetList";
 import RestList from 'components/RestLayout/RestList';
-import { arrayEmpty, dateFormatOnSubmit, formatMoney, formatTime } from 'utils/dataUtils';
+import { arrayEmpty, dateFormatOnSubmit, f5List, formatMoney, formatTime } from 'utils/dataUtils';
 import { useCallback } from 'react';
 import { InAppEvent } from 'utils/FuseUtils';
 import { HASH_MODAL } from 'configs';
@@ -47,6 +51,8 @@ import {
 } from '@ant-design/icons';
 import { DEPARTMENT_MAP_KEYS_VALUE } from 'configs/localData';
 import UserService from 'services/UserService';
+import RequestUtils from 'utils/RequestUtils';
+import { useNavigate } from 'react-router-dom';
 
 const STATUS_COLORS = {
   'Not Started': 'default',
@@ -54,14 +60,6 @@ const STATUS_COLORS = {
   'Completed': 'success',
   'On Hold': 'warning'
 };
-
-const STATUS_TEXT_MAP = {
-  'Not Started': 'Chưa bắt đầu',
-  'In Progress': 'Đang thực hiện',
-  'Completed': 'Hoàn thành',
-  'On Hold': 'Tạm dừng'
-};
-
 const { Text, Paragraph } = Typography;
 
 const getRandomColor = (name) => {
@@ -90,8 +88,10 @@ const UserAvatar = ({ name, size = 'default' }) => {
   )
 };
 
+const TITLE = "Danh sách dự án nội bộ";
 const TASK = () => {
 
+  const navigate = useNavigate();
   const [ editingProgress, setEditingProgress ] = useState(null);
   const [ tempProgress, setTempProgress ] = useState(0);
 
@@ -103,6 +103,16 @@ const TASK = () => {
     });
   }, []);
 
+  const onDelete = useCallback(async (id) => {
+    const { message: MSG } = await RequestUtils.Post("/works/delete/" + id, {});
+    message.info(MSG);
+    f5List("works/fetch");
+  }, []);
+
+  const onView = useCallback(async (id) => {
+    navigate(String("/task/calendar/").concat(id));
+  }, [navigate]);
+
   const startEditingProgress = (projectId, currentProgress) => {
     setEditingProgress(projectId);
     setTempProgress(currentProgress);
@@ -113,8 +123,10 @@ const TASK = () => {
     setTempProgress(0);
   };
 
-  const saveProgress = (projectId) => {
-    console.log({ projectId, tempProgress });
+  const saveProgress = async (record) => {
+    const { message: MSG } = await RequestUtils.Post("/works/save", {...record, progress: tempProgress });
+    message.info(MSG);
+    f5List("works/fetch");
     setEditingProgress(null);
   };
 
@@ -231,7 +243,7 @@ const TASK = () => {
                 type="primary" 
                 size="small" 
                 icon={<CheckOutlined />} 
-                onClick={() => saveProgress(record.id)}
+                onClick={() => saveProgress(record)}
               />
               <Button 
                 size="small" 
@@ -263,7 +275,7 @@ const TASK = () => {
       width: 120,
       render: (status) => (
         <Tag color={STATUS_COLORS[status] || 'default'}>
-          {STATUS_TEXT_MAP[status] || status}
+          {status}
         </Tag>
       )
     },
@@ -277,24 +289,33 @@ const TASK = () => {
       title: 'Hành động',
       key: 'action',
       fixed: 'right',
-      width: 150,
+      width: 130,
       render: (_, record) => (
         <Space size="middle">
           <Button 
             type="primary" 
             icon={<EyeOutlined />} 
-            size="small" 
+            size="small"
+            onClick={() => onView(record.id)} 
           />
           <Button 
             icon={<EditOutlined />} 
             size="small" 
             onClick={() => onEdit(record)} 
           />
-          <Button 
-            danger 
-            icon={<DeleteOutlined />} 
-            size="small" 
-          />
+          <Popconfirm
+            title="Xóa dự án"
+            description="Bạn có chắc chắn muốn xóa dự án này ?"
+            okText="Đồng ý"
+            cancelText="Hủy"
+            onConfirm={() => onDelete(record.id)}
+          >
+            <Button 
+              danger 
+              icon={<DeleteOutlined />} 
+              size="small"
+            />
+          </Popconfirm>
         </Space>
       )
     }
@@ -319,18 +340,26 @@ const TASK = () => {
   }, [])
 
   return (
-    <RestList
-      xScroll={1200}
-      onData={onData}
-      initialFilter={{ limit: 10, page: 1 }}
-      filter={<Filter />}
-      beforeSubmitFilter={beforeSubmitFilter}
-      useGetAllQuery={useGetList}
-      apiPath={'works/fetch'}
-      hasCreate={true}
-      customClickCreate={onEdit}
-      columns={CUSTOM_ACTION}
-    />
+    <div>
+      <Helmet>
+        <title>{TITLE}</title>
+      </Helmet>
+      <CustomBreadcrumb
+        data={[{ title: 'Trang chủ' }, { title: TITLE }]}
+      />
+      <RestList
+        xScroll={1200}
+        onData={onData}
+        initialFilter={{ limit: 10, page: 1 }}
+        filter={<Filter />}
+        beforeSubmitFilter={beforeSubmitFilter}
+        useGetAllQuery={useGetList}
+        apiPath={'works/fetch'}
+        hasCreate={true}
+        customClickCreate={onEdit}
+        columns={CUSTOM_ACTION}
+      />
+    </div>
   )
 }
 

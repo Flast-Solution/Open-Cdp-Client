@@ -25,8 +25,9 @@ import CustomBreadcrumb from 'components/BreadcrumbCustom';
 import ListOrder from 'containers/Order/List';
 
 const OrderPage = () => {
-  const [title] = useState("Danh sách đơn hàng");
-  const filter = { type: "order" }
+  const [ title ] = useState("Danh sách đơn hàng");
+  const urlParams = new URLSearchParams(window.location.search);
+  const filter = { type: "order", ...urlParams }
   return <>
     <Helmet>
       <title>{title}</title>

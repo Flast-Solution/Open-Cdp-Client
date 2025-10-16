@@ -26,7 +26,7 @@ const { Text, Paragraph } = Typography;
 export const KanbanCardWrapper = styled.div`
   background: #ffffff;
   border-radius: 8px;
-  min-width: 280px;
+  width: 280px;
   box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
   padding: 16px;
   margin-bottom: 12px;

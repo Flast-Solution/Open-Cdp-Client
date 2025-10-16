@@ -62,7 +62,7 @@ const RestList = ({
     if (!isEmpty(initialFilter)) {
       setQueryParams(pre => ({ ...pre, ...initialFilter }));
     }
-  }, [initialFilter]);
+  }, []);
 
   const { data, loading } = useGetAllQuery({ queryParams, onData });
   const handleChangeQueryParams = (params) => {

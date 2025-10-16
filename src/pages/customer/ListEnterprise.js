@@ -1,5 +1,5 @@
 /**************************************************************************/
-/*  index.js                                                           		*/
+/*  ListEnterprise.js                                                     */
 /**************************************************************************/
 /*                       Tệp này là một phần của:                         */
 /*                             Open CDP                                   */
@@ -23,99 +23,98 @@ import React, { useCallback, useState } from 'react';
 import { Helmet } from 'react-helmet';
 import CustomBreadcrumb from 'components/BreadcrumbCustom';
 import RestList from 'components/RestLayout/RestList';
-import LeadFilter from './Filter';
-import useGetList from "hooks/useGetList";
-import { arrayNotEmpty, dateFormatOnSubmit } from 'utils/dataUtils';
-import { HASH_MODAL } from 'configs';
-import { InAppEvent } from 'utils/FuseUtils';
-import { Button } from 'antd';
-import UserService from 'services/UserService';
+import CustomerFilter from './Filter';
+import useGetList from 'hooks/useGetList';
+import { Button, Tag } from 'antd';
+import { dateFormatOnSubmit, formatTime } from 'utils/dataUtils';
+import { useNavigate } from 'react-router-dom';
+import { ShoppingCartOutlined } from '@ant-design/icons';
+import styled from 'styled-components';
+import RequestUtils from 'utils/RequestUtils';
 
-const ListUserGroup = () => {
+const StyledTag = styled(Tag)`
+  cursor: pointer;
+`;
 
-  const [ title ] = useState("Danh sách tài khoản Team");
+const ListEnterprise = () => {
+
+  let navigate = useNavigate();
+  const [ title ] = useState("Khách doanh nghiệp");
   const CUSTOM_ACTION = [
     {
-      title: "Tên Team",
-      dataIndex: 'name',
-      width: 200,
-      ellipsis: true,
-    },
-    {
-      title: "Tên Leader",
-      dataIndex: 'leaderName',
-      width: 200,
+      title: "Khách hàng",
+      dataIndex: 'companyName',
+      width: 150,
       ellipsis: true
     },
     {
-      title: "Thời gian",
+      title: "G.Đốc",
+      dataIndex: 'director',
+      width: 150,
+      ellipsis: true
+    },
+    {
+      title: "Số điện thoại",
+      dataIndex: 'mobilePhone',
+      width: 150,
+      ellipsis: true
+    },
+    {
+      title: "Mã S.Thuế",
+      dataIndex: 'taxCode',
+      width: 150,
+      ellipsis: true
+    },
+    {
+      title: "Email",
+      dataIndex: 'email',
+      width: 150,
+      ellipsis: true,
+      render: (email) => email || '(Chưa có)'
+    },
+    {
+      title: "Địa chỉ",
+      dataIndex: 'address',
+      width: 170,
+      ellipsis: true
+    },
+    {
+      title: "Đ.Hàng",
+      dataIndex: 'numOfOrder',
+      width: 90,
+      render: (value) => (Number.isInteger(value) && value > 0) ? (
+        <StyledTag color="blue" icon={<ShoppingCartOutlined />}>{value} Đơn</StyledTag>
+      ) : '(Chưa có)'
+    },
+    {
+      title: "Ngày tạo",
       dataIndex: 'inTime',
       width: 200,
       ellipsis: true,
-      render: (inTime) => dateFormatOnSubmit(inTime)
-    },
-    {
-      title: "D/s thành viên",
-      dataIndex: 'members',
-      width: 200,
-      ellipsis: true,
-      render: (members) => members?.join(", ")
-    },
-    {
-      title: "S/L thành viên",
-      dataIndex: 'memberNumber',
-      width: 200,
-      ellipsis: true
-    },
-    {
-      title: "Phòng ban",
-      dataIndex: 'department',
-      width: 200,
-      ellipsis: true,
+      render: (inTime) => formatTime(inTime)
     },
     {
       title: "Thao tác",
       width: 120,
       fixed: 'right',
-      render: (record) => (
-        <Button color="primary" variant="dashed" size='small' onClick={() => onHandleUpdateUser(record)}>
-          Update
+      ellipsis: true,
+      render: (record) => record.numOfOrder ? (
+        <Button color="primary" variant="dashed" onClick={() => onHandleEdit(record)} size='small'>
+          Chi tiết
         </Button>
-      )
+      ) : '(no order)'
     }
   ];
-
-  const onData = useCallback(async (values) => {
-    if(arrayNotEmpty(values)) {
-      const uIds = values.flatMap(item => item.listMember);
-      const mUsers = await UserService.mapId2Name(uIds);
-      for(let item of values) {
-        item.members = item.listMember.map(i => mUsers[i] || '');
-      }
-    }
-    return { embedded : values, page: {} };
-  }, []);
 
   const beforeSubmitFilter = useCallback((values) => {
     dateFormatOnSubmit(values, ['from', 'to']);
     return values;
   }, []);
 
-  const onCreateLead = () => {
-    let title = 'Tạo tài khoản Group';
-    let hash = '#draw/userGroup.edit';
-    let data = { record: {}};
-    InAppEvent.emit(HASH_MODAL, { hash, title, data });
-  }
-
-  const onHandleUpdateUser = (datas) => {
-    let title = 'Sửa tài khoản Group';
-    let hash = '#draw/userGroup.edit';
-
-    const { members, ...valuse } = datas;
-    let data = { record: valuse };
-    InAppEvent.emit(HASH_MODAL, { hash, title, data });
-  }
+  const onHandleEdit = (record) => {
+    let uri = RequestUtils.generateUrlGetParams("/sale/order", {enterpriseId: record.id});
+    navigate(uri);
+  };
 
   return (
     <div>
@@ -127,19 +126,16 @@ const ListUserGroup = () => {
       />
       <RestList
         xScroll={1200}
-        onData={onData}
         initialFilter={{ limit: 10, page: 1 }}
-        filter={<LeadFilter />}
+        filter={<CustomerFilter taxCode={true} />}
         beforeSubmitFilter={beforeSubmitFilter}
         useGetAllQuery={useGetList}
-        apiPath={'user-group/fetch'}
-        customClickCreate={onCreateLead}
+        hasCreate={false}
+        apiPath={'customer/fetch-customer-enterprise'}
         columns={CUSTOM_ACTION}
       />
     </div>
   )
 }
 
-export default ListUserGroup
-
-
+export default ListEnterprise

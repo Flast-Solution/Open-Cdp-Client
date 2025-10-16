@@ -24,14 +24,14 @@ import mapKeys from 'lodash/mapKeys';
 
 export const ACTIVE_TYPES = [
   {
-    value: '2',
-    text: 'isActive.inactive',
+    value: 2,
+    text: 'Kích hoạt',
     color: 'red',
     textColor: theme.color.error
   },
   {
-    value: '1',
-    text: 'isActive.active',
+    value: 1,
+    text: 'Ngưng',
     color: 'green',
     textColor: theme.color.success
   }
@@ -96,7 +96,7 @@ export const DEPARTMENT = [
   { value: 1, name: "IT", color: 'blue' },
   { value: 2, name: "Marketing", color: 'green' },
   { value: 3, name: "Kinhdoanh", color: 'purple' },
-  { value: 4, name: "default", color: 'orange' }
+  { value: 4, name: "Khác", color: 'orange' }
 ];
 export const DEPARTMENT_MAP_KEYS_VALUE = mapKeys(DEPARTMENT, 'value');
 

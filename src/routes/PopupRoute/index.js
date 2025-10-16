@@ -43,15 +43,23 @@ const CustomModalStyles = createGlobalStyle`
   }
 `;
 
+<<<<<<< HEAD
 const Material = [
   {
     path: 'material.add',
     Component: React.lazy(() => import('containers/Material')),
+=======
+const Common = [
+  {
+    path: 'task.add',
+    Component: React.lazy(() => import('containers/Works/TaskForm')),
+>>>>>>> 51e5682d64003976f532b4fe0c048d6d44764efd
     modalOptions: { title: '', width: 600 }
   }
 ];
 
 const modalRoutes = [
+  ...Common,
   ...Order,
   ...NhapKho,
   ...Cusomter,

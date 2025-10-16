@@ -64,7 +64,7 @@ const CustomerForm = ({
       return;
     }
 
-    let [product] = details;
+    let [ product ] = details;
     const defindMappingSchema = {
       name: "customerName",
       mobile: "customerMobile",
