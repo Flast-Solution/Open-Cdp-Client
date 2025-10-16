@@ -99,3 +99,9 @@ export const DEPARTMENT = [
   { value: 4, name: "default", color: 'orange' }
 ];
 export const DEPARTMENT_MAP_KEYS_VALUE = mapKeys(DEPARTMENT, 'value');
+
+export const MATERIAL_UNIT_TYPE = [
+  { value: "QUANTITY", name: "Số lượng" },
+  { value: "DIMENSION", name: "Kích thước" },
+  { value: "WEIGHT", name: "Trọng lượng" }
+];

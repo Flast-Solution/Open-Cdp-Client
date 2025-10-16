@@ -43,11 +43,20 @@ const CustomModalStyles = createGlobalStyle`
   }
 `;
 
+const Material = [
+  {
+    path: 'material.add',
+    Component: React.lazy(() => import('containers/Material')),
+    modalOptions: { title: '', width: 600 }
+  }
+];
+
 const modalRoutes = [
   ...Order,
   ...NhapKho,
   ...Cusomter,
-  ...KPI
+  ...KPI,
+  ...Material
 ];
 
 const getPopupRoute = (currentModal) => {

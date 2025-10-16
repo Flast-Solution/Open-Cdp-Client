@@ -110,26 +110,3 @@ export const dateFormatOnSubmit = (entity, propertes = [], format = "YYYY-MM-DD 
 export const formatTime = (text, fm = "DD-MM-YYYY") => text ? moment(new Date(text)).format(fm) : 'N/a';
 export const formatMoney = (x) => x ? x.toLocaleString('it-IT') + ' đ' : '0 đ';
 export const calVat = ({ total, vatPercent }) => (total || 0) * (vatPercent / 100);
-
-export const discountAsNumber = ({ discountUnit, discountValue, total }) => {
-    if (!discountUnit || !discountValue) {
-        return 0;
-    }
-    return discountUnit === 'percent' ? (Number(discountValue) / 100) * Number(total) : discountValue
-}
-
-export const checkValidParentInboxId = (inboxId) => inboxId && inboxId !== 'parent';
-export const checkValidInboxId = (inboxId) => inboxId && inboxId !== 'inbox';
-export const getLocationIdLocal = () => localStorage.getItem('locationId');
-export const getBusinessIdLocal = () => localStorage.getItem('businessId');
-
-export const getUserFullNameInbox = (item) => {
-    return item?.customer?.fullName || item?.user?.fullName || item?.senderName;
-};
-
-export const getUserAvatarInbox = (item) => {
-    return item?.customer?.avatar || item?.user?.avatar || item?.senderAvatar;
-};
-
-export const formatTimeSubmit = (time) =>
-  time ? moment(time).toISOString() : null;

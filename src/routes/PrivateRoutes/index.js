@@ -25,8 +25,11 @@ import FuseUtils from 'utils/FuseUtils';
 
 import { LoginConfig } from './AuthConfig';
 import { CommonConfig } from './CommonConfig';
-import { ProductConfig } from './ProductConfig';
 import { KpiConfig } from './KpiConfig';
+
+/* Sản phẩm - Dịch vụ - BOM */
+import { ProductConfig } from './ProductConfig';
+import { MaterialConfig } from './MaterialConfig';
 
 /* Lead - Cơ hội - Đơn hàng */
 import { LeadConfig } from './LeadConfig';
@@ -60,6 +63,7 @@ const routeConfigs = [
     LoginConfig,
     KpiConfig,
     ProductConfig,
+    MaterialConfig,
     CommonConfig,
     LeadConfig,
     Lead3DayConfig,

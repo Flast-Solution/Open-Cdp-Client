@@ -45,7 +45,9 @@ import {
   TagOutlined,
   DeleteOutlined,
   PaperClipOutlined,
-  GiftOutlined
+  GiftOutlined,
+  BuildOutlined,
+  DeliveredProcedureOutlined
 } from '@ant-design/icons';
 
 import useCollapseSidebar from 'hooks/useCollapseSidebar';
@@ -96,9 +98,13 @@ function SideBar() {
     getItem(<Link to="/kpi"> Kpi</Link>, 'Kpi', <RiseOutlined />),
     getItem(<Link to="/bot">Bot dữ liệu</Link>, 'bot_data', <PullRequestOutlined />),
     getItem(<Link to="/product"> Sản phẩm</Link>, 'product_list', <UngroupOutlined />),
+    getItem('Sản xuất', 'san_xuat', <BuildOutlined />, [
+      getItem(<Link to="/material">Nguyên V.Liệu</Link>, 'material', <DeliveredProcedureOutlined />),
+      getItem(<Link to="/material/bom">Lệnh S.Xuất</Link>, 'material.bom', <FolderOpenOutlined />)
+    ]),
     getItem('Tài khoản', 'tai_khoan', <UserOutlined />, [
       getItem(<Link to="/user/group">Team</Link>, 'user_group', <TeamOutlined />),
-      getItem(<Link to="/user/list-system"> Tài khoản hệ thống</Link>, 'user_system', <SettingOutlined />)
+      getItem(<Link to="/user/list-system">Tài khoản hệ thống</Link>, 'user_system', <SettingOutlined />)
     ])
   ]
 
