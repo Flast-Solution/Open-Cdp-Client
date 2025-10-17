@@ -19,7 +19,7 @@
 /* có trách nghiệm                                                        */
 /**************************************************************************/
 
-import { useEffect } from "react";
+import React, { useEffect } from "react";
 import { Form, Row, Col, message } from "antd";
 import { isEmpty } from "lodash";
 import FormHidden from "components/form/FormHidden";
@@ -106,6 +106,6 @@ const MaterialForm = ({ onSave, material }) => {
       </Row>
     </Form>
   )
-}
+};
 
-export default MaterialForm
+export default MaterialForm;

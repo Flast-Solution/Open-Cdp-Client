@@ -25,13 +25,14 @@ import useGetList from "hooks/useGetList";
 import { Helmet } from "react-helmet";
 import CustomBreadcrumb from 'components/BreadcrumbCustom';
 import Filter from './Filter';
-import { Button, Image } from 'antd';
+import { Button, Image, Space } from 'antd';
 import { InAppEvent } from "utils/FuseUtils";
 import { GATEWAY, HASH_MODAL } from 'configs';
 import { arrayEmpty, dateFormatOnSubmit, formatTime } from 'utils/dataUtils';
 import ProductAttrService from 'services/ProductAttrService';
 import { cloneDeep } from 'lodash';
 import SkuView, { PriceView } from 'containers/Product/SkuView';
+import { Link } from 'react-router-dom';
 
 const Index = () => {
 
@@ -69,12 +70,19 @@ const Index = () => {
     data: {}
   });
 
-  const [title] = useState("Danh sách sản phẩm");
+  const onAddBom = (item) => InAppEvent.emit(HASH_MODAL, {
+    hash: '#draw/product.bom',
+    title: 'Cấu hình BOM (Bill of Materials) #' + item.id,
+    data: cloneDeep(item)
+  });
+
+  const [ title ] = useState("Danh sách sản phẩm");
   const CUSTOM_ACTION = [
     {
       title: "Mã",
       dataIndex: 'code',
-      width: 100
+      width: 110,
+      ellipsis: true
     },
     {
       title: "Hình ảnh",
@@ -92,9 +100,10 @@ const Index = () => {
     },
     {
       title: "Sản phẩm",
-      dataIndex: 'name',
+      key: 'name',
       width: 200,
-      ellipsis: true
+      ellipsis: true,
+      render: (record) => <Link to={`/product/edit/${record.id}`}>{record.name}</Link>
     },
     {
       title: "SKus",
@@ -126,10 +135,13 @@ const Index = () => {
     },
     {
       title: "",
-      width: 100,
+      width: 140,
       fixed: 'right',
       render: (record) => (
-        <Button color="danger" variant="dashed" onClick={() => onEdit(record)} size='small'>Detail</Button>
+        <Space gap={8}>
+          <Button color="danger" variant="dashed" onClick={() => onEdit(record)} size='small'>Detail</Button>
+          <Button onClick={() => onAddBom(record)} size='small'>Bom</Button>
+        </Space>
       )
     }
   ];

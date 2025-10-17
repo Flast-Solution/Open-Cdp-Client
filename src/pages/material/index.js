@@ -20,21 +20,24 @@
 /**************************************************************************/
 
 import React, { useCallback, useState } from 'react';
-import { Button, Space, Popconfirm, Form, message } from 'antd';
+import { Button, Space, Popconfirm, Form, message, Row, Col } from 'antd';
 import { Helmet } from 'react-helmet';
 import CustomBreadcrumb from 'components/BreadcrumbCustom';
 import RestList from 'components/RestLayout/RestList';
 import Filter from './Filter';
 import useGetList from "hooks/useGetList";
-import { dateFormatOnSubmit, formatMoney, formatTime, f5List } from 'utils/dataUtils';
+import { dateFormatOnSubmit, formatMoney, formatTime, f5List, arrayEmpty } from 'utils/dataUtils';
 import { HASH_POPUP } from 'configs/constant';
 import { InAppEvent } from 'utils/FuseUtils';
 import { DeleteOutlined } from '@ant-design/icons';
 import FormInfiniteStock from 'components/form/SelectInfinite/FormInfiniteStock';
 import FormInputNumber from 'components/form/FormInputNumber';
 import RequestUtils from 'utils/RequestUtils';
+import FormTextArea from 'components/form/FormTextArea';
+import FormInput from 'components/form/FormInput';
+import { SUCCESS_CODE } from 'configs';
 
-const PopconfirmImport = ({ form }) => {
+const PopconfirmImport = ({ form, record }) => {
   return (
     <Form form={form} layout='vertical' style={{ width: 300, margin: '30px 30px 0px 0px' }}>
 			<FormInfiniteStock
@@ -51,6 +54,40 @@ const PopconfirmImport = ({ form }) => {
 				required
 				min={1}
 				initialValue={1}
+			/>
+			<FormInput 
+				label="Nhà cung cấp"
+				placeholder="Nhập nhà cung cấp"
+				required
+				name={"source"}
+			/>
+			{record.unitType === 'DIMENSION' ? (
+				<Row gutter={16}>
+					<Col md={12} xs={24}>
+						<FormInputNumber
+							style={{ width: '100%' }}
+							name={'height'}
+							label="Dài (cm)"
+							required
+							placeholder={"Nhập chiều dài"}
+						/>
+					</Col>
+					<Col md={12} xs={24}>
+						<FormInputNumber
+							style={{ width: '100%' }}
+							name={'width'}
+							label="Rộng (cm)"
+							required
+							placeholder={"Nhập chiều rộng"}
+						/>
+					</Col>
+				</Row>
+			) : ''}
+			<FormTextArea 
+				name="note"
+				label="Ghi chú"
+				placeholder="Nhập ghi chú (nếu có)"
+				rows={2}
 			/>
 		</Form>
   )
@@ -76,11 +113,22 @@ const MaterialPage = () => {
 		try {
 			const values = await form.validateFields();
 			const body = { ...values, materialId: record.id };
-			const { message: MSG } = await RequestUtils.Post('/material/import', body);
+			const { message: MSG, errorCode } = await RequestUtils.Post('/inventory/save', body);
 			message.success(MSG);
+			if(errorCode === SUCCESS_CODE) {
+				f5List("material/fetch");
+			}
 		} catch (error) {
 			console.error('Error during import:', error);
 			message.error('Failed to import material. Please try again.');
+		}
+	};
+
+	const onConfirmDelete = async (id) => {
+		const { message: MSG, errorCode } = await RequestUtils.Post('/material/delete/' + id, {});
+		message.success(MSG);
+		if(errorCode === SUCCESS_CODE) {
+			f5List("material/fetch");
 		}
 	};
 
@@ -121,7 +169,7 @@ const MaterialPage = () => {
 			dataIndex: 'inventory',
 			ellipsis: true,
 			width: 120,
-			render: (inventory) => inventory?.quantity || 0
+			render: (inventory) => arrayEmpty(inventory) ? 0 : inventory.reduce((total, item) => total + item.quantity, 0	)
 		},
 		{
 			title: 'Ngày tạo',
@@ -146,7 +194,7 @@ const MaterialPage = () => {
 					<Popconfirm
 						placement="topLeft"
 						title="Chọn kho để nhập"
-						description={<PopconfirmImport form={form} />}
+						description={<PopconfirmImport form={form} record={record} />}
 						onConfirm={() => onConfirmImport(record)}
 						okText="Có"
 						cancelText="Không"
@@ -156,6 +204,7 @@ const MaterialPage = () => {
 						</Button>
 					</Popconfirm>
 					<Popconfirm
+						onConfirm={() => onConfirmDelete(record.id)}
 						title="Xóa vật liệu"
 						description="Bạn có chắc chắn muốn xóa vật liệu này không?"
 						okText="Có"
