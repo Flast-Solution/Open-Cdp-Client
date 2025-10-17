@@ -112,4 +112,7 @@ export const useGetOrderCodeQuery = ({ queryParams, onCompleted }) =>
 export const useGetServiceQuery = ({ queryParams, onCompleted }) =>
 	useData({ queryParams, onCompleted, api: 'service/list' });
 
+export const useGetMaterialQuery = ({ queryParams, onCompleted }) =>
+	useData({ queryParams, onCompleted, api: 'material/fetch' });
+
 export default useData;

@@ -32,9 +32,9 @@ import { cloneDeep } from 'lodash';
 const log = (value) => console.log('[container.product.index] ', value);
 const Product = ({ closeModal, data }) => {
 
-  const [record, setRecord] = useState({});
-  const [fileActive, setFileActive] = useState('');
-  const [sessionId, setSessionId] = useState(null);
+  const [ record, setRecord ] = useState({});
+  const [ fileActive, setFileActive ] = useState('');
+  const [ sessionId, setSessionId ] = useState(null);
 
   useEffect(() => {
     (async () => {
