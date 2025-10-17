@@ -18,7 +18,7 @@
 /* Đội ngũ phát triển mong rằng phần mềm được sử dụng đúng mục đích và    */
 /* có trách nghiệm                                                        */
 /**************************************************************************/
-import { useEffect, useState, useContext } from 'react';
+import { useState, useContext } from 'react';
 import RestEditModal from 'components/RestLayout/RestEditModal';
 import FormListAddition from "components/form/FormListAddtion";
 import { Col, Row, Typography, Form, message } from 'antd';
@@ -31,12 +31,14 @@ import CustomButton from 'components/CustomButton';
 import FormInput from 'components/form/FormInput';
 import { arrayEmpty, formatMoney } from 'utils/dataUtils';
 import RequestUtils from 'utils/RequestUtils';
+import { useEffectAsync } from 'hooks/MyHooks';
 
 const ProductBomContainer = ({ closeModal, data }) => {
 
   const [ record, setRecord ] = useState({});
-  useEffect(() => {
-    setRecord(data);
+  useEffectAsync(async () => {
+    const mPData = await RequestUtils.GetAsList("/product-material/find-by-product-id/" + data.id);
+    setRecord({ models: mPData});
   }, [data]);
 
   const onSubmit = async (values) => {
