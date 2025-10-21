@@ -32,13 +32,14 @@ import FormInput from 'components/form/FormInput';
 import { arrayEmpty, formatMoney } from 'utils/dataUtils';
 import RequestUtils from 'utils/RequestUtils';
 import { useEffectAsync } from 'hooks/MyHooks';
+import FormSelect from 'components/form/FormSelect';
 
 const ProductBomContainer = ({ closeModal, data }) => {
 
   const [ record, setRecord ] = useState({});
   useEffectAsync(async () => {
-    const mPData = await RequestUtils.GetAsList("/product-material/find-by-product-id/" + data.id);
-    setRecord({ models: mPData});
+    const mPData = await RequestUtils.GetAsList("/product-material/find-by-product/" + data.id);
+    setRecord({ models: mPData, product: data });
   }, [data]);
 
   const onSubmit = async (values) => {
@@ -82,7 +83,8 @@ const ProductBomContainer = ({ closeModal, data }) => {
 const FormOpenBom = ({ field }) => {
 
   const [ material, setMaterial ] = useState({})
-  const { form } = useContext(FormContextCustom);
+  const { form, record } = useContext(FormContextCustom);
+
   const { name } = field || { name: 0 };
   const onChangeSelectMaterial = (value, item) => {
     let price = undefined;
@@ -94,6 +96,14 @@ const FormOpenBom = ({ field }) => {
     });
     setMaterial(item);
   }
+
+  const materialId = Form.useWatch(["models", name, "materialId"], form);
+  useEffectAsync(async () => {
+    if(materialId) {
+      const { data } = await RequestUtils.Get("/material/find-id", {id: materialId});
+      setMaterial(data);
+    }
+  }, [materialId]);
 
   return (
     <Row gutter={16}>
@@ -115,6 +125,15 @@ const FormOpenBom = ({ field }) => {
           name={[name, 'quantity']}
           placeholder="Số lượng"
           label="Số lượng"
+        />
+      </Col>
+      <Col md={24} xs={24}>
+        <FormSelect 
+          required
+          name={[name, 'skuId']}
+          label='Sku'
+          placeholder='Chọn loại SKu'
+          resourceData={record?.product?.skus ?? []}
         />
       </Col>
       <Col md={24} xs={24}>
