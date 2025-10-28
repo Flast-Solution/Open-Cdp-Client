@@ -89,3 +89,9 @@ export const calPriceOff = ({ discountValue, discountUnit, total }) => {
   }
   return (discountValue * total) / 100;
 };
+
+export const isPositiveInteger = (value) => {
+  return typeof value === 'number' 
+    && Number.isInteger(value) 
+    && value > 0;
+};

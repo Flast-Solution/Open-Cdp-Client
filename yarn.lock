@@ -7754,6 +7754,18 @@ jiti@^1.21.6:
   resolved "https://registry.yarnpkg.com/jiti/-/jiti-1.21.7.tgz#9dd81043424a3d28458b193d965f0d18a2300ba9"
   integrity sha512-/imKNG4EbWNrVjoNC/1H5/9GFy+tqjGBHCaSsN+P2RnPqjsLmv6UD3Ej+Kj8nBWaRAwyk7kK5ZUc+OEatnTR3A==
 
+jodit-react@^5.2.31:
+  version "5.2.31"
+  resolved "https://registry.yarnpkg.com/jodit-react/-/jodit-react-5.2.31.tgz#f8c380b5fbdbed7337904067839f85240725e931"
+  integrity sha512-E0iu+EhUN2xYsv0OF/RsJ0WFAR5tmLWqHj6pOTCOJJQK3i0FKpFuACw/X+1W4RTIBrb7qoGNa38aW4bj5mf5Ww==
+  dependencies:
+    jodit "^4.6.19"
+
+jodit@^4.6.19:
+  version "4.7.4"
+  resolved "https://registry.yarnpkg.com/jodit/-/jodit-4.7.4.tgz#d92c6cc9e1b0b953f72bab46b790072dd1140924"
+  integrity sha512-qjjhGBqFE3ZhqXsCInJRPwjOQDhXAxun+zof2hq0Qn/aV+k4YqeKyWq72uKkVmSW86VGxP38Mvezx+/QdM/PUQ==
+
 "js-tokens@^3.0.0 || ^4.0.0", js-tokens@^4.0.0:
   version "4.0.0"
   resolved "https://registry.yarnpkg.com/js-tokens/-/js-tokens-4.0.0.tgz#19203fb59991df98e3a287050d4647cdeaf32499"
