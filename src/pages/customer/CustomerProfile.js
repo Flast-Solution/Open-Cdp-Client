@@ -62,11 +62,6 @@ const customer = {
   leadScore: 85
 };
 
-const wonDeals = [
-  { amount: '150 triệu ₫', date: '03/2025' },
-  { amount: '100 triệu ₫', date: '12/2024' },
-];
-
 const interactions = [
   { content: 'Gửi báo giá CRM', date: '28/03', opened: true },
   { content: 'Cuộc gọi 15 phút – Thảo luận tính năng', date: '25/03' },
@@ -74,18 +69,7 @@ const interactions = [
   { content: 'Tham gia webinar "Tối ưu vận hành"', date: '18/03' },
 ];
 
-const products = [
-  { name: 'CRM Gói Cơ bản', status: 'Đang sử dụng', expiry: 'Còn 3 tháng' },
-  { name: 'Hỗ trợ kỹ thuật tiêu chuẩn', status: 'Đang sử dụng' },
-];
-
 const upsellSuggestions = ['Gói Nâng cao', 'Bảo trì', 'Tư vấn triển khai'];
-
-const stats = {
-  totalSales: '480 triệu ₫',
-  avgOrder: '120 triệu ₫',
-  clv: '1.2 tỷ ₫',
-};
 
 const alerts = [
   'Đơn hàng gần đây nhất: 20/05/2025',
@@ -117,7 +101,6 @@ const CustomerProfile = () => {
     setCustomer(iCustomer);
   }, [id]);
 
-  console.log(data);
   const onEditCustomer = () => InAppEvent.openDrawer("#customer.edit", {
     title: 'Cập nhật thông tin khách hàng #' + iCustomer.id,
     iCustomer,
@@ -184,13 +167,13 @@ const CustomerProfile = () => {
           <Card title="Doanh số & Cơ hội" style={{ marginBottom: 16 }}>
             <Row gutter={16}>
               <Col span={8}>
-                <Statistic title="Tổng doanh số" value={stats.totalSales} prefix="₫" />
+                <Statistic title="Tổng doanh số" value={data?.summary?.total ?? 0} prefix="₫" />
               </Col>
               <Col span={8}>
-                <Statistic title="Đơn hàng trung bình" value={stats.avgOrder} prefix="₫" />
+                <Statistic title="Đơn hàng trung bình" value={Math.ceil(data?.summary?.avg ?? 0)} prefix="₫" />
               </Col>
               <Col span={8}>
-                <Statistic title="CLV ước tính" value={stats.clv} prefix="₫" />
+                <Statistic title="CLV ước tính" value={Math.ceil(data?.summary?.clv ?? 0)} prefix="₫" />
               </Col>
             </Row>
 
@@ -250,12 +233,7 @@ const CustomerProfile = () => {
             />
             <div style={{ marginTop: 12 }}>
               <Text type="success">
-                ✅ Đã chốt ({wonDeals.length}):{' '}
-                {wonDeals.map((d, i) => (
-                  <span key={i}>
-                    {d.amount} ({d.date}){' '}
-                  </span>
-                ))}
+                ✅ Đã chốt ({data?.summary?.orders ?? 0}). Tổng giá trị đơn: {formatMoney(data?.summary?.total ?? 0)}
               </Text>
             </div>
           </Card>
@@ -282,13 +260,83 @@ const CustomerProfile = () => {
           </Card>
 
           <Card title="Sản phẩm & Dịch vụ" style={{ marginBottom: 16 }}>
-            <Title level={5}>Đang sử dụng</Title>
-            {products.map((p, i) => (
-              <div key={i} style={{ marginBottom: 8 }}>
-                <Text strong>{p.name}</Text> – <Tag color="green">{p.status}</Tag>{' '}
-                {p.expiry && <Text type="secondary">({p.expiry})</Text>}
-              </div>
-            ))}
+            <Table
+              scroll={{ x: 'max-content' }}
+              rowKey={"id"}
+              dataSource={data?.orders ?? []}
+              pagination={(data?.orders ?? []).length > 5 ? true : false}
+              size="small"
+              columns={[
+                {
+                  title: 'Kinh doanh',
+                  dataIndex: 'userCreateUsername',
+                  key: 'userCreateUsername',
+                  width: 120,
+                  ellipsis: true
+                },
+                {
+                  title: 'Mã đơn',
+                  dataIndex: 'code',
+                  key: 'code',
+                  width: 150,
+                  ellipsis: true
+                },
+                {
+                  title: 'Sản phẩm',
+                  dataIndex: 'products',
+                  width: 150,
+                  ellipsis: true,
+                  render: (products, record) => renderArrayColor(products, record.detailstatus)
+                },
+                {
+                  title: 'Ngày đặt',
+                  dataIndex: 'createdAt',
+                  key: 'createdAt',
+                  width: 130,
+                  ellipsis: true,
+                  render: (time) => formatTime(time)
+                },
+                {
+                  title: 'Giảm giá',
+                  dataIndex: 'priceOff',
+                  key: 'priceOff',
+                  width: 130,
+                  ellipsis: true,
+                  render: (priceOff) => formatMoney(priceOff)
+                },
+                {
+                  title: 'Tổng tiền',
+                  dataIndex: 'total',
+                  key: 'total',
+                  width: 130,
+                  ellipsis: true,
+                  render: (total) => formatMoney(total)
+                },
+                {
+                  title: 'Thanh toán',
+                  dataIndex: 'paid',
+                  key: 'paid',
+                  width: 130,
+                  ellipsis: true,
+                  render: (paid) => formatMoney(paid)
+                },
+                {
+                  title: 'Còn lại',
+                  key: 'remain',
+                  width: 130,
+                  ellipsis: true,
+                  render: ({total, paid}) => formatMoney(total - paid)
+                },
+                {
+                  fixed: 'right',
+                  title: 'Trạng thái',
+                  dataIndex: 'detailstatus',
+                  width: 150,
+                  ellipsis: true,
+                  render: (detailstatus) => renderArrayColor(detailstatus, detailstatus)
+                }
+              ]}
+            />
           </Card>
         </Col>
 
