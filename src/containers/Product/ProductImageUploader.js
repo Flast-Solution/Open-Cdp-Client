@@ -24,7 +24,9 @@ const ProductImageUploader = ({
   title = 'Upload ảnh sản phẩm',
   onBeforeSubmitMultiPart = (values) => values,
   onBeforeSubmitUrl = (values) => values,
-  onClickAddImageToContent = (url) => url
+  onClickAddImageToContent = (url) => url,
+  onToggleFeatured = (id) => id,
+  onToggleSlideShow = (id, checked) => true
 }) => {
 
   const { record } = useContext(FormContextCustom);
@@ -88,15 +90,18 @@ const ProductImageUploader = ({
   };
 
   const handleToggleFeatured = (id) => {
-    setImages(images.map(img => 
-      ({ ...img, isFeatured: img.id === id })
-    ));
+    setImages(images.map(img => ({
+      ...img,
+      isFeatured: img.id === id ? !img.isFeatured : img.isFeatured
+    })));
+    onToggleFeatured(id);
   };
 
   const handleToggleSlide = (id, checked) => {
     setImages(images.map(img => 
       img.id === id ? { ...img, isSlideshow: checked } : img
     ));
+    onToggleSlideShow(id, checked);
   };
 
   const handleUpload = (id) => {
@@ -126,7 +131,6 @@ const ProductImageUploader = ({
     }
 
     const { data, errorCode, message: MSG } = await response.json();
-    console.log(data);
     if(errorCode !== SUCCESS_CODE) {
       message.error(MSG);
       return;

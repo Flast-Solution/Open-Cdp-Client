@@ -1,4 +1,4 @@
-import { useContext, useState, useEffect, useRef, useImperativeHandle, forwardRef } from 'react';
+import { useContext, useState, useRef, useImperativeHandle, forwardRef } from 'react';
 import { useEffectAsync } from 'hooks/MyHooks';
 import { useParams } from 'react-router-dom';
 import RequestUtils from 'utils/RequestUtils';
@@ -7,13 +7,15 @@ import CustomBreadcrumb from 'components/BreadcrumbCustom';
 import { GATEWAY, SUCCESS_CODE } from 'configs';
 import RestEditModal from 'components/RestLayout/RestEditModal';
 import FormHidden from 'components/form/FormHidden';
-import { Row, Col } from 'antd';
+import { Row, Col, message } from 'antd';
 import JoditEditor from 'jodit-react';
 import FormInput from 'components/form/FormInput';
 import FormTextArea from 'components/form/FormTextArea';
 import ProductImageUploader from 'containers/Product/ProductImageUploader';
 import { FormContextCustom } from 'components/context/FormContextCustom';
 import CustomButton from 'components/CustomButton';
+import { useCallback } from 'react';
+import FormInfiniteCategory from 'components/form/SelectInfinite/FormInfiniteCategory';
 
 const ProductEdit = () => {
 
@@ -40,6 +42,26 @@ const ProductEdit = () => {
     }
   };
 
+  const onUpdateFeaturedImage = useCallback(async (imageId) => {
+    RequestUtils.Post("/product/image-featured/" + imageId);
+  }, []);
+
+  const onUpdateSlideImage = useCallback(async (imageId, checked) => {
+    RequestUtils.Post("/product/image-slide", { imageId, checked, productId: id });
+  }, [id]);
+
+  const onSubmit = useCallback(async (values) => {
+    const { images, ...body } = values;
+    const { message: MEG, data, errorCode } = await RequestUtils.Post("/product/update-content", {
+      productId: id,
+      ...body
+    });
+    if(errorCode === 200) {
+      setContent(pre => ({...pre, ...data }));
+    }
+    message.info(MEG);
+  }, [ id ]);
+
   return (
     <>
       <Helmet>
@@ -51,17 +73,37 @@ const ProductEdit = () => {
       <RestEditModal
         record={mContent}
         updateRecord={(values) => setContent(preVal => ({...preVal, ...values}))}
+        onSubmit={onSubmit}
       >
         <Row gutter={16} style={{ marginTop: 20 }}>
           <Col md={24} xs={24}>
             <FormHidden name={'id'} />
+            <FormHidden name={'content'} />
           </Col>
           <Col md={12} xs={24}>
+            <Row gutter={16}>
+              <Col md={12} xs={24}>
+                <FormInput
+                  required
+                  label="Tiêu đề"
+                  name="title"
+                  placeholder={"Nhập tiêu đề"}
+                />
+              </Col>
+              <Col md={12} xs={24}>
+                <FormInfiniteCategory 
+                  mode="multiple"
+                  label="Danh mục"
+                  name='listCategories'
+                  placeholder={"Chọn nhiều danh mục"}
+                />
+              </Col>
+            </Row>
             <FormInput
               required
-              label="Tiêu đề"
-              name="title"
-              placeholder={"Nhập tiêu đề"}
+              label="Url tùy chỉnh"
+              name="slug"
+              placeholder={"Nhập url cho web"}
             />
             <FormTextArea 
               required
@@ -71,6 +113,7 @@ const ProductEdit = () => {
             />
             <FormJoditEditor 
               name="content"
+              initContent={mContent?.content ?? ''}
               ref={editorRef}
             />
             <CustomButton 
@@ -89,6 +132,8 @@ const ProductEdit = () => {
               apiUploadMultiPart="/product/upload-multi-part"
               apiUploadUrlFile="/product/upload-url"
               onClickAddImageToContent={insertImageToEditor}
+              onToggleFeatured={onUpdateFeaturedImage}
+              onToggleSlideShow={onUpdateSlideImage}
             />
           </Col>
         </Row>
@@ -97,7 +142,11 @@ const ProductEdit = () => {
   )
 };
 
-const FormJoditEditor = forwardRef(({ name, placeholder }, ref) => {
+const FormJoditEditor = forwardRef(({ 
+  name,
+  initContent = '',
+  placeholder = 'Nhập nội dung'
+ }, ref) => {
 
   const { form } = useContext(FormContextCustom);
   const [ editorValue, setEditorValue ] = useState('');
@@ -112,13 +161,12 @@ const FormJoditEditor = forwardRef(({ name, placeholder }, ref) => {
 
   const handleChange = (newContent) => {
     const content = newContent || '';
-    form.setFieldValue([name], content);
+    form.setFieldValue(name, content);
   };
 
   /* Hàm public để chèn ảnh (sẽ được gọi từ ngoài) */
   useImperativeHandle(ref, () => ({
     insertImage: (imageUrl) => {
-      console.log({imageUrl})
       if (!joditInstance.current) {
         return;
       }
@@ -138,11 +186,9 @@ const FormJoditEditor = forwardRef(({ name, placeholder }, ref) => {
     /* eslint-disable-next-line */
   }), [form, name]);
 
-  useEffect(() => {
-    const allValues = form.getFieldsValue(true);
-    const fieldValue = allValues[name];
-    setEditorValue(fieldValue || '');
-  }, [form, name]);
+  useEffectAsync(() => {
+    setEditorValue(initContent);
+  }, [initContent]);
 
   return (
    <JoditEditor
