@@ -5,7 +5,6 @@ import {
   Button,
   Checkbox,
   List,
-  Image,
   Input,
   message,
   Space,
@@ -17,6 +16,7 @@ import { isPositiveInteger } from 'utils/tools';
 import RequestUtils from 'utils/RequestUtils';
 import { GATEWAY, SUCCESS_CODE } from 'configs';
 import { FormContextCustom } from 'components/context/FormContextCustom';
+import CustomImage from 'components/common/CustomImage';
 
 const ImageUploader = ({
   apiUploadMultiPart,
@@ -216,7 +216,7 @@ const ImageUploader = ({
               }}
             >
               <Col span={4}>
-                <Image
+                <CustomImage
                   preview={false}
                   src={item.url}
                   alt={item.name}
