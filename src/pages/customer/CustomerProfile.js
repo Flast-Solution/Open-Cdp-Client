@@ -27,7 +27,6 @@ import {
   Table,
   Button,
   List,
-  Avatar,
   Statistic,
   Row,
   Col,
@@ -46,6 +45,7 @@ import { useNavigate } from 'react-router-dom';
 import { useParams } from 'react-router-dom';
 import OrderService from 'services/OrderService';
 import { renderArrayColor } from 'containers/Order/utils';
+import CareNoteList from 'containers/Customer/CareNoteList';
 
 const { Title, Text, Paragraph } = Typography;
 const customer = {
@@ -62,15 +62,7 @@ const customer = {
   leadScore: 85
 };
 
-const interactions = [
-  { content: 'Gửi báo giá CRM', date: '28/03', opened: true },
-  { content: 'Cuộc gọi 15 phút – Thảo luận tính năng', date: '25/03' },
-  { content: 'Truy cập trang gói cao cấp (2 lần)', date: '20/03' },
-  { content: 'Tham gia webinar "Tối ưu vận hành"', date: '18/03' },
-];
-
 const upsellSuggestions = ['Gói Nâng cao', 'Bảo trì', 'Tư vấn triển khai'];
-
 const alerts = [
   'Đơn hàng gần đây nhất: 20/05/2025',
   'Chưa tương tác >14 ngày'
@@ -237,28 +229,7 @@ const CustomerProfile = () => {
               </Text>
             </div>
           </Card>
-
-          <Card title="Tương tác & Hành vi" style={{ marginBottom: 16 }}>
-            <List
-              dataSource={interactions}
-              renderItem={(item) => (
-                <List.Item>
-                  <List.Item.Meta
-                    avatar={<Avatar style={{ backgroundColor: '#1890ff' }}>💬</Avatar>}
-                    title={
-                      <Text>
-                        {item.content}{' '}
-                        {item.opened && <Tag color="blue" style={{ marginLeft: 8 }}>Đã mở</Tag>}
-                      </Text>
-                    }
-                    description={<Text type="secondary">{item.date}</Text>}
-                  />
-                </List.Item>
-              )}
-            />
-            <Text strong>Sản phẩm / Dịch vụ (3), CSKH (5)</Text>
-          </Card>
-
+          <CareNoteList />
           <Card title="Sản phẩm & Dịch vụ" style={{ marginBottom: 16 }}>
             <Table
               scroll={{ x: 'max-content' }}
